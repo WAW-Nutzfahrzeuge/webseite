@@ -1,7 +1,6 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
-
-import cloudflare from "@astrojs/cloudflare";
+import vercel from "@astrojs/vercel";
 
 export default defineConfig({
   site: "https://www.wawnutzfahrzeuge.de",
@@ -10,5 +9,5 @@ export default defineConfig({
     sitemap()
   ],
 
-  adapter: cloudflare()
+  adapter: vercel()
 });
