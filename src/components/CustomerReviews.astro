@@ -47,7 +47,7 @@ const reviews = [
   },
 ];
 
-const loopedReviews = [...reviews, ...reviews];
+const loopedReviews = [...reviews, ...reviews, ...reviews];
 ---
 
 <section class="home-reviews section" aria-labelledby="home-reviews-title">
@@ -97,40 +97,50 @@ const loopedReviews = [...reviews, ...reviews];
     let startX = 0;
     let startScrollLeft = 0;
     let animationFrame = 0;
-    let resumeDelay = 0;
+    let lastTimestamp = 0;
+    let resumeAt = 0;
+    let virtualScrollLeft = 0;
+    let isNormalizing = false;
+    const pixelsPerSecond = 34;
 
-    const getHalfWidth = () => track.scrollWidth / 2;
+    const getSetWidth = () => track.scrollWidth / 3;
 
     const normalizeScroll = () => {
-      const halfWidth = getHalfWidth();
-      const endBoundary = track.scrollWidth - track.clientWidth - 2;
-      if (halfWidth <= 0) return;
+      const setWidth = getSetWidth();
+      if (setWidth <= 0) return;
 
-      if (track.scrollLeft >= endBoundary) {
-        track.scrollLeft = track.scrollLeft - halfWidth;
-      } else if (track.scrollLeft < 1) {
-        track.scrollLeft = track.scrollLeft + halfWidth;
+      if (virtualScrollLeft >= setWidth * 2) {
+        virtualScrollLeft -= setWidth;
+      } else if (virtualScrollLeft < setWidth * 0.5) {
+        virtualScrollLeft += setWidth;
       }
+
+      isNormalizing = true;
+      track.scrollLeft = virtualScrollLeft;
+      isNormalizing = false;
     };
 
     const setInitialScrollPosition = () => {
-      const halfWidth = getHalfWidth();
-      if (halfWidth > 0) {
-        track.scrollLeft = halfWidth;
+      const setWidth = getSetWidth();
+      if (setWidth > 0) {
+        virtualScrollLeft = setWidth;
+        track.scrollLeft = virtualScrollLeft;
       }
     };
 
     const startAutoLoop = () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      const tick = () => {
+      const tick = (timestamp: number) => {
+        const delta = lastTimestamp ? Math.min(timestamp - lastTimestamp, 32) : 16;
+        lastTimestamp = timestamp;
+
         if (!isDragging) {
-          if (resumeDelay > 0) {
-            resumeDelay -= 1;
-          } else {
-            track.scrollLeft += 0.36;
+          if (timestamp >= resumeAt) {
+            virtualScrollLeft += (pixelsPerSecond * delta) / 1000;
+            track.scrollLeft = virtualScrollLeft;
+            normalizeScroll();
           }
-          normalizeScroll();
         }
         animationFrame = window.requestAnimationFrame(tick);
       };
@@ -142,7 +152,8 @@ const loopedReviews = [...reviews, ...reviews];
       if (event.pointerType === "mouse" && event.button !== 0) return;
       isDragging = true;
       startX = event.clientX;
-      startScrollLeft = track.scrollLeft;
+      virtualScrollLeft = track.scrollLeft;
+      startScrollLeft = virtualScrollLeft;
       track.classList.add("is-dragging");
       track.setPointerCapture(event.pointerId);
     });
@@ -151,14 +162,15 @@ const loopedReviews = [...reviews, ...reviews];
       if (!isDragging) return;
       event.preventDefault();
       const distance = event.clientX - startX;
-      track.scrollLeft = startScrollLeft - distance;
+      virtualScrollLeft = startScrollLeft - distance;
+      track.scrollLeft = virtualScrollLeft;
       normalizeScroll();
     });
 
     const stopDragging = (event: PointerEvent) => {
       if (!isDragging) return;
       isDragging = false;
-      resumeDelay = 24;
+      resumeAt = performance.now() + 900;
       track.classList.remove("is-dragging");
       if (track.hasPointerCapture(event.pointerId)) {
         track.releasePointerCapture(event.pointerId);
@@ -168,7 +180,11 @@ const loopedReviews = [...reviews, ...reviews];
 
     track.addEventListener("pointerup", stopDragging);
     track.addEventListener("pointercancel", stopDragging);
-    track.addEventListener("scroll", normalizeScroll, { passive: true });
+    track.addEventListener("scroll", () => {
+      if (isNormalizing || isDragging) return;
+      virtualScrollLeft = track.scrollLeft;
+      normalizeScroll();
+    }, { passive: true });
 
     window.requestAnimationFrame(() => {
       setInitialScrollPosition();
