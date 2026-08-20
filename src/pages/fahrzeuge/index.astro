@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FloatingContact from "../../components/FloatingContact.astro";
+import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import FahrzeugeHero from "../../components/FahrzeugeHero.astro";
+import FahrzeugCards from "../../components/FahrzeugCards.astro";
+import FahrzeugeBenefits from "../../components/FahrzeugeBenefits.astro";
+import FahrzeugeDamageSection from "../../components/FahrzeugeDamageSection.astro";
+import FahrzeugeCTA from "../../components/FahrzeugeCTA.astro";
+import { absoluteUrl, createBreadcrumbSchema } from "../../utils/seo";
+
+const canonical = absoluteUrl("/fahrzeuge");
+const schema = createBreadcrumbSchema([
+    { name: "Startseite", url: absoluteUrl("/") },
+    { name: "Fahrzeuge", url: canonical },
+]);
+---
+
+<BaseLayout
+    title="Fahrzeuge | LKW, Auflieger & Nutzfahrzeuge verkaufen | WAW Nutzfahrzeuge"
+    description="Diese Fahrzeugtypen kauft WAW an: LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks - auch mit Schäden oder hoher Laufleistung."
+    canonical={canonical}
+    schema={schema}
+>
+    <Header transparent />
+
+    <main>
+        <FahrzeugeHero />
+        <FahrzeugCards />
+        <FahrzeugeBenefits />
+        <FahrzeugeDamageSection />
+        <FahrzeugeCTA />
+    </main>
+
+    <Footer />
+    <FloatingContact />
+    <ScrollAnimations />
+</BaseLayout>

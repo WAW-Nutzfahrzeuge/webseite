@@ -1,0 +1,207 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import ScrollAnimations from "./ScrollAnimations.astro";
+import AblaufHero from "./AblaufHero.astro";
+import AblaufSteps from "./AblaufSteps.astro";
+import AblaufBenefits from "./AblaufBenefits.astro";
+import AblaufInfo from "./AblaufInfo.astro";
+import AblaufFAQ from "./AblaufFAQ.astro";
+import AblaufCTA from "./AblaufCTA.astro";
+import { localizePath, type Locale } from "../data/i18n";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
+
+const { lang } = Astro.props as { lang: Locale };
+
+const content = {
+  en: {
+    title: "Process | Sell trucks in 5 steps | WAW Commercial Vehicles",
+    description:
+      "How selling your truck or commercial vehicle to WAW works: send vehicle data, receive feedback, discuss the offer, coordinate payment and pickup.",
+    breadcrumbHome: "Home",
+    breadcrumbCurrent: "Process",
+    hero: {
+      kicker: "PROCESS",
+      title: "Truck sales, clearly handled.",
+      text:
+        "Send us the key vehicle details. We get back to you, clarify open questions and coordinate offer, payment, handover and possible pickup directly with you.",
+      primaryHref: "#inquiry",
+      primaryLabel: "Offer vehicle",
+      secondaryHref: localizePath("services", "en"),
+      secondaryLabel: "View services",
+      trustline: ["Direct communication", "Fair prices", "Germany and Europe-wide"],
+    },
+    stepsKicker: "THIS IS HOW IT WORKS",
+    stepsTitle: "Sell your truck in 5 clear steps",
+    steps: [
+      { number: "01", title: "Send inquiry", text: "Send vehicle type, make, year, mileage, location and photos if available.", iconKey: "file" },
+      { number: "02", title: "Receive feedback", text: "We contact you as quickly as possible and clarify open questions directly.", iconKey: "message" },
+      { number: "03", title: "Receive offer", text: "We discuss a market-oriented offer based on your data, photos and documents.", iconKey: "euro" },
+      { number: "04", title: "Coordinate payment", text: "Payment method and timing are agreed clearly before handover.", iconKey: "payment" },
+      { number: "05", title: "Coordinate pickup", text: "Afterwards we coordinate handover or possible pickup at a suitable date.", iconKey: "truck" },
+    ],
+    benefitsKicker: "YOUR ADVANTAGES WITH WAW",
+    benefitsTitle: "Why companies and fleets contact us",
+    benefits: [
+      { title: "Safe & reliable", text: "Clear coordination from first contact through to handover.", iconKey: "shield" },
+      { title: "Fast handling", text: "We respond as quickly as possible and discuss the next steps directly.", iconKey: "clock" },
+      { title: "Fair prices", text: "Market-oriented offers based on vehicle data, condition and location.", iconKey: "euro" },
+      { title: "Germany and Europe-wide", text: "You can offer vehicles from Germany and Europe directly to us.", iconKey: "map" },
+    ],
+    info: {
+      kicker: "TRANSPARENT & PROFESSIONAL",
+      title: "Your commercial vehicle sale in experienced hands",
+      text:
+        "We are your contact for selling trucks, semi-trailers, trailers, vans, construction machinery and complete fleets. Our goal is a clear process without unnecessary detours.",
+      points: [
+        "Experience in commercial vehicle trading since 1995",
+        "Direct coordination with real contacts",
+        "Vehicles with damage or high mileage are also possible",
+        "All brands and models",
+      ],
+      imageAlt: "WAW Commercial Vehicles contact for vehicle purchase",
+      callLabel: "Directly reachable",
+    },
+    faqTitle: "Frequently asked questions about the process",
+    faqs: [
+      { question: "How quickly do I receive feedback?", answer: "After receiving your vehicle data, we get back to you as quickly as possible. Complete details and photos help us respond more specifically." },
+      { question: "Are there any costs for me?", answer: "The inquiry and first coordination are non-binding. Costs or special arrangements are discussed clearly before any further handling." },
+      { question: "Do you also buy damaged vehicles?", answer: "Yes. You can also offer trucks, trailers, vans, construction machinery and fleets with damage, high mileage or older model years." },
+      { question: "How is payment handled?", answer: "Payment is made quickly and securely after agreement and vehicle handover. Details are coordinated with you in advance." },
+      { question: "Which documents are needed?", answer: "Registration documents, maintenance records, inspection reports and clear photos are helpful. For the first contact, vehicle type, location and contact details are enough." },
+      { question: "Do I have to deliver the vehicle myself?", answer: "After agreement, we coordinate handover or possible pickup at a suitable date across Germany and Europe." },
+    ],
+    cta: {
+      kicker: "SELL A VEHICLE?",
+      title: "Send vehicle data and receive feedback",
+      text: "Send us the key vehicle details. If individual details are missing, your contact details and a short description are enough to start.",
+      callLabel: "Call",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Write now",
+      source: "Process page EN",
+      submitLabel: "Send inquiry",
+      sendingLabel: "Sending...",
+      privacyText: "Your data is treated confidentially and is not passed on to third parties.",
+      defaultError: "The inquiry could not be sent.",
+      placeholders: {
+        name: "Name",
+        phone: "Phone",
+        email: "Email",
+        vehicle: "Vehicle, e.g. MAN TGX",
+        year: "Year",
+        mileage: "Mileage (approx.)",
+        message: "Additional vehicle information",
+      },
+    },
+  },
+  fr: {
+    title: "Processus | Vendre un camion en 5 étapes | WAW Véhicules Utilitaires",
+    description:
+      "Voici comment se déroule la vente de votre camion ou véhicule utilitaire à WAW : données du véhicule, retour, offre, paiement et enlèvement.",
+    breadcrumbHome: "Accueil",
+    breadcrumbCurrent: "Processus",
+    hero: {
+      kicker: "PROCESSUS",
+      title: "Vente de camion, clairement organisée.",
+      text:
+        "Envoyez-nous les principales informations du véhicule. Nous vous recontactons, clarifions les questions ouvertes et coordonnons offre, paiement, remise et éventuel enlèvement directement avec vous.",
+      primaryHref: "#demande",
+      primaryLabel: "Proposer un véhicule",
+      secondaryHref: localizePath("services", "fr"),
+      secondaryLabel: "Voir les services",
+      trustline: ["Communication directe", "Prix équitables", "Allemagne et Europe"],
+    },
+    stepsKicker: "VOICI COMMENT ÇA MARCHE",
+    stepsTitle: "Vendre votre camion en 5 étapes claires",
+    steps: [
+      { number: "01", title: "Envoyer la demande", text: "Envoyez type de véhicule, marque, année, kilométrage, lieu et photos si disponibles.", iconKey: "file" },
+      { number: "02", title: "Recevoir un retour", text: "Nous vous contactons rapidement et clarifions les questions ouvertes directement avec vous.", iconKey: "message" },
+      { number: "03", title: "Recevoir une offre", text: "Nous discutons une offre cohérente avec le marché sur la base de vos données, photos et documents.", iconKey: "euro" },
+      { number: "04", title: "Coordonner le paiement", text: "Le mode et le moment du paiement sont convenus clairement avant la remise.", iconKey: "payment" },
+      { number: "05", title: "Coordonner l'enlèvement", text: "Ensuite, nous coordonnons la remise ou l'enlèvement éventuel à une date adaptée.", iconKey: "truck" },
+    ],
+    benefitsKicker: "VOS AVANTAGES AVEC WAW",
+    benefitsTitle: "Pourquoi entreprises et flottes nous contactent",
+    benefits: [
+      { title: "Sûr & fiable", text: "Coordination claire du premier contact jusqu'à la remise.", iconKey: "shield" },
+      { title: "Traitement rapide", text: "Nous répondons rapidement et discutons les prochaines étapes directement.", iconKey: "clock" },
+      { title: "Prix équitables", text: "Offres orientées marché selon les données, l'état et le lieu du véhicule.", iconKey: "euro" },
+      { title: "Allemagne et Europe", text: "Vous pouvez nous proposer des véhicules depuis l'Allemagne et l'Europe.", iconKey: "map" },
+    ],
+    info: {
+      kicker: "TRANSPARENT & PROFESSIONNEL",
+      title: "Votre vente de véhicule utilitaire entre de bonnes mains",
+      text:
+        "Nous sommes votre interlocuteur pour la vente de camions, semi-remorques, remorques, fourgons, machines de chantier et flottes complètes. Notre objectif est un processus clair sans détours inutiles.",
+      points: [
+        "Expérience dans le commerce de véhicules utilitaires depuis 1995",
+        "Coordination directe avec des interlocuteurs",
+        "Véhicules avec dommages ou fort kilométrage possibles",
+        "Toutes marques et tous modèles",
+      ],
+      imageAlt: "WAW Véhicules Utilitaires interlocuteur pour le rachat",
+      callLabel: "Joignable directement",
+    },
+    faqTitle: "Questions fréquentes sur le processus",
+    faqs: [
+      { question: "Quand recevrai-je un retour ?", answer: "Après réception des données du véhicule, nous vous recontactons rapidement. Des informations et photos complètes nous aident à répondre plus précisément." },
+      { question: "Y a-t-il des frais pour moi ?", answer: "La demande et la première coordination sont sans engagement. Les coûts ou accords particuliers sont discutés clairement avant toute suite." },
+      { question: "Achetez-vous aussi des véhicules endommagés ?", answer: "Oui. Vous pouvez également proposer camions, remorques, fourgons, machines de chantier et flottes avec dommages, kilométrage élevé ou années anciennes." },
+      { question: "Comment se déroule le paiement ?", answer: "Le paiement est effectué rapidement et en sécurité après accord et remise du véhicule. Les détails sont convenus avec vous à l'avance." },
+      { question: "Quels documents sont nécessaires ?", answer: "Documents du véhicule, justificatifs d'entretien, rapports de contrôle et photos claires sont utiles. Pour le premier contact, type de véhicule, lieu et coordonnées suffisent." },
+      { question: "Dois-je livrer le véhicule moi-même ?", answer: "Après accord, nous coordonnons la remise ou l'enlèvement éventuel à une date adaptée en Allemagne et en Europe." },
+    ],
+    cta: {
+      kicker: "VENDRE UN VÉHICULE ?",
+      title: "Envoyer les données du véhicule et recevoir un retour",
+      text: "Envoyez-nous les principales informations. Si certaines données manquent, vos coordonnées et une courte description suffisent pour commencer.",
+      callLabel: "Appeler",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Écrire maintenant",
+      source: "Processus FR",
+      submitLabel: "Envoyer la demande",
+      sendingLabel: "Envoi...",
+      privacyText: "Vos données sont traitées de manière confidentielle et ne sont pas transmises à des tiers.",
+      defaultError: "La demande n'a pas pu être envoyée.",
+      placeholders: {
+        name: "Nom",
+        phone: "Téléphone",
+        email: "E-mail",
+        vehicle: "Véhicule, par ex. MAN TGX",
+        year: "Année",
+        mileage: "Kilométrage (env.)",
+        message: "Informations complémentaires sur le véhicule",
+      },
+    },
+  },
+} as const;
+
+const copy = content[lang];
+const canonical = absoluteUrl(localizePath("process", lang));
+const schema = [
+  createBreadcrumbSchema([
+    { name: copy.breadcrumbHome, url: absoluteUrl(localizePath("home", lang)) },
+    { name: copy.breadcrumbCurrent, url: canonical },
+  ]),
+  createFaqSchema(copy.faqs),
+];
+---
+
+<BaseLayout title={copy.title} description={copy.description} canonical={canonical} schema={schema}>
+  <Header transparent />
+
+  <main>
+    <AblaufHero {...copy.hero} />
+    <AblaufSteps kicker={copy.stepsKicker} title={copy.stepsTitle} steps={copy.steps} />
+    <AblaufBenefits kicker={copy.benefitsKicker} title={copy.benefitsTitle} benefits={copy.benefits} />
+    <AblaufInfo {...copy.info} />
+    <AblaufFAQ faqs={copy.faqs} title={copy.faqTitle} />
+    <AblaufCTA {...copy.cta} />
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>

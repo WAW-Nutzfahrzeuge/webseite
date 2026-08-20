@@ -1,0 +1,275 @@
+---
+import { site } from "../data/site";
+import type { Locale } from "../data/i18n";
+
+const { lang = "de" } = Astro.props as { lang?: Locale };
+const labels = {
+  de: { phone: "Telefon", call: "Anrufen", whatsapp: "WhatsApp", inquiryLabel: "Anfrage", inquiry: "Anfrage" },
+  en: { phone: "Phone", call: "Call", whatsapp: "WhatsApp", inquiryLabel: "Inquiry", inquiry: "Inquiry" },
+  fr: { phone: "Téléphone", call: "Appeler", whatsapp: "WhatsApp", inquiryLabel: "Demande", inquiry: "Demande" },
+}[lang];
+const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" : "/fr/contact";
+---
+
+<div class="floating-contact" aria-label="Schnellkontakt">
+    <a href={`tel:${site.phoneHref}`} class="float-btn">
+    <span class="float-label">{labels.phone}</span>
+    <span class="icon-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 19 19.5 19.5 0 0 1 5 12.81 19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.89.33 1.76.62 2.6a2 2 0 0 1-.45 2.11L8 9.66a16 16 0 0 0 6.34 6.34l1.23-1.23a2 2 0 0 1 2.11-.45c.84.29 1.71.5 2.6.62A2 2 0 0 1 22 16.92Z" />
+      </svg>
+    </span>
+        <strong>{labels.call}</strong>
+    </a>
+
+    <a href={site.whatsappHref} target="_blank" rel="noopener" class="float-btn whatsapp">
+    <span class="float-label">{labels.whatsapp}</span>
+    <span class="icon-wrap">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16.03 3C8.88 3 3.08 8.73 3.08 15.8c0 2.25.6 4.45 1.73 6.38L3 29l7-1.78a13.1 13.1 0 0 0 6.03 1.47C23.18 28.69 29 22.96 29 15.9 29 8.82 23.18 3 16.03 3Zm0 23.35a10.7 10.7 0 0 1-5.45-1.5l-.39-.23-4.14 1.05 1.1-4-.26-.41a10.3 10.3 0 0 1-1.56-5.46c0-5.76 4.8-10.45 10.7-10.45 5.9 0 10.7 4.7 10.7 10.55 0 5.76-4.8 10.45-10.7 10.45Zm5.88-7.82c-.32-.16-1.9-.93-2.2-1.04-.29-.1-.5-.16-.72.16-.22.32-.83 1.04-1.02 1.25-.19.22-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.58-.96-.85-1.6-1.9-1.79-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.38.48-.56.16-.19.22-.32.32-.54.1-.22.05-.4-.03-.56-.08-.16-.72-1.72-.98-2.36-.26-.62-.52-.54-.72-.55h-.61c-.22 0-.56.08-.85.4-.29.32-1.12 1.1-1.12 2.68s1.15 3.1 1.31 3.32c.16.22 2.26 3.46 5.48 4.85.77.33 1.37.53 1.84.68.77.24 1.47.21 2.02.13.62-.1 1.9-.77 2.17-1.52.27-.75.27-1.4.19-1.52-.08-.13-.29-.21-.61-.37Z" />
+      </svg>
+    </span>
+        <strong>{labels.whatsapp}</strong>
+    </a>
+
+    <a href={contactPath} class="float-btn primary">
+    <span class="float-label">{labels.inquiryLabel}</span>
+    <span class="icon-wrap pulse">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+    </span>
+        <strong>{labels.inquiry}</strong>
+    </a>
+</div>
+
+<style>
+    .floating-contact {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 80;
+
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 999px;
+
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+
+        box-shadow:
+                0 18px 50px rgba(15, 23, 42, 0.12),
+                0 6px 18px rgba(15, 23, 42, 0.06);
+
+        animation: floatBar 5s ease-in-out infinite;
+    }
+
+    .float-btn {
+        position: relative;
+        overflow: hidden;
+
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+
+        padding: 12px 15px;
+        border-radius: 999px;
+
+        color: #17181c;
+        font-size: 14px;
+        font-weight: 850;
+
+        transition:
+                transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+                background 240ms ease,
+                box-shadow 240ms ease;
+    }
+
+    .float-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: translateX(-120%);
+        background: linear-gradient(
+                110deg,
+                transparent,
+                rgba(255,255,255,0.5),
+                transparent
+        );
+        transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .float-btn:hover::before {
+        transform: translateX(120%);
+    }
+
+    .float-btn:hover {
+        transform: translateY(-3px);
+        background: #ffffff;
+        box-shadow:
+                0 12px 28px rgba(15,23,42,0.1);
+    }
+
+    .icon-wrap {
+        position: relative;
+        z-index: 1;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 30px;
+        height: 30px;
+
+        border-radius: 999px;
+
+        background: rgba(15, 23, 42, 0.065);
+    }
+
+    .icon-wrap svg {
+        width: 17px;
+        height: 17px;
+        display: block;
+        fill: currentColor;
+    }
+
+    .icon-wrap svg path {
+        fill: currentColor;
+    }
+
+    .primary .icon-wrap svg {
+        width: 17px;
+        height: 17px;
+
+        fill: none !important;
+    }
+
+    .primary .icon-wrap svg path {
+        fill: none !important;
+
+        stroke: currentColor !important;
+        stroke-width: 2.6;
+
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .primary .icon-wrap svg path {
+        fill: none;
+        stroke: currentColor;
+    }
+
+    .float-btn strong {
+        position: relative;
+        z-index: 1;
+    }
+
+    .float-label {
+        display: none !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    .float-btn.whatsapp:hover {
+        box-shadow:
+                0 12px 28px rgba(15,23,42,0.1),
+                0 0 0 4px rgba(15,23,42,0.035);
+    }
+
+    .float-btn.primary {
+        background: var(--orange);
+        color: #ffffff;
+    }
+
+    .float-btn.primary .icon-wrap {
+        background: rgba(255,255,255,0.16);
+    }
+
+    .float-btn.primary:hover {
+        background: var(--orange-dark);
+        box-shadow:
+                0 16px 38px rgba(242,97,0,0.32);
+    }
+
+    .pulse::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: inherit;
+        border: 1px solid rgba(255,255,255,0.42);
+        animation: pulseRing 1.8s ease-out infinite;
+    }
+
+    @keyframes floatBar {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-4px);
+        }
+    }
+
+    @keyframes pulseRing {
+        0% {
+            opacity: 0.8;
+            transform: scale(0.85);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(1.45);
+        }
+    }
+
+    @media (max-width: 720px) {
+        .floating-contact {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+
+            justify-content: space-between;
+
+            border-radius: 24px;
+        }
+
+        .float-btn {
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 10px 10px;
+            min-width: 0;
+        }
+
+        .float-label {
+            display: block !important;
+            color: rgba(23, 24, 28, 0.72);
+            font-size: 11px;
+            font-weight: 850;
+            line-height: 1;
+        }
+
+        .float-btn strong {
+            display: none;
+        }
+
+        .float-btn.primary .float-label {
+            color: rgba(255, 255, 255, 0.86);
+        }
+
+        .icon-wrap {
+            width: 34px;
+            height: 34px;
+        }
+
+        .icon-wrap svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+</style>

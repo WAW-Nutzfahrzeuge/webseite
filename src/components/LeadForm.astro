@@ -1,0 +1,328 @@
+---
+import StarBorder from "./StarBorder.astro";
+import type { Locale } from "../data/i18n";
+
+const { compact = false, lang = "de" } = Astro.props as { compact?: boolean; lang?: Locale };
+const formText = {
+  de: {
+    kicker: "Unverbindliche Anfrage",
+    title: "Nutzfahrzeug verkaufen?",
+    intro: "Senden Sie uns die wichtigsten Daten. Wir melden uns schnellstmöglich zurück.",
+    help: "Falls Ihnen Fahrzeugdaten fehlen, reichen auch Ihre Kontaktdaten. Den Rest klären wir gemeinsam.",
+    name: "Name",
+    phone: "Telefon",
+    vehicle: "Fahrzeug, z.B. MAN TGX",
+    email: "E-Mail",
+    company: "Unternehmen",
+    year: "Baujahr",
+    message: "Nachricht, Zustand, Kilometerstand oder weitere Details",
+    submit: "Anfrage absenden",
+    privacy: "Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage genutzt.",
+    source: compact ? "Kompaktes Formular" : "LeadForm",
+  },
+  en: {
+    kicker: "Free inquiry",
+    title: "Sell a commercial vehicle?",
+    intro: "Send us the most important details. We will get back to you as quickly as possible.",
+    help: "If some vehicle details are missing, your contact details are enough. We can clarify the rest together.",
+    name: "Name",
+    phone: "Phone",
+    vehicle: "Vehicle, e.g. MAN TGX",
+    email: "Email",
+    company: "Company",
+    year: "Year",
+    message: "Message, condition, mileage or further details",
+    submit: "Submit inquiry",
+    privacy: "Your information is used only to process your inquiry.",
+    source: compact ? "Compact form EN" : "LeadForm EN",
+  },
+  fr: {
+    kicker: "Demande gratuite",
+    title: "Vendre un véhicule utilitaire ?",
+    intro: "Envoyez-nous les informations essentielles. Nous vous recontactons rapidement.",
+    help: "Si certaines données manquent, vos coordonnées suffisent. Nous clarifierons le reste ensemble.",
+    name: "Nom",
+    phone: "Téléphone",
+    vehicle: "Véhicule, par ex. MAN TGX",
+    email: "E-mail",
+    company: "Entreprise",
+    year: "Année",
+    message: "Message, état, kilométrage ou autres détails",
+    submit: "Envoyer la demande",
+    privacy: "Vos informations sont utilisées uniquement pour traiter votre demande.",
+    source: compact ? "Formulaire compact FR" : "LeadForm FR",
+  },
+}[lang];
+---
+<form class={`lead-form ${compact ? "lead-form--compact" : ""}`} id="kontakt" data-lead-form>
+  <div>
+    <p class="form-kicker">{formText.kicker}</p>
+    <h2>{formText.title}</h2>
+    <p>{formText.intro}</p>
+    <p class="form-help">{formText.help}</p>
+  </div>
+
+  <div class="form-grid">
+    <input name="name" placeholder={formText.name} required />
+    <input name="phone" placeholder={formText.phone} required />
+    <input name="vehicle" placeholder={formText.vehicle} />
+    {!compact && (
+      <>
+        <input name="email" type="email" placeholder={formText.email} />
+        <input name="company" placeholder={formText.company} />
+        <input name="year" placeholder={formText.year} />
+      </>
+    )}
+  </div>
+
+  <textarea name="message" rows={compact ? "3" : "4"} placeholder={formText.message}></textarea>
+
+  <input type="text" name="website" class="form-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <input type="hidden" name="formStartedAt" data-form-started-at />
+  <input type="hidden" name="source" value={formText.source} />
+
+  <StarBorder as="button" type="submit" id="submit-btn" color="#ff6b00" speed="5s" class="submit-star">
+    {formText.submit}
+  </StarBorder>
+
+  <p class="form-status" data-form-status aria-live="polite"></p>
+
+  <p class="privacy-note">
+    {formText.privacy}
+  </p>
+</form>
+
+<style>
+  .lead-form {
+    position: relative;
+    padding: 22px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background:
+      radial-gradient(circle at top right, rgba(255,107,0,0.18), transparent 18rem),
+      linear-gradient(180deg, rgba(13,43,77,0.98), rgba(3,17,34,0.98));
+    box-shadow: 0 30px 90px rgba(0,0,0,0.42);
+    backdrop-filter: blur(20px);
+  }
+
+  .form-kicker {
+    margin: 0 0 8px;
+    color: #ffb06b;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(26px, 3vw, 38px);
+    letter-spacing: -0.04em;
+  }
+
+  p {
+    color: rgba(232,239,248,0.72);
+    line-height: 1.6;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.13);
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    border-radius: 16px;
+    padding: 15px 16px;
+    outline: none;
+    transition: 180ms ease;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: rgba(255,107,0,0.72);
+    box-shadow: 0 0 0 4px rgba(255,107,0,0.12);
+  }
+
+  textarea {
+    margin-top: 12px;
+    resize: vertical;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .privacy-note {
+    margin-bottom: 0;
+    font-size: 13px;
+  }
+
+  .form-help {
+    margin-top: 8px;
+    color: rgba(255,255,255,0.82);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .form-status {
+    min-height: 20px;
+    margin: 12px 0 0;
+    color: #ffb5a8;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .form-hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .lead-form--compact {
+    padding: 18px;
+    border-radius: 24px;
+    box-shadow: 0 22px 64px rgba(0,0,0,0.28);
+  }
+
+  .lead-form--compact h2 {
+    font-size: clamp(22px, 2.4vw, 30px);
+  }
+
+  .lead-form--compact p {
+    margin-block: 8px 0;
+  }
+
+  .lead-form--compact .form-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .lead-form--compact input,
+  .lead-form--compact textarea {
+    padding: 13px 14px;
+    border-radius: 14px;
+  }
+
+  /* StarBorder submit button — full width */
+  :global(.submit-star) {
+    display: block;
+    width: 100%;
+  }
+
+  :global(.submit-star .inner-content) {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    padding: 15px 28px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    border-color: rgba(255,255,255,0.22);
+  }
+
+  @media (max-width: 760px) {
+    .lead-form--compact .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .lead-form {
+      padding: 20px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .lead-form {
+      border-radius: 24px;
+    }
+
+    h2 {
+      font-size: 28px;
+    }
+
+    input,
+    textarea {
+      border-radius: 14px;
+      padding: 14px;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-lead-form]");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const submitButton = form.querySelector<HTMLButtonElement>(".star-border-container");
+    const innerContent = submitButton?.querySelector<HTMLElement>(".inner-content");
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const originalText = innerContent?.textContent?.trim();
+
+    if (status) status.textContent = "";
+
+    if (submitButton && innerContent) {
+      innerContent.textContent = "Wird gesendet...";
+      submitButton.setAttribute("disabled", "true");
+    }
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        const errorMessage =
+          result?.error ||
+          Object.values(result?.errors || {})[0] ||
+          "Die Anfrage konnte nicht gesendet werden.";
+        throw new Error(String(errorMessage));
+      }
+
+      window.location.href = result.redirectTo || "/danke";
+    } catch (error) {
+      if (status) {
+        status.textContent =
+          error instanceof Error
+            ? error.message
+            : "Die Anfrage konnte leider nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie direkt an.";
+      }
+
+      if (submitButton && innerContent) {
+        innerContent.textContent = originalText || "Anfrage absenden";
+        submitButton.removeAttribute("disabled");
+      }
+    }
+  });
+
+  const startedAt = form?.querySelector<HTMLInputElement>("[data-form-started-at]");
+  if (startedAt) startedAt.value = String(Date.now());
+</script>

@@ -1,0 +1,138 @@
+---
+const {
+  kicker = "KONTAKT",
+  title = "LKW oder Nutzfahrzeug anbieten.",
+  text = "Sie möchten einen LKW, Auflieger, Transporter, eine Baumaschine oder einen kompletten Fuhrpark verkaufen? Senden Sie uns die wichtigsten Daten, wir melden uns schnellstmöglich zurück.",
+  trustline = ["Schnelle Rückmeldung", "Direkte Kommunikation", "Deutschland- und europaweit erreichbar"],
+} = Astro.props;
+---
+
+<section class="contact-hero">
+  <div class="contact-hero-bg" aria-hidden="true"></div>
+  <div class="container contact-hero-inner">
+    <div class="contact-hero-copy reveal">
+      <span class="contact-kicker">{kicker}</span>
+      <h1>{title}</h1>
+      <p>{text}</p>
+
+      <div class="contact-trustline">
+        {trustline.map((item) => <span>{item}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-hero {
+    position: relative;
+    min-height: 650px;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+    background: #05070a;
+  }
+
+  .contact-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.84) 0%, rgba(5,7,10,0.54) 48%, rgba(5,7,10,0.12) 100%),
+      linear-gradient(180deg, rgba(5,7,10,0.18), rgba(5,7,10,0.48)),
+      url("/images/kontakt-location.webp");
+    background-size: cover;
+    background-position: center right;
+  }
+
+  .contact-hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 36%, rgba(255,107,0,0.14), transparent 22rem),
+      linear-gradient(180deg, transparent 64%, rgba(5,7,10,0.26));
+  }
+
+  .contact-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 130px 0 82px;
+  }
+
+  .contact-hero-copy {
+    max-width: 760px;
+  }
+
+  .contact-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .contact-hero h1 {
+    margin: 18px 0 0;
+    color: #fff;
+    font-size: clamp(56px, 7vw, 98px);
+    line-height: 0.92;
+    letter-spacing: -0.078em;
+  }
+
+  .contact-hero p {
+    max-width: 670px;
+    margin: 28px 0 0;
+    color: rgba(255,255,255,0.82);
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.7;
+  }
+
+  .contact-trustline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+    margin-top: 46px;
+    color: rgba(255,255,255,0.92);
+    font-size: 15px;
+    font-weight: 850;
+  }
+
+  .contact-trustline span::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    border-radius: 999px;
+    background: var(--orange);
+    box-shadow: 0 0 0 4px rgba(255,107,0,0.16);
+  }
+
+  @media (max-width: 760px) {
+    .contact-hero {
+      min-height: 720px;
+    }
+
+    .contact-hero-bg {
+      background:
+        linear-gradient(180deg, rgba(5,7,10,0.52), rgba(5,7,10,0.76)),
+        linear-gradient(90deg, rgba(5,7,10,0.64), rgba(5,7,10,0.18)),
+        url("/images/kontakt-location.webp");
+      background-size: cover;
+      background-position: center top;
+    }
+
+    .contact-hero-inner {
+      padding: 112px 0 58px;
+    }
+
+    .contact-hero h1 {
+      font-size: clamp(48px, 14vw, 68px);
+    }
+
+    .contact-trustline {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 32px;
+    }
+  }
+</style>

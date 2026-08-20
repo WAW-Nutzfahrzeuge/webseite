@@ -1,0 +1,42 @@
+---
+import LocalizedLandingPage from "../../components/LocalizedLandingPage.astro";
+import {
+  locales,
+  routeMap,
+  routeSlugAliases,
+  type StaticRouteKey,
+  type Locale,
+} from "../../data/i18n";
+
+export function getStaticPaths() {
+  const staticPaths: Array<{
+    params: { lang: Locale; slug: string };
+    props: { lang: Locale; pageKey: StaticRouteKey };
+  }> = [];
+
+  for (const lang of locales.filter((locale) => locale !== "de")) {
+    for (const key of Object.keys(routeSlugAliases) as StaticRouteKey[]) {
+      if (key === "vehicles" || key === "process" || key === "contact") continue;
+
+      const canonicalSlug = routeMap[key][lang].split("/").filter(Boolean).at(-1);
+      const slugs = new Set([canonicalSlug, ...routeSlugAliases[key]].filter(Boolean) as string[]);
+
+      for (const slug of slugs) {
+        staticPaths.push({
+          params: { lang, slug },
+          props: { lang, pageKey: key },
+        });
+      }
+    }
+  }
+
+  return staticPaths;
+}
+
+const { lang, pageKey } = Astro.props as {
+  lang: Locale;
+  pageKey: StaticRouteKey;
+};
+---
+
+<LocalizedLandingPage lang={lang} pageKey={pageKey} />

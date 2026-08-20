@@ -1,0 +1,375 @@
+---
+import { Send } from "@lucide/astro";
+
+const {
+  kicker = "UNVERBINDLICHE ANFRAGE",
+  title = "Fahrzeugdaten senden",
+  text = "Senden Sie uns die wichtigsten Angaben zum Fahrzeug oder Fuhrpark. Wir melden uns schnellstmöglich bei Ihnen.",
+  help = "Nicht alle Daten zur Hand? Kein Problem. Kontaktdaten reichen zunächst aus, fehlende Informationen klären wir gemeinsam.",
+  labels = {
+    name: "Name *",
+    phone: "Telefon *",
+    email: "E-Mail",
+    company: "Unternehmen",
+    vehicle: "Fahrzeugtyp",
+    year: "Baujahr",
+    mileage: "Kilometerstand",
+    condition: "Zustand / Schäden",
+    message: "Nachricht",
+  },
+  placeholders = {
+    name: "Ihr Name",
+    phone: "+49 ...",
+    email: "name@example.de",
+    company: "Optional",
+    vehicle: "z.B. LKW, Auflieger",
+    year: "z.B. 2018",
+    mileage: "ca. Kilometerstand",
+    condition: "z.B. fahrbereit, Motorschaden",
+    message: "Weitere Informationen zum Fahrzeug",
+  },
+  source = "Kontaktseite",
+  submitLabel = "Anfrage absenden",
+  sendingLabel = "Wird gesendet...",
+  privacyText = "Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet.",
+  defaultError = "Die Anfrage konnte nicht gesendet werden.",
+  fallbackError = "Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns direkt an oder schreiben Sie per WhatsApp.",
+} = Astro.props;
+---
+
+<form
+  class="contact-lead-form"
+  id="kontaktformular"
+  data-contact-form
+  data-submit-label={submitLabel}
+  data-sending-label={sendingLabel}
+  data-default-error={defaultError}
+  data-fallback-error={fallbackError}
+>
+  <div class="contact-form-head">
+    <span>{kicker}</span>
+    <h2>{title}</h2>
+    <p>{text}</p>
+    <p class="contact-form-help">{help}</p>
+  </div>
+
+  <div class="contact-form-grid">
+    <label>
+      <span>{labels.name}</span>
+      <input name="name" autocomplete="name" placeholder={placeholders.name} required />
+    </label>
+    <label>
+      <span>{labels.phone}</span>
+      <input name="phone" autocomplete="tel" placeholder={placeholders.phone} required />
+    </label>
+    <label>
+      <span>{labels.email}</span>
+      <input name="email" type="email" autocomplete="email" placeholder={placeholders.email} />
+    </label>
+    <label>
+      <span>{labels.company}</span>
+      <input name="company" autocomplete="organization" placeholder={placeholders.company} />
+    </label>
+    <label>
+      <span>{labels.vehicle}</span>
+      <input name="vehicle" placeholder={placeholders.vehicle} />
+    </label>
+    <label>
+      <span>{labels.year}</span>
+      <input name="year" inputmode="numeric" placeholder={placeholders.year} />
+    </label>
+    <label>
+      <span>{labels.mileage}</span>
+      <input name="mileage" inputmode="numeric" placeholder={placeholders.mileage} />
+    </label>
+    <label>
+      <span>{labels.condition}</span>
+      <input name="condition" placeholder={placeholders.condition} />
+    </label>
+  </div>
+
+  <label class="contact-form-message">
+    <span>{labels.message}</span>
+    <textarea name="message" rows="4" placeholder={placeholders.message}></textarea>
+  </label>
+
+  <input type="text" name="website" class="form-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <input type="hidden" name="formStartedAt" data-form-started-at />
+  <input type="hidden" name="source" value={source} />
+
+  <button type="submit" class="contact-form-submit">
+    <span>{submitLabel}</span>
+    <Send size={18} stroke-width={2.4} aria-hidden="true" />
+  </button>
+
+  <p class="contact-form-status" data-form-status aria-live="polite"></p>
+  <p class="contact-form-privacy">
+    {privacyText}
+  </p>
+</form>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>("[data-contact-form]");
+
+  forms.forEach((form) => {
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const button = form.querySelector<HTMLButtonElement>(".contact-form-submit");
+    const buttonText = button?.querySelector("span");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      if (status) {
+        status.textContent = "";
+        status.classList.remove("is-error", "is-success");
+      }
+
+      if (button && buttonText) {
+        button.disabled = true;
+        buttonText.textContent = form.dataset.sendingLabel || "Wird gesendet...";
+      }
+
+      const formData = new FormData(form);
+
+      const payload = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        company: formData.get("company"),
+        vehicle: formData.get("vehicle"),
+        year: formData.get("year"),
+        mileage: formData.get("mileage"),
+        condition: formData.get("condition"),
+        message: formData.get("message"),
+        website: formData.get("website"),
+        formStartedAt: formData.get("formStartedAt"),
+        source: formData.get("source"),
+      };
+
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+          const errorMessage =
+            result?.error ||
+            Object.values(result?.errors || {})[0] ||
+            form.dataset.defaultError ||
+            "Die Anfrage konnte nicht gesendet werden.";
+          throw new Error(String(errorMessage));
+        }
+
+        form.reset();
+        window.location.href = result.redirectTo || "/danke";
+      } catch (error) {
+        if (status) {
+          status.textContent =
+            error instanceof Error
+              ? error.message
+              : form.dataset.fallbackError || "Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns direkt an oder schreiben Sie per WhatsApp.";
+          status.classList.add("is-error");
+        }
+      } finally {
+        if (button && buttonText) {
+          button.disabled = false;
+          buttonText.textContent = form.dataset.submitLabel || "Anfrage absenden";
+        }
+      }
+    });
+
+    const startedAt = form.querySelector<HTMLInputElement>("[data-form-started-at]");
+    if (startedAt) startedAt.value = String(Date.now());
+  });
+</script>
+
+<style>
+  .contact-lead-form {
+    position: relative;
+    padding: clamp(24px, 3vw, 34px);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at top right, rgba(255,107,0,0.2), transparent 18rem),
+      linear-gradient(145deg, rgba(9,19,34,0.98), rgba(2,8,18,0.98));
+    box-shadow: 0 30px 90px rgba(5,7,10,0.32);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .contact-lead-form::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), transparent 34%);
+    opacity: 0.54;
+  }
+
+  .contact-lead-form > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-form-head span {
+    color: #ffb06b;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-form-head h2 {
+    margin: 10px 0 10px;
+    color: #fff;
+    font-size: clamp(28px, 3.2vw, 42px);
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+
+  .contact-form-head p {
+    margin: 0 0 22px;
+    color: rgba(239,244,250,0.74);
+    line-height: 1.65;
+  }
+
+  .contact-form-head .contact-form-help {
+    margin-top: -10px;
+    color: rgba(255,255,255,0.84);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .contact-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  label {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  label span {
+    color: rgba(255,255,255,0.78);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.075);
+    color: #fff;
+    font: inherit;
+    outline: none;
+    padding: 14px 15px;
+    transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+
+  .form-hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(255,255,255,0.42);
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: rgba(255,107,0,0.82);
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 4px rgba(255,107,0,0.12);
+  }
+
+  .contact-form-message {
+    margin-top: 12px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .contact-form-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 900;
+    padding: 16px 24px;
+    box-shadow: 0 18px 42px rgba(255,107,0,0.26);
+    transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  }
+
+  .contact-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 54px rgba(255,107,0,0.34);
+  }
+
+  .contact-form-submit:disabled {
+    cursor: wait;
+    opacity: 0.72;
+    transform: none;
+  }
+
+  .contact-form-status {
+    min-height: 20px;
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .contact-form-status.is-success {
+    color: #9ff0b8;
+  }
+
+  .contact-form-status.is-error {
+    color: #ffb5a8;
+  }
+
+  .contact-form-privacy {
+    margin: 10px 0 0;
+    color: rgba(239,244,250,0.56);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 680px) {
+    .contact-lead-form {
+      border-radius: 22px;
+      padding: 22px;
+    }
+
+    .contact-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

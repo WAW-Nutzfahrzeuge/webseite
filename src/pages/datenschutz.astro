@@ -1,0 +1,437 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FloatingContact from "../components/FloatingContact.astro";
+import { site } from "../data/site";
+
+const canonical = `${site.url}/datenschutz`;
+const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.address.locality}, Deutschland`;
+---
+
+<BaseLayout
+  title="Datenschutz | WAW Nutzfahrzeuge"
+  description="Datenschutzerklaerung von WAW Nutzfahrzeuge mit Informationen zu Kontaktformular, E-Mail-Versand, Hosting, Logfiles und Betroffenenrechten."
+  canonical={canonical}
+>
+  <Header />
+
+  <main class="legal-page">
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <span class="legal-kicker">DATENSCHUTZ</span>
+        <h1>Datenschutzerklaerung</h1>
+        <p>
+          Wir informieren Sie transparent darueber, welche personenbezogenen
+          Daten beim Besuch dieser Website und bei einer Anfrage an WAW
+          Nutzfahrzeuge verarbeitet werden.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-content">
+      <div class="container legal-grid">
+        <aside class="legal-toc" aria-label="Inhaltsuebersicht">
+          <strong>Uebersicht</strong>
+          <a href="#verantwortlicher">Verantwortlicher</a>
+          <a href="#datenarten">Datenarten</a>
+          <a href="#kontaktformular">Kontaktformular</a>
+          <a href="#email">E-Mail-Versand</a>
+          <a href="#hosting">Hosting & Logfiles</a>
+          <a href="#karte">Kartenfunktion</a>
+          <a href="#rechte">Ihre Rechte</a>
+          <a href="#aufsicht">Aufsichtsbehoerde</a>
+        </aside>
+
+        <article class="legal-card">
+          <section id="verantwortlicher">
+            <h2>1. Verantwortlicher</h2>
+            <p>
+              Verantwortlich fuer die Datenverarbeitung auf dieser Website ist:
+            </p>
+            <p>
+              <strong>{site.name}</strong><br />
+              [PLATZHALTER: Rechtsform und Inhaber / Geschaeftsfuehrung]<br />
+              {fullAddress}<br />
+              Telefon: <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
+              E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+            <p>
+              Datenschutzbeauftragter: [PLATZHALTER: falls gesetzlich
+              erforderlich, Kontaktdaten ergaenzen; andernfalls "nicht
+              bestellt" ergaenzen.]
+            </p>
+          </section>
+
+          <section id="datenarten">
+            <h2>2. Allgemeine Hinweise und Datenarten</h2>
+            <p>
+              Personenbezogene Daten sind alle Informationen, die sich auf eine
+              identifizierte oder identifizierbare natuerliche Person beziehen.
+              Wir verarbeiten Daten grundsaetzlich nur, soweit dies fuer den
+              Betrieb der Website, die Bearbeitung Ihrer Anfrage, die Anbahnung
+              oder Durchfuehrung eines Ankaufs oder zur Erfuellung gesetzlicher
+              Pflichten erforderlich ist.
+            </p>
+            <p>
+              Je nach Nutzung koennen insbesondere folgende Daten verarbeitet
+              werden: Name, Telefonnummer, E-Mail-Adresse, Unternehmensangaben,
+              Fahrzeugdaten, Nachrichteninhalte, technische Zugriffsdaten,
+              IP-Adresse, Datum und Uhrzeit des Zugriffs sowie Angaben zur
+              Spam-Abwehr.
+            </p>
+          </section>
+
+          <section id="kontaktformular">
+            <h2>3. Kontaktformular und Anfragebearbeitung</h2>
+            <p>
+              Wenn Sie uns ueber das Kontaktformular eine Anfrage senden,
+              verarbeiten wir die von Ihnen eingegebenen Daten zur Bearbeitung
+              Ihrer Anfrage. Dazu koennen Name, Telefon, E-Mail-Adresse,
+              Unternehmen, Fahrzeugtyp, Baujahr, Kilometerstand, Angaben zu
+              Zustand oder Schaeden und Ihre Nachricht gehoeren.
+            </p>
+            <p>
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit Ihre
+              Anfrage der Durchfuehrung vorvertraglicher Massnahmen oder der
+              Anbahnung eines Fahrzeugankaufs dient. Soweit die Verarbeitung zur
+              Sicherung des Formulars, zur Spam-Abwehr oder zur technischen
+              Nachvollziehbarkeit erforderlich ist, erfolgt sie auf Grundlage von
+              Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in
+              der sicheren, verlaesslichen und missbrauchsarmen Bearbeitung von
+              Website-Anfragen.
+            </p>
+            <p>
+              Das Formular nutzt technische Schutzmechanismen wie serverseitige
+              Validierung, Zeitpruefung, Honeypot-Feld, Inhaltspruefung und
+              Rate-Limiting. Diese Schutzmassnahmen dienen ausschliesslich der
+              Abwehr von Spam, Missbrauch und automatisierten Masseneinsendungen.
+            </p>
+          </section>
+
+          <section id="email">
+            <h2>4. E-Mail-Versand und Resend</h2>
+            <p>
+              Zur technischen Zustellung von Website-Anfragen und optionalen
+              Eingangsbestätigungen kann der E-Mail-Dienstleister Resend genutzt
+              werden. Dabei werden die fuer den Versand erforderlichen
+              Kommunikationsdaten verarbeitet, insbesondere Empfaengeradresse,
+              Absenderangaben, Nachrichteninhalt, Betreff und technische
+              Versandinformationen.
+            </p>
+            <p>
+              Anbieter: Resend, Inc., [PLATZHALTER: aktuelle Anbieteranschrift
+              aus dem Resend-Auftragsverarbeitungsvertrag ergaenzen].
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO fuer die
+              Anfragebearbeitung sowie Art. 6 Abs. 1 lit. f DSGVO fuer den
+              sicheren und zuverlaessigen Versand transaktionaler E-Mails.
+            </p>
+            <p>
+              Sofern Resend Daten ausserhalb der EU/des EWR verarbeitet, erfolgt
+              dies auf Grundlage geeigneter Garantien, insbesondere
+              Standardvertragsklauseln, soweit diese vom Anbieter bereitgestellt
+              werden. Bitte pruefen Sie vor Livegang den abgeschlossenen
+              Auftragsverarbeitungsvertrag und die aktuellen Resend-Unterlagen.
+            </p>
+          </section>
+
+          <section id="hosting">
+            <h2>5. Hosting, Auslieferung und Server-Logfiles</h2>
+            <p>
+              Diese Website wird ueber Cloudflare Pages beziehungsweise die
+              Cloudflare-Infrastruktur ausgeliefert. Anbieter ist Cloudflare,
+              Inc., 101 Townsend St, San Francisco, CA 94107, USA. Cloudflare
+              verarbeitet technische Daten, um die Website sicher, schnell und
+              stabil bereitzustellen.
+            </p>
+            <p>
+              Beim Aufruf der Website koennen insbesondere IP-Adresse, Datum und
+              Uhrzeit des Zugriffs, angeforderte URL, Referrer, Browsertyp,
+              Betriebssystem, Statuscodes und vergleichbare technische Daten
+              verarbeitet werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f
+              DSGVO. Unser berechtigtes Interesse liegt im sicheren und
+              performanten Betrieb der Website, der Fehleranalyse und der Abwehr
+              von Angriffen.
+            </p>
+            <p>
+              Fuer eine Uebermittlung in Drittlaender nutzt Cloudflare nach
+              eigenen Angaben geeignete Datenschutzgarantien. Bitte pruefen Sie
+              vor Livegang den abgeschlossenen Auftragsverarbeitungsvertrag und
+              die konkreten Cloudflare-Datenschutzeinstellungen.
+            </p>
+          </section>
+
+          <section>
+            <h2>6. Cookies, Tracking und Analyse</h2>
+            <p>
+              Nach aktuellem technischen Stand setzt diese Website keine
+              werblichen Tracking-Cookies und keine Analysewerkzeuge wie Google
+              Analytics ein. Falls spaeter Analyse-, Marketing- oder
+              Remarketing-Dienste eingebunden werden, muss diese
+              Datenschutzerklaerung vorab angepasst und gegebenenfalls ein
+              Consent-Banner eingerichtet werden.
+            </p>
+          </section>
+
+          <section id="karte">
+            <h2>7. Kartenfunktion und externe Links</h2>
+            <p>
+              Auf der Kontaktseite kann eine Karte von OpenStreetMap eingebettet
+              sein. Beim Laden der Karte koennen technische Daten wie Ihre
+              IP-Adresse an die beteiligten Kartendienste uebermittelt werden.
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes
+              Interesse liegt in einer nutzerfreundlichen Darstellung unseres
+              Standorts und der Routenplanung.
+            </p>
+            <p>
+              Links zu externen Diensten, zum Beispiel Google Maps fuer die
+              Routenplanung oder WhatsApp fuer eine direkte Kontaktaufnahme,
+              fuehren zu Angeboten Dritter. Wenn Sie diese Links anklicken,
+              gelten die Datenschutzbestimmungen des jeweiligen Anbieters.
+            </p>
+          </section>
+
+          <section>
+            <h2>8. WhatsApp, Telefon und direkte Kommunikation</h2>
+            <p>
+              Wenn Sie uns per Telefon, WhatsApp oder E-Mail kontaktieren,
+              verarbeiten wir Ihre Kommunikationsdaten zur Bearbeitung Ihrer
+              Anfrage. Bei Nutzung von WhatsApp erfolgt die Kommunikation ueber
+              den Anbieter WhatsApp Ireland Limited beziehungsweise Meta. Bitte
+              beachten Sie, dass dabei Daten auch durch WhatsApp verarbeitet
+              werden koennen.
+            </p>
+            <p>
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit Ihre
+              Anfrage auf die Anbahnung oder Durchfuehrung eines Ankaufs
+              gerichtet ist, und Art. 6 Abs. 1 lit. f DSGVO fuer allgemeine
+              Kommunikation.
+            </p>
+          </section>
+
+          <section>
+            <h2>9. Speicherdauer</h2>
+            <p>
+              Wir speichern personenbezogene Daten nur so lange, wie dies fuer
+              die Bearbeitung Ihrer Anfrage, die Anbahnung oder Durchfuehrung
+              eines Ankaufs, die Erfuellung gesetzlicher Aufbewahrungspflichten
+              oder die Abwehr beziehungsweise Geltendmachung rechtlicher
+              Ansprueche erforderlich ist. Anfragen ohne anschliessenden
+              Vertragsschluss werden regelmaessig geloescht, sobald keine
+              weitere Bearbeitung erforderlich ist, sofern keine gesetzlichen
+              Pflichten entgegenstehen.
+            </p>
+          </section>
+
+          <section>
+            <h2>10. Empfaenger von Daten</h2>
+            <p>
+              Zugriff auf personenbezogene Daten erhalten nur Stellen, die diese
+              zur Bearbeitung Ihrer Anfrage oder zum Betrieb der Website
+              benoetigen. Dazu koennen technische Dienstleister wie Hosting-,
+              E-Mail- und IT-Dienstleister gehoeren. Eine Weitergabe an Dritte
+              erfolgt nur, wenn sie erforderlich ist, gesetzlich erlaubt ist,
+              eine Einwilligung vorliegt oder wir gesetzlich dazu verpflichtet
+              sind.
+            </p>
+          </section>
+
+          <section id="rechte">
+            <h2>11. Ihre Rechte</h2>
+            <p>
+              Sie haben im Rahmen der gesetzlichen Voraussetzungen das Recht auf
+              Auskunft, Berichtigung, Loeschung, Einschraenkung der Verarbeitung,
+              Datenuebertragbarkeit sowie Widerspruch gegen bestimmte
+              Verarbeitungen. Soweit eine Verarbeitung auf Ihrer Einwilligung
+              beruht, koennen Sie diese Einwilligung jederzeit mit Wirkung fuer
+              die Zukunft widerrufen.
+            </p>
+            <p>
+              Zur Ausuebung Ihrer Rechte koennen Sie uns ueber die oben
+              genannten Kontaktdaten erreichen.
+            </p>
+          </section>
+
+          <section id="aufsicht">
+            <h2>12. Beschwerderecht bei einer Aufsichtsbehoerde</h2>
+            <p>
+              Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehoerde
+              zu beschweren. Zustaendig kann insbesondere die Aufsichtsbehoerde
+              Ihres Wohnorts, Ihres Arbeitsplatzes oder unseres Unternehmenssitzes
+              sein.
+            </p>
+            <p>
+              Fuer Schleswig-Holstein ist regelmaessig zustaendig:<br />
+              Unabhaengiges Landeszentrum fuer Datenschutz Schleswig-Holstein
+              (ULD), Holstenstrasse 98, 24103 Kiel<br />
+              Website: <a href="https://www.datenschutzzentrum.de/" target="_blank" rel="noopener">www.datenschutzzentrum.de</a>
+            </p>
+          </section>
+
+          <section>
+            <h2>13. Aktualitaet dieser Datenschutzerklaerung</h2>
+            <p>
+              Stand: August 2026. Wir passen diese Datenschutzerklaerung an,
+              wenn sich technische, rechtliche oder organisatorische
+              Verarbeitungsvorgaenge aendern.
+            </p>
+          </section>
+
+          <p class="legal-note">
+            Hinweis: Diese Seite enthaelt bewusst Platzhalter fuer noch fehlende
+            Unternehmens- und Vertragsdaten. Vor Veroeffentlichung sollten die
+            Angaben durch die tatsaechlichen Daten ersetzt und juristisch geprueft
+            werden.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: 0;
+    background: #f6f8fb;
+  }
+
+  .legal-hero {
+    padding: 86px 0 56px;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255, 107, 0, 0.18), transparent 24rem),
+      linear-gradient(135deg, #07111f, #0c223d);
+    color: #fff;
+  }
+
+  .legal-hero-inner {
+    max-width: 980px;
+  }
+
+  .legal-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 16px 0 18px;
+    max-width: 900px;
+    font-size: clamp(46px, 7vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+  }
+
+  .legal-hero p {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    padding: 58px 0 86px;
+  }
+
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .legal-toc,
+  .legal-card {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 24px 70px rgba(17, 24, 39, 0.08);
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 110px;
+    padding: 22px;
+  }
+
+  .legal-toc strong,
+  .legal-toc a {
+    display: block;
+  }
+
+  .legal-toc strong {
+    margin-bottom: 14px;
+    color: #111827;
+  }
+
+  .legal-toc a {
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+  }
+
+  .legal-toc a:hover {
+    color: var(--orange);
+  }
+
+  .legal-card {
+    padding: clamp(28px, 4vw, 54px);
+  }
+
+  .legal-card section + section {
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  p,
+  li {
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  a {
+    font-weight: 750;
+    color: #111827;
+  }
+
+  .legal-note {
+    margin-top: 38px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(255, 107, 0, 0.1);
+    color: #7a3600;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .legal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .legal-toc {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .legal-page {
+      padding-top: 0;
+    }
+
+    .legal-hero {
+      padding: 58px 0 42px;
+    }
+  }
+</style>

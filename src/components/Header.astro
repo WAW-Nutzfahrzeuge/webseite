@@ -1,0 +1,962 @@
+---
+import { serviceLinks, site } from "../data/site";
+import { navigationCities } from "../data/cities";
+import {
+  getLocalizedEquivalentPath,
+  localeLabels,
+  locales,
+  localeShortLabels,
+  localizeCityPath,
+  localizePath,
+  ui,
+  type Locale,
+} from "../data/i18n";
+
+const { transparent = false, lang = "de" } = Astro.props;
+const currentLang = lang as Locale;
+const nav = ui[currentLang];
+const currentPath = Astro.url.pathname;
+const isActive = (path: string) => currentPath === path || currentPath.startsWith(`${path}/`);
+const localized = (route: Parameters<typeof localizePath>[0]) => localizePath(route, currentLang);
+const languageOptions = locales.map((locale) => ({
+  locale,
+  label: localeLabels[locale],
+  shortLabel: localeShortLabels[locale],
+  href: getLocalizedEquivalentPath(currentPath, locale),
+}));
+---
+
+<header class={`site-header ${transparent ? "site-header--transparent" : "site-header--solid"}`} id="site-header">
+  <div class="container header-inner">
+    <a href={localized("home")} class="logo" aria-label="WAW Nutzfahrzeuge Startseite">
+      <img src="/images/waw-logo.svg" alt="WAW Nutzfahrzeuge Logo" />
+    </a>
+
+    <nav class="desktop-nav" aria-label="Hauptnavigation">
+      <a href={localized("home")} class={currentPath === localized("home") ? "is-active" : ""}>{nav.home}</a>
+
+      <div class={`nav-group ${isActive(localized("services")) ? "is-active" : ""}`}>
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          {nav.services}
+          <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </button>
+        <div class="nav-dropdown" role="menu">
+          <a href={localized("services")} role="menuitem" class="dropdown-all">
+            <span>{nav.allServices}</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </a>
+          <div class="dropdown-divider"></div>
+          {serviceLinks.map((link) => (
+            <a href={`${localized("services")}#${link.href.split("#")[1]}`} role="menuitem">{nav.serviceLinks[link.href.split("#")[1] as keyof typeof nav.serviceLinks] || link.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <a href={localized("process")} class={isActive(localized("process")) ? "is-active" : ""}>{nav.process}</a>
+      <a href={localized("vehicles")} class={isActive(localized("vehicles")) ? "is-active" : ""}>{nav.vehicles}</a>
+
+      <div class={`nav-group ${isActive(localized("locations")) || currentPath.includes("/lkw-verkaufen/") || currentPath.includes("/sell-trucks/") || currentPath.includes("/vendre-camion/") ? "is-active" : ""}`}>
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          {nav.locations}
+          <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </button>
+        <div class="nav-dropdown nav-dropdown--wide" role="menu">
+          <a href={localized("locations")} role="menuitem" class="dropdown-all">
+            <span>{nav.allLocations}</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-cities">
+            {navigationCities.map((city) => (
+              <a href={localizeCityPath(city.slug, currentLang)} role="menuitem">{city.name}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <a href={localized("about")} class={isActive(localized("about")) ? "is-active" : ""}>{nav.about}</a>
+      <a href={localized("contact")} class={isActive(localized("contact")) ? "is-active" : ""}>{nav.contact}</a>
+    </nav>
+
+    <div class="header-actions">
+      <label class="language-switcher" aria-label="Sprache auswählen">
+        <span>{nav.language}</span>
+        <select data-language-switcher>
+          {languageOptions.map((option) => (
+            <option value={option.href} selected={option.locale === currentLang}>{option.shortLabel}</option>
+          ))}
+        </select>
+      </label>
+
+      <a href={`tel:${site.phoneHref}`} class="call-btn">
+        {site.phoneDisplay}
+      </a>
+
+      <a href={localized("contact")} class="cta-btn">
+        {nav.startInquiry}
+      </a>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label={currentLang === "de" ? "Menü öffnen" : currentLang === "en" ? "Open menu" : "Ouvrir le menu"} aria-expanded="false" aria-controls="mobile-sheet">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile sheet overlay -->
+<div class="sheet-backdrop" id="sheet-backdrop" aria-hidden="true"></div>
+
+<div class="mobile-sheet" id="mobile-sheet" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="sheet-top">
+    <a href={localized("home")} class="sheet-logo">
+      <img src="/images/waw-logo.svg" alt="WAW Nutzfahrzeuge" />
+    </a>
+    <button class="sheet-close" id="sheet-close" aria-label={currentLang === "de" ? "Menü schließen" : currentLang === "en" ? "Close menu" : "Fermer le menu"}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <nav class="sheet-nav" aria-label="Mobile Navigation">
+    <label class="sheet-language-switcher" aria-label="Sprache auswählen">
+      <span>{nav.language}</span>
+      <select data-language-switcher>
+        {languageOptions.map((option) => (
+          <option value={option.href} selected={option.locale === currentLang}>{option.label}</option>
+        ))}
+      </select>
+    </label>
+
+    <a href={localized("home")} class={`sheet-link ${currentPath === localized("home") ? "is-active" : ""}`}>{nav.home}</a>
+
+    <div class={`sheet-group ${isActive(localized("services")) ? "is-active" : ""}`} id="sg-leistungen">
+      <button class="sheet-group-btn" aria-expanded="false">
+        <span>{nav.services}</span>
+        <svg class="sheet-chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </button>
+      <div class="sheet-sub">
+        <a href={localized("services")} class="sheet-sub-all">{nav.allServices} →</a>
+        {serviceLinks.map((link) => (
+          <a href={`${localized("services")}#${link.href.split("#")[1]}`}>{nav.serviceLinks[link.href.split("#")[1] as keyof typeof nav.serviceLinks] || link.label}</a>
+        ))}
+      </div>
+    </div>
+
+    <a href={localized("process")} class={`sheet-link ${isActive(localized("process")) ? "is-active" : ""}`}>{nav.process}</a>
+    <a href={localized("vehicles")} class={`sheet-link ${isActive(localized("vehicles")) ? "is-active" : ""}`}>{nav.vehicles}</a>
+
+    <div class={`sheet-group ${isActive(localized("locations")) || currentPath.includes("/lkw-verkaufen/") || currentPath.includes("/sell-trucks/") || currentPath.includes("/vendre-camion/") ? "is-active" : ""}`} id="sg-standorte">
+      <button class="sheet-group-btn" aria-expanded="false">
+        <span>{nav.locations}</span>
+        <svg class="sheet-chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </button>
+      <div class="sheet-sub">
+        <a href={localized("locations")} class="sheet-sub-all">{nav.allLocations} →</a>
+        <div class="sheet-cities">
+          {navigationCities.map((city) => (
+            <a href={localizeCityPath(city.slug, currentLang)}>{city.name}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <a href={localized("about")} class={`sheet-link ${isActive(localized("about")) ? "is-active" : ""}`}>{nav.about}</a>
+    <a href={localized("contact")} class={`sheet-link ${isActive(localized("contact")) ? "is-active" : ""}`}>{nav.contact}</a>
+  </nav>
+
+  <div class="sheet-cta">
+    <a href={localized("contact")} class="sheet-cta-btn">{nav.startInquiry}</a>
+    <a href={`tel:${site.phoneHref}`} class="sheet-call-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.1 5.18 2 2 0 0 1 5.08 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.91 10.91a16 16 0 0 0 6.18 6.18l1.38-1.38a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 24 18z"/></svg>
+      {nav.call}
+    </a>
+  </div>
+
+  <div class="sheet-contact">
+    <p class="sheet-contact-label">{nav.contact}</p>
+    <a href={`tel:${site.phoneHref}`} class="sheet-contact-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.1 5.18 2 2 0 0 1 5.08 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.91 10.91a16 16 0 0 0 6.18 6.18l1.38-1.38a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 24 18z"/></svg>
+      {site.phoneDisplay}
+    </a>
+    <a href={site.whatsappHref} target="_blank" rel="noopener" class="sheet-contact-row">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884zm8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      {nav.writeWhatsapp}
+    </a>
+    <div class="sheet-contact-row sheet-hours">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      {currentLang === "de" ? "Mo–Fr 8–18 · Sa 9–14 Uhr" : currentLang === "en" ? "Mon-Fri 8-18 · Sat 9-14" : "Lun-ven 8-18 · Sam 9-14"}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll effect
+  const header = document.getElementById("site-header");
+  window.addEventListener("scroll", () => {
+    header?.classList.toggle("scrolled", window.scrollY > 10);
+  }, { passive: true });
+
+  // Mobile sheet
+  const toggle     = document.getElementById("mobile-toggle") as HTMLButtonElement | null;
+  const sheet      = document.getElementById("mobile-sheet");
+  const backdrop   = document.getElementById("sheet-backdrop");
+  const closeBtn   = document.getElementById("sheet-close");
+
+  function openSheet() {
+    sheet?.classList.add("open");
+    backdrop?.classList.add("open");
+    document.body.style.overflow = "hidden";
+    toggle?.setAttribute("aria-expanded", "true");
+    toggle?.classList.add("active");
+    sheet?.setAttribute("aria-hidden", "false");
+  }
+
+  function closeSheet() {
+    sheet?.classList.remove("open");
+    backdrop?.classList.remove("open");
+    document.body.style.overflow = "";
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.classList.remove("active");
+    sheet?.setAttribute("aria-hidden", "true");
+  }
+
+  toggle?.addEventListener("click", () => {
+    sheet?.classList.contains("open") ? closeSheet() : openSheet();
+  });
+
+  closeBtn?.addEventListener("click", closeSheet);
+  backdrop?.addEventListener("click", closeSheet);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeSheet();
+  });
+
+  // Mobile accordion groups
+  const sheetGroups = document.querySelectorAll<HTMLElement>(".sheet-group");
+
+  sheetGroups.forEach((group) => {
+    const btn = group.querySelector<HTMLButtonElement>(".sheet-group-btn");
+    const sub = group.querySelector<HTMLElement>(".sheet-sub");
+
+    btn?.addEventListener("click", () => {
+      const isOpen = group.classList.contains("open");
+
+      // Close all other groups
+      sheetGroups.forEach((g) => {
+        g.classList.remove("open");
+        g.querySelector(".sheet-group-btn")?.setAttribute("aria-expanded", "false");
+        const s = g.querySelector<HTMLElement>(".sheet-sub");
+        if (s) s.style.maxHeight = "0";
+      });
+
+      if (!isOpen && sub) {
+        group.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+        sub.style.maxHeight = sub.scrollHeight + "px";
+      }
+    });
+  });
+
+  // Desktop: update aria-expanded on hover for accessibility
+  const navGroups = document.querySelectorAll<HTMLElement>(".nav-group");
+  navGroups.forEach((group) => {
+    const btn = group.querySelector<HTMLButtonElement>(".nav-dropdown-btn");
+    group.addEventListener("mouseenter", () => btn?.setAttribute("aria-expanded", "true"));
+    group.addEventListener("mouseleave", () => btn?.setAttribute("aria-expanded", "false"));
+  });
+
+  document.querySelectorAll<HTMLSelectElement>("[data-language-switcher]").forEach((select) => {
+    select.addEventListener("change", () => {
+      if (select.value) window.location.href = select.value;
+    });
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+
+    padding: 10px 0;
+
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(15,23,42,0.06);
+    box-shadow:
+        0 1px 0 rgba(15,23,42,0.06),
+        0 14px 42px rgba(15,23,42,0.075);
+
+    transition:
+        background 240ms ease,
+        border-color 240ms ease,
+        box-shadow 240ms ease,
+        padding 240ms ease;
+  }
+
+  .site-header--transparent {
+    position: fixed;
+    left: 0;
+    right: 0;
+    padding: 18px 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: none;
+  }
+
+  .site-header--transparent.scrolled {
+    padding: 10px 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(15,23,42,0.06);
+    box-shadow:
+        0 1px 0 rgba(15,23,42,0.06),
+        0 14px 42px rgba(15,23,42,0.075);
+  }
+
+  .site-header--transparent:not(.scrolled) .logo img {
+    filter: none;
+  }
+
+  .site-header--transparent:not(.scrolled) .desktop-nav > a,
+  .site-header--transparent:not(.scrolled) .nav-dropdown-btn {
+    color: rgba(255,255,255,0.88);
+  }
+
+  .site-header--transparent:not(.scrolled) .desktop-nav > a:hover,
+  .site-header--transparent:not(.scrolled) .nav-group:hover .nav-dropdown-btn {
+    color: white;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .site-header--transparent:not(.scrolled) .call-btn {
+    color: white;
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.26);
+  }
+
+  .site-header--transparent:not(.scrolled) .mobile-toggle {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.24);
+  }
+
+  .site-header--transparent:not(.scrolled) .mobile-toggle span {
+    background: #fff;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .logo img {
+    width: 188px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  @media (max-width: 640px) {
+    .logo img { width: 148px; }
+  }
+
+  /* ── Desktop nav ── */
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .desktop-nav > a {
+    padding: 8px 12px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: 180ms ease;
+  }
+
+  .desktop-nav > a:hover {
+    color: var(--text);
+    background: rgba(15,23,42,0.05);
+  }
+
+  .desktop-nav > a.is-active,
+  .nav-group.is-active .nav-dropdown-btn,
+  .site-header--transparent:not(.scrolled) .desktop-nav > a.is-active,
+  .site-header--transparent:not(.scrolled) .nav-group.is-active .nav-dropdown-btn {
+    color: var(--orange);
+  }
+
+  /* ── Dropdown groups ── */
+  .nav-group {
+    position: relative;
+  }
+
+  /* Invisible bridge prevents gap between trigger and dropdown */
+  .nav-group::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: -8px;
+    right: -8px;
+    height: 14px;
+  }
+
+  .nav-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: 180ms ease;
+  }
+
+  .nav-group:hover .nav-dropdown-btn {
+    color: var(--text);
+    background: rgba(15,23,42,0.05);
+  }
+
+  .chevron {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-group:hover .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown panel */
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    min-width: 220px;
+    z-index: 300;
+
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow:
+      0 8px 24px rgba(15,23,42,0.08),
+      0 24px 60px rgba(15,23,42,0.12);
+    padding: 8px;
+
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 180ms ease,
+      transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-group:hover .nav-dropdown {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .nav-dropdown--wide { min-width: 430px; }
+
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    transition: 160ms ease;
+  }
+
+  .nav-dropdown a:hover {
+    background: rgba(15,23,42,0.05);
+  }
+
+  .nav-dropdown a svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: 160ms ease;
+    flex-shrink: 0;
+  }
+
+  .nav-dropdown a:hover svg {
+    opacity: 0.6;
+    transform: translateX(0);
+  }
+
+  .dropdown-all { font-weight: 800 !important; }
+
+  .dropdown-divider {
+    height: 1px;
+    background: var(--card-border);
+    margin: 6px 4px;
+  }
+
+  .dropdown-cities {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .dropdown-cities a { justify-content: flex-start !important; }
+
+  /* ── Header actions ── */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .language-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px 7px 12px;
+    border: 1px solid rgba(15,23,42,0.1);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.72);
+    color: var(--text);
+    transition: 220ms ease;
+  }
+
+  .site-header--transparent:not(.scrolled) .language-switcher {
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+
+  .language-switcher span {
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+  }
+
+  .language-switcher select,
+  .sheet-language-switcher select {
+    border: none;
+    border-radius: 999px;
+    background: rgba(15,23,42,0.06);
+    color: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .language-switcher select {
+    padding: 5px 24px 5px 8px;
+  }
+
+  .site-header--transparent:not(.scrolled) .language-switcher select {
+    background: rgba(255,255,255,0.16);
+  }
+
+  .language-switcher option,
+  .sheet-language-switcher option {
+    color: #17181c;
+    background: #fff;
+  }
+
+  .language-switcher select:focus-visible,
+  .sheet-language-switcher select:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255,107,0,0.24);
+  }
+
+  .call-btn {
+    padding: 11px 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.72);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 800;
+    transition: 220ms ease;
+  }
+
+  .call-btn:hover { transform: translateY(-2px); }
+
+  .cta-btn {
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    transition: 220ms ease;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(255,107,0,0.32);
+  }
+
+  /* ── Mobile toggle ── */
+  .mobile-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.72);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .mobile-toggle span {
+    position: absolute;
+    left: 11px;
+    width: 22px;
+    height: 2px;
+    background: #17181c;
+    transition: 220ms ease;
+  }
+
+  .mobile-toggle span:first-child { top: 17px; }
+  .mobile-toggle span:last-child  { top: 25px; }
+
+  .mobile-toggle.active span:first-child { transform: rotate(45deg);  top: 21px; }
+  .mobile-toggle.active span:last-child  { transform: rotate(-45deg); top: 21px; }
+
+  /* ── Backdrop ── */
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 299;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  .sheet-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Mobile sheet ── */
+  .mobile-sheet {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 300;
+
+    width: min(440px, 100vw);
+
+    background: #fff;
+
+    transform: translateX(100%);
+    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 env(safe-area-inset-bottom, 0);
+  }
+
+  .mobile-sheet.open {
+    transform: translateX(0);
+  }
+
+  /* Sheet header */
+  .sheet-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--card-border);
+    flex-shrink: 0;
+  }
+
+  .sheet-logo img {
+    width: 140px;
+    height: auto;
+    display: block;
+  }
+
+  .sheet-close {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: rgba(15,23,42,0.04);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    transition: background 180ms ease;
+  }
+
+  .sheet-close:hover { background: rgba(15,23,42,0.08); }
+
+  .sheet-close svg {
+    width: 18px;
+    height: 18px;
+    color: #17181c;
+  }
+
+  /* Sheet nav */
+  .sheet-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    gap: 4px;
+  }
+
+  .sheet-language-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 2px 0 10px;
+    padding: 13px 14px;
+    border: 1px solid rgba(15,23,42,0.08);
+    border-radius: 16px;
+    background: rgba(15,23,42,0.04);
+    color: #17181c;
+  }
+
+  .sheet-language-switcher span {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--muted);
+  }
+
+  .sheet-language-switcher select {
+    padding: 8px 28px 8px 12px;
+    background: #fff;
+    border: 1px solid rgba(15,23,42,0.1);
+  }
+
+  .sheet-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 16px;
+    border-radius: 16px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #17181c;
+    transition: background 160ms ease;
+  }
+
+  .sheet-link.is-active,
+  .sheet-group.is-active .sheet-group-btn {
+    color: var(--orange);
+    background: rgba(255,107,0,0.08);
+  }
+
+  .sheet-link:hover { background: rgba(15,23,42,0.04); }
+
+  /* Sheet accordion groups */
+  .sheet-group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #17181c;
+    transition: background 160ms ease;
+  }
+
+  .sheet-group-btn:hover { background: rgba(15,23,42,0.04); }
+
+  .sheet-group.open .sheet-group-btn { background: rgba(15,23,42,0.05); }
+
+  .sheet-chevron {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sheet-group.open .sheet-chevron { transform: rotate(180deg); }
+
+  .sheet-sub {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0 6px;
+  }
+
+  .sheet-sub-all {
+    display: block;
+    padding: 10px 14px;
+    margin: 6px 0 4px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #17181c;
+    background: rgba(15,23,42,0.05);
+    transition: background 160ms ease;
+  }
+
+  .sheet-sub-all:hover { background: rgba(15,23,42,0.09); }
+
+  .sheet-sub a:not(.sheet-sub-all) {
+    display: block;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--muted);
+    transition: background 160ms ease, color 160ms ease;
+  }
+
+  .sheet-sub a:not(.sheet-sub-all):hover {
+    background: rgba(15,23,42,0.04);
+    color: #17181c;
+  }
+
+  /* Cities grid inside sub */
+  .sheet-cities {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    padding-bottom: 4px;
+  }
+
+  /* Sheet CTA */
+  .sheet-cta {
+    display: flex;
+    gap: 10px;
+    padding: 16px 16px 12px;
+    flex-shrink: 0;
+  }
+
+  .sheet-cta-btn {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: var(--orange);
+    color: white;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    transition: 200ms ease;
+  }
+
+  .sheet-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(242,97,0,0.28); }
+
+  .sheet-call-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--card-border);
+    background: rgba(255,255,255,0.72);
+    font-size: 15px;
+    font-weight: 800;
+    color: #17181c;
+    white-space: nowrap;
+    transition: 200ms ease;
+  }
+
+  .sheet-call-btn:hover { transform: translateY(-2px); }
+
+  .sheet-call-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Sheet contact block */
+  .sheet-contact {
+    margin: 0 16px 20px;
+    padding: 18px;
+    border-radius: 22px;
+    background: rgba(15,23,42,0.04);
+    border: 1px solid var(--card-border);
+    flex-shrink: 0;
+  }
+
+  .sheet-contact-label {
+    margin: 0 0 12px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .sheet-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #17181c;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(15,23,42,0.07);
+    transition: opacity 160ms ease;
+  }
+
+  .sheet-contact-row:last-child { border-bottom: none; }
+  .sheet-contact-row:hover { opacity: 0.7; }
+
+  .sheet-contact-row svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--muted); }
+
+  .sheet-hours { color: var(--muted); font-weight: 600 !important; cursor: default; }
+  .sheet-hours:hover { opacity: 1 !important; }
+
+  /* ── Responsive breakpoints ── */
+  @media (max-width: 1040px) {
+    .desktop-nav,
+    .call-btn,
+    .cta-btn,
+    .language-switcher {
+      display: none;
+    }
+
+    .mobile-toggle {
+      display: block;
+    }
+  }
+</style>

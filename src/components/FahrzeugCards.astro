@@ -1,0 +1,373 @@
+---
+import {
+  CircleCheck,
+  ShieldCheck,
+  Timer,
+  Wallet,
+} from "@lucide/astro";
+
+const vehicles = [
+  {
+    id: "lkw",
+    title: "LKW Ankauf",
+    text: "Gebrauchte LKW verschiedener Marken, Gewichtsklassen und Aufbauten - auch mit hoher Laufleistung oder Mängeln.",
+    image: "/images/fahrzeug_lkw.webp",
+    iconSrc: "/icons/lkw.png",
+    href: "/leistungen#lkw",
+  },
+  {
+    id: "sattelzugmaschinen",
+    title: "Sattelzugmaschinen Ankauf",
+    text: "Zugmaschinen verschiedener Hersteller und Baujahre. Auch ältere Fahrzeuge oder Schäden können Sie anbieten.",
+    image: "/images/fahrzeug_sattelzugmaschine.webp",
+    iconSrc: "/icons/sattelzugmaschine.png",
+    href: "/leistungen#sattelzugmaschinen",
+  },
+  {
+    id: "auflieger",
+    title: "Auflieger Ankauf",
+    text: "Planenauflieger, Kühlauflieger, Kipper, Tieflader und Spezialauflieger aus gewerblicher Nutzung.",
+    image: "/images/fahrzeug_auflieger.webp",
+    iconSrc: "/icons/auflieger.png",
+    href: "/leistungen#auflieger",
+  },
+  {
+    id: "anhaenger",
+    title: "Anhänger Ankauf",
+    text: "Deichselanhänger, Zentralachsanhänger und Spezialanhänger für den gewerblichen Einsatz.",
+    image: "/images/fahrzeuge_anhaenger.webp",
+    iconSrc: "/icons/anhaenger.png",
+    href: "/leistungen#anhaenger",
+  },
+  {
+    id: "transporter",
+    title: "Transporter Ankauf",
+    text: "Transporter und leichte Nutzfahrzeuge wie Sprinter, Crafter, Transit, Ducato und vergleichbare Modelle.",
+    image: "/images/fahrzeug_transporter.webp",
+    iconSrc: "/icons/transporter.png",
+    href: "/leistungen#transporter",
+  },
+  {
+    id: "baumaschinen",
+    title: "Baumaschinen Ankauf",
+    text: "Bagger, Radlader, Krane, Betonmischer und weitere Baumaschinen - auch mit Mängeln.",
+    image: "/images/fahrzeug_baumaschine.webp",
+    iconSrc: "/icons/bagger.png",
+    href: "/leistungen#baumaschinen",
+  },
+  {
+    id: "fuhrpark",
+    title: "Fuhrpark Ankauf",
+    text: "Mehrere LKW, gemischte Fahrzeugpakete oder komplette Fuhrparks gemeinsam anbieten.",
+    image: "/images/fahrzeug_fuhrpark.webp",
+    iconSrc: "/icons/fuhrpark.png",
+    href: "/leistungen#fuhrpark",
+  },
+];
+
+const benefits = [
+  { label: "Viele Zustände möglich", icon: CircleCheck },
+  { label: "Schnelle Entscheidung", icon: Timer },
+  { label: "Abholung nach Abstimmung", iconSrc: "/icons/transporter.png" },
+  { label: "Direkte Zahlung", icon: Wallet },
+  { label: "Diskrete Abwicklung", icon: ShieldCheck },
+];
+
+const {
+  introKicker = "UNSERE ANKAUFBEREICHE",
+  introTitle = "Wir kaufen LKW und Nutzfahrzeuge vieler Arten",
+  introText = "Finden Sie schnell die passende Kategorie für Ihr Fahrzeug. Jede Fahrzeugart kann einzeln oder als Teil eines Fuhrparks angefragt werden.",
+  vehicleItems = vehicles,
+  benefitItems = benefits,
+  linkLabel = "Mehr zum Ankauf →",
+} = Astro.props as {
+  introKicker?: string;
+  introTitle?: string;
+  introText?: string;
+  vehicleItems?: typeof vehicles;
+  benefitItems?: Array<(typeof benefits)[number] | { label: string; iconSrc?: string }>;
+  linkLabel?: string;
+};
+---
+
+<section class="fahrzeug-cards-section">
+  <div class="container">
+    <div class="cards-intro" data-animate>
+      <div>
+        <span>{introKicker}</span>
+        <h2>{introTitle}</h2>
+      </div>
+      <p>{introText}</p>
+    </div>
+
+    <div class="cards-layout">
+      <div class="vehicle-grid">
+        {vehicleItems.map((vehicle) => (
+          <a href={vehicle.href} class="vehicle-card" data-animate>
+            <div class="vehicle-image">
+              <img src={vehicle.image} alt={vehicle.title} loading="eager" />
+            </div>
+            <div class="vehicle-body">
+              <div class="vehicle-badge">
+                <img src={vehicle.iconSrc} alt="" loading="lazy" aria-hidden="true" />
+              </div>
+              <h3>{vehicle.title}</h3>
+              <p>{vehicle.text}</p>
+              <span>{linkLabel}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <aside class="vehicle-benefits" data-animate>
+      {benefitItems.map((benefit) => {
+        const Icon = "icon" in benefit ? benefit.icon : null;
+        return (
+          <div class="benefit-row">
+            <span>
+              {benefit.iconSrc ? (
+                <img src={benefit.iconSrc} alt="" loading="lazy" aria-hidden="true" />
+              ) : Icon ? (
+                <Icon aria-hidden="true" />
+              ) : (
+                <CircleCheck aria-hidden="true" />
+              )}
+            </span>
+            <strong>{benefit.label}</strong>
+          </div>
+        );
+      })}
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fahrzeug-cards-section {
+    padding: 84px 0 88px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,107,0,0.05), transparent 22rem),
+      #fff;
+  }
+
+  .cards-intro {
+    display: grid;
+    grid-template-columns: 1fr 0.92fr;
+    gap: 70px;
+    align-items: end;
+    margin-bottom: 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid rgba(17,24,39,0.1);
+  }
+
+  .cards-intro span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .cards-intro h2 {
+    max-width: 640px;
+    margin: 14px 0 0;
+    font-size: clamp(38px, 5vw, 66px);
+    line-height: 1;
+    letter-spacing: -0.072em;
+  }
+
+  .cards-intro p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .cards-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 34px;
+    align-items: start;
+  }
+
+  .vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .vehicle-card {
+    overflow: hidden;
+    border-radius: 13px;
+    background: #fff;
+    border: 1px solid rgba(17,24,39,0.08);
+    box-shadow:
+      0 10px 26px rgba(15,23,42,0.06),
+      0 28px 78px rgba(15,23,42,0.08);
+    transition:
+      transform 240ms ease,
+      border-color 240ms ease,
+      box-shadow 240ms ease;
+  }
+
+  .vehicle-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255,107,0,0.28);
+    box-shadow:
+      0 18px 42px rgba(15,23,42,0.1),
+      0 38px 92px rgba(15,23,42,0.14);
+  }
+
+  .vehicle-image {
+    height: 205px;
+    overflow: hidden;
+    background: #07111f;
+  }
+
+  .vehicle-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .vehicle-card:hover .vehicle-image img {
+    transform: scale(1.06);
+  }
+
+  .vehicle-body {
+    position: relative;
+    min-height: 260px;
+    padding: 42px 26px 26px;
+  }
+
+  .vehicle-badge {
+    position: absolute;
+    left: 24px;
+    top: -28px;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: var(--orange);
+    background: #fff;
+    border: 1px solid rgba(255,107,0,0.16);
+    box-shadow: 0 14px 32px rgba(15,23,42,0.12);
+  }
+
+  .vehicle-badge img {
+    width: 30px;
+    height: 30px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .vehicle-body h3 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.18;
+    letter-spacing: -0.045em;
+  }
+
+  .vehicle-body p {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .vehicle-body > span {
+    display: inline-block;
+    margin-top: 24px;
+    color: var(--orange);
+    font-weight: 900;
+    font-size: 14px;
+  }
+
+  .vehicle-benefits {
+    position: sticky;
+    top: 110px;
+    display: grid;
+    gap: 24px;
+    padding: 14px 0;
+  }
+
+  .benefit-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .benefit-row > span {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    color: var(--orange);
+    background: rgba(255,107,0,0.1);
+  }
+
+  .benefit-row :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+
+  .benefit-row img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .benefit-row strong {
+    color: #111827;
+    font-size: 16px;
+    letter-spacing: -0.025em;
+  }
+
+  @media (max-width: 1180px) {
+    .cards-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .vehicle-benefits {
+      position: static;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .cards-intro {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .vehicle-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .fahrzeug-cards-section {
+      padding: 62px 0;
+    }
+
+    .vehicle-grid,
+    .vehicle-benefits {
+      grid-template-columns: 1fr;
+    }
+
+    .vehicle-image {
+      height: 210px;
+    }
+
+    .vehicle-body {
+      min-height: auto;
+    }
+  }
+</style>

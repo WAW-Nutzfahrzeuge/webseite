@@ -1,0 +1,283 @@
+---
+import { CircleCheck, MapPin, Route } from "@lucide/astro";
+import { site } from "../data/site";
+
+const defaultBullets = [
+  "Anfahrt oder Abholung nach Abstimmung",
+  "Deutschland- und europaweit erreichbar",
+  "Alle Fahrzeugtypen",
+  "Auch Fahrzeuge mit Schäden oder hoher Laufleistung",
+];
+
+const defaultCityLinks = [
+  { href: "/lkw-verkaufen/hamburg", label: "Hamburg" },
+  { href: "/lkw-verkaufen/berlin", label: "Berlin" },
+  { href: "/lkw-verkaufen/hannover", label: "Hannover" },
+  { href: "/lkw-verkaufen/bremen", label: "Bremen" },
+];
+
+const {
+  routeLabel = "Route planen",
+  kicker = "DEUTSCHLAND- UND EUROPAWEIT FÜR SIE UNTERWEGS",
+  title = "LKW und Nutzfahrzeuge in Deutschland und Europa verkaufen",
+  text = "Ob Hamburg, Berlin, Hannover, Bremen, Kiel oder ein kleinerer Ort: Sie können uns Ihr Nutzfahrzeug deutschland- und europaweit anbieten. Die weitere Abwicklung stimmen wir direkt mit Ihnen ab.",
+  bullets = defaultBullets,
+  cityLinks = defaultCityLinks,
+  allLocationsHref = "/standorte",
+  allLocationsLabel = "Alle Standorte ansehen",
+} = Astro.props;
+---
+
+<section class="contact-map-section">
+  <div class="container contact-map-grid">
+    <div class="contact-map-card" data-animate>
+      <div class="contact-map-label">
+        <span><MapPin size={22} stroke-width={2.3} /></span>
+        <div>
+          <strong>{site.name}</strong>
+          <small>{site.address.street}, {site.address.postalCode} {site.address.locality}</small>
+        </div>
+      </div>
+
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=10.5209%2C53.5578%2C10.6009%2C53.5978&layer=mapnik&marker=53.5778%2C10.5609"
+        title="Standort WAW Nutzfahrzeuge in Talkau"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+      ></iframe>
+
+      <a
+        class="route-button"
+        href="https://www.google.com/maps/search/Hegesahl+2,+21493+Talkau,+Deutschland"
+        target="_blank"
+        rel="noopener"
+      >
+        {routeLabel}
+        <Route size={18} stroke-width={2.4} />
+      </a>
+    </div>
+
+    <div class="contact-map-copy" data-animate>
+      <span>{kicker}</span>
+      <h2>{title}</h2>
+      <p>{text}</p>
+
+      <ul>
+        {bullets.map((item) => (
+          <li>
+            <CircleCheck size={20} stroke-width={2.4} />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="contact-location-links">
+        <a href={allLocationsHref}>{allLocationsLabel}</a>
+        {cityLinks.map((city) => (
+          <a href={city.href}>{city.label}</a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-map-section {
+    padding: clamp(78px, 8vw, 118px) 0;
+    background:
+      radial-gradient(circle at 86% 20%, rgba(255,107,0,0.08), transparent 22rem),
+      #fff;
+  }
+
+  .contact-map-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: clamp(34px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .contact-map-card {
+    position: relative;
+    min-height: 520px;
+    overflow: hidden;
+    border: 1px solid rgba(17,24,39,0.08);
+    border-radius: 28px;
+    background: #edf0f4;
+    box-shadow: 0 28px 82px rgba(17,24,39,0.12);
+  }
+
+  .contact-map-card iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    border: 0;
+    filter: saturate(0.9) contrast(1.03);
+  }
+
+  .contact-map-label {
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    max-width: calc(100% - 40px);
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.94);
+    box-shadow: 0 18px 46px rgba(17,24,39,0.14);
+  }
+
+  .contact-map-label > span {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    background: rgba(255,107,0,0.12);
+    color: var(--orange);
+  }
+
+  .contact-map-label strong,
+  .contact-map-label small {
+    display: block;
+  }
+
+  .contact-map-label strong {
+    color: #111827;
+    font-size: 15px;
+  }
+
+  .contact-map-label small {
+    margin-top: 3px;
+    color: #697586;
+    font-size: 13px;
+  }
+
+  .route-button {
+    position: absolute;
+    z-index: 2;
+    right: 20px;
+    bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    background: var(--orange);
+    color: #fff;
+    font-weight: 900;
+    padding: 13px 18px;
+    text-decoration: none;
+    box-shadow: 0 18px 42px rgba(255,107,0,0.3);
+  }
+
+  .contact-map-copy span {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.11em;
+  }
+
+  .contact-map-copy h2 {
+    margin: 14px 0 16px;
+    color: #111827;
+    font-size: clamp(38px, 5vw, 66px);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+
+  .contact-map-copy p {
+    margin: 0;
+    color: #5b6675;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .contact-map-copy ul {
+    display: grid;
+    gap: 13px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-map-copy li {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: #111827;
+    font-weight: 800;
+  }
+
+  .contact-map-copy li svg {
+    flex: 0 0 auto;
+    color: var(--orange);
+  }
+
+  .contact-location-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 34px;
+  }
+
+  .contact-location-links a {
+    border: 1px solid rgba(17,24,39,0.1);
+    border-radius: 999px;
+    background: #fff;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 850;
+    padding: 11px 15px;
+    text-decoration: none;
+    box-shadow: 0 12px 28px rgba(17,24,39,0.06);
+    transition: transform 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+
+  .contact-location-links a:first-child,
+  .contact-location-links a:hover {
+    border-color: rgba(255,107,0,0.38);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 940px) {
+    .contact-map-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .contact-map-section {
+      padding: 68px 0;
+    }
+
+    .contact-map-card,
+    .contact-map-card iframe {
+      min-height: 410px;
+    }
+
+    .contact-map-card {
+      border-radius: 22px;
+    }
+
+    .contact-map-label {
+      left: 14px;
+      top: 14px;
+      max-width: calc(100% - 28px);
+    }
+
+    .route-button {
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+    }
+
+    .contact-map-copy h2 {
+      font-size: clamp(34px, 11vw, 48px);
+    }
+  }
+</style>

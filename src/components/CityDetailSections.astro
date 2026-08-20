@@ -1,0 +1,157 @@
+---
+import { cities } from "../data/cities";
+
+const { city } = Astro.props;
+const nearbyLinkedCities = (city.nearbyCities || [])
+    .map((nearbyName: string) => cities.find((entry) => entry.name === nearbyName))
+    .filter((entry): entry is (typeof cities)[number] => Boolean(entry));
+---
+
+<section class="city-details section">
+    <div class="container city-details-grid">
+        <article class="detail-card dark glass-reflect" data-animate>
+            <span>Lokaler Ankauf</span>
+            <h2>LKW Ankauf in {city.name}</h2>
+            <p>
+                {city.localProfile} Wir kaufen gebrauchte LKW, Auflieger,
+                Anhänger, Transporter, Baumaschinen und Fuhrparks aus {city.name} an.
+            </p>
+        </article>
+
+        <article class="detail-card glass-reflect" data-animate>
+            <span>Fahrzeugarten</span>
+            <h3>Welche Fahrzeuge können Sie anbieten?</h3>
+            <p>
+                In {city.name} können Sie unter anderem Sattelzugmaschinen,
+                Transporter, Anhänger, Auflieger, Kipper, Kühlfahrzeuge,
+                Baumaschinen und komplette Fuhrparks anbieten.
+            </p>
+        </article>
+
+        <article class="detail-card glass-reflect" data-animate>
+            <span>Abwicklung</span>
+            <h3>Direkt abgestimmt</h3>
+            <p>
+                Nach der Anfrage besprechen wir Fahrzeugdaten, Zustand und Standort in
+                {` ${city.name}`} und stimmen die nächsten Schritte direkt mit Ihnen ab.
+            </p>
+        </article>
+
+        <article class="detail-card wide glass-reflect" data-animate>
+            <span>Umgebung</span>
+            <h3>Nutzfahrzeuge verkaufen in {city.name} und Umgebung</h3>
+            {nearbyLinkedCities.length > 0 ? (
+                <div class="nearby-links">
+                    {nearbyLinkedCities.map((nearbyCity) => (
+                        <a href={`/lkw-verkaufen/${nearbyCity.slug}`}>
+                            {nearbyCity.name}
+                        </a>
+                    ))}
+                </div>
+            ) : (
+                <p>
+                    Wir sind deutschland- und europaweit tätig und kaufen auch Fahrzeuge aus dem weiteren
+                    regionalen Umfeld von {city.name}.
+                </p>
+            )}
+        </article>
+    </div>
+</section>
+
+<style>
+    .city-details-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+    }
+
+    .detail-card {
+        min-height: 240px;
+        padding: 26px;
+        border-radius: 30px;
+        background: rgba(255,255,255,0.78);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--shadow);
+        transition: 240ms ease;
+    }
+
+    .detail-card:hover {
+        transform: translateY(-6px);
+        background: #fff;
+    }
+
+    .detail-card.dark {
+        grid-column: span 2;
+        background:
+                linear-gradient(135deg, #f26100, #b83c00);
+        color: white;
+    }
+
+    .detail-card.wide {
+        grid-column: span 2;
+    }
+
+    .detail-card span {
+        display: inline-flex;
+        margin-bottom: 46px;
+        color: var(--silver);
+        font-size: 14px;
+        font-weight: 900;
+    }
+
+    .detail-card.dark span {
+        color: rgba(255,255,255,0.62);
+    }
+
+    .detail-card h2,
+    .detail-card h3 {
+        margin: 0 0 12px;
+        font-size: clamp(26px, 3vw, 42px);
+        line-height: 1;
+        letter-spacing: -0.06em;
+    }
+
+    .detail-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+    }
+
+    .detail-card.dark p {
+        color: rgba(255,255,255,0.68);
+    }
+
+    .nearby-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .nearby-links a {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 13px;
+        border-radius: 999px;
+        background: rgba(255,107,0,0.08);
+        color: #111827;
+        font-size: 14px;
+        font-weight: 850;
+        transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .nearby-links a:hover {
+        transform: translateY(-2px);
+        background: rgba(255,107,0,0.14);
+    }
+
+    @media (max-width: 900px) {
+        .city-details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-card.dark,
+        .detail-card.wide {
+            grid-column: span 1;
+        }
+    }
+</style>

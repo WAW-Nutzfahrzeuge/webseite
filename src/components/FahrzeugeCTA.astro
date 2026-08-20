@@ -1,0 +1,399 @@
+---
+import { MessageCircle, PhoneCall, Send } from "@lucide/astro";
+import { site } from "../data/site";
+
+const {
+  kicker = "FAHRZEUG VERKAUFEN?",
+  title = "Fahrzeugtyp auswählen und Anfrage senden",
+  text = "Senden Sie uns Fahrzeugtyp, Baujahr, Kilometerstand, Zustand, Standort und vorhandene Fotos. Fehlen Daten, klären wir diese gemeinsam.",
+  callLabel = "Anrufen",
+  whatsappLabel = "WhatsApp",
+  whatsappText = "Jetzt schreiben",
+  placeholders = {
+    name: "Name",
+    phone: "Telefon",
+    email: "E-Mail",
+    vehicle: "Fahrzeugtyp (z.B. LKW, Auflieger)",
+    year: "Baujahr",
+    mileage: "Kilometerstand (ca.)",
+    message: "Weitere Informationen zum Fahrzeug",
+  },
+  submitLabel = "Anfrage absenden",
+  sendingLabel = "Wird gesendet...",
+  source = "Fahrzeugeseite",
+  privacyText = "Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.",
+  fallbackError = "Die Anfrage konnte leider nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie direkt an.",
+} = Astro.props as {
+  kicker?: string;
+  title?: string;
+  text?: string;
+  callLabel?: string;
+  whatsappLabel?: string;
+  whatsappText?: string;
+  placeholders?: {
+    name: string;
+    phone: string;
+    email: string;
+    vehicle: string;
+    year: string;
+    mileage: string;
+    message: string;
+  };
+  submitLabel?: string;
+  sendingLabel?: string;
+  source?: string;
+  privacyText?: string;
+  fallbackError?: string;
+};
+---
+
+<section class="fahrzeuge-cta" id="anfrage">
+  <div class="container cta-panel" data-animate>
+    <div class="cta-copy">
+      <span>{kicker}</span>
+      <h2>{title}</h2>
+      <p>{text}</p>
+
+      <div class="cta-contact">
+        <a href={`tel:${site.phoneHref}`}>
+          <PhoneCall aria-hidden="true" />
+          <span>
+            <small>{callLabel}</small>
+            <strong>{site.phoneDisplay}</strong>
+          </span>
+        </a>
+        <a href={site.whatsappHref} target="_blank" rel="noopener">
+          <MessageCircle aria-hidden="true" />
+          <span>
+            <small>{whatsappLabel}</small>
+            <strong>{whatsappText}</strong>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <form
+      class="fahrzeuge-form"
+      data-ajax-contact-form
+      data-sending-label={sendingLabel}
+      data-submit-label={submitLabel}
+      data-default-error="Die Anfrage konnte nicht gesendet werden."
+      data-fallback-error={fallbackError}
+    >
+      <div class="form-grid">
+        <input name="name" placeholder={placeholders.name} required />
+        <input name="phone" placeholder={placeholders.phone} required />
+        <input name="email" type="email" placeholder={placeholders.email} />
+        <input name="vehicle" placeholder={placeholders.vehicle} />
+        <input name="year" placeholder={placeholders.year} />
+        <input name="mileage" placeholder={placeholders.mileage} />
+      </div>
+      <textarea name="message" rows="4" placeholder={placeholders.message}></textarea>
+      <input type="text" name="website" class="form-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <input type="hidden" name="formStartedAt" data-form-started-at />
+      <input type="hidden" name="source" value={source} />
+      <button type="submit">
+        {submitLabel}
+        <Send aria-hidden="true" />
+      </button>
+      <p class="form-status" data-form-status aria-live="polite"></p>
+      <p class="privacy-note">{privacyText}</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>(".fahrzeuge-form");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const button = form.querySelector<HTMLButtonElement>("button");
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const originalText = button?.textContent?.trim();
+    const formCopy = {
+      sending: form.dataset.sendingLabel || "Wird gesendet...",
+      submit: form.dataset.submitLabel || "Anfrage absenden",
+      defaultError: form.dataset.defaultError || "Die Anfrage konnte nicht gesendet werden.",
+      fallbackError:
+        form.dataset.fallbackError ||
+        "Die Anfrage konnte leider nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie direkt an.",
+    };
+
+    if (status) status.textContent = "";
+
+    if (button) {
+      button.textContent = formCopy.sending;
+      button.disabled = true;
+    }
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        const errorMessage =
+          result?.error ||
+          Object.values(result?.errors || {})[0] ||
+          formCopy.defaultError;
+        throw new Error(String(errorMessage));
+      }
+
+      window.location.href = result.redirectTo || "/danke";
+    } catch (error) {
+      if (status) {
+        status.textContent =
+          error instanceof Error
+            ? error.message
+            : formCopy.fallbackError;
+      }
+
+      if (button) {
+        button.textContent = originalText || formCopy.submit;
+        button.disabled = false;
+      }
+    }
+  });
+
+  const startedAt = form?.querySelector<HTMLInputElement>("[data-form-started-at]");
+  if (startedAt) startedAt.value = String(Date.now());
+</script>
+
+<style>
+  .fahrzeuge-cta {
+    padding: 36px 0 78px;
+    background: #fff;
+  }
+
+  .cta-panel {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 0.86fr 1.14fr;
+    gap: 48px;
+    align-items: center;
+    padding: 48px;
+    border-radius: 24px;
+    color: #fff;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.96), rgba(5,7,10,0.84)),
+      url("/images/cta-trucks.webp");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 28px 90px rgba(15,23,42,0.18);
+  }
+
+  .cta-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 28%, rgba(255,107,0,0.18), transparent 20rem),
+      radial-gradient(circle at 82% 18%, rgba(255,255,255,0.06), transparent 22rem);
+    pointer-events: none;
+  }
+
+  .cta-copy,
+  .fahrzeuge-form {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-copy > span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .cta-copy h2 {
+    margin: 16px 0 0;
+    color: #fff;
+    font-size: clamp(36px, 5vw, 62px);
+    line-height: 1;
+    letter-spacing: -0.068em;
+  }
+
+  .cta-copy p {
+    max-width: 480px;
+    margin: 20px 0 0;
+    color: rgba(255,255,255,0.72);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .cta-contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .cta-contact a {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 17px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16);
+    transition: 220ms ease;
+  }
+
+  .cta-contact a:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.12);
+  }
+
+  .cta-contact :global(svg) {
+    width: 24px;
+    height: 24px;
+    color: var(--orange);
+  }
+
+  .cta-contact small {
+    display: block;
+    color: rgba(255,255,255,0.64);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .cta-contact strong {
+    display: block;
+    color: #fff;
+    font-size: 15px;
+  }
+
+  .fahrzeuge-form {
+    position: relative;
+    display: grid;
+    gap: 12px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .fahrzeuge-form input,
+  .fahrzeuge-form textarea {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.42);
+    color: #fff;
+    border-radius: 9px;
+    padding: 15px 16px;
+    outline: none;
+  }
+
+  .fahrzeuge-form input:focus,
+  .fahrzeuge-form textarea:focus {
+    border-color: rgba(255,107,0,0.8);
+    box-shadow: 0 0 0 4px rgba(255,107,0,0.12);
+  }
+
+  .fahrzeuge-form textarea {
+    resize: vertical;
+  }
+
+  .fahrzeuge-form button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 24px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    font-weight: 900;
+    box-shadow: 0 16px 38px rgba(255,107,0,0.26);
+  }
+
+  .fahrzeuge-form button :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .privacy-note {
+    margin: 0;
+    color: rgba(255,255,255,0.58);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .form-status {
+    min-height: 20px;
+    margin: 0;
+    color: #ffb5a8;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .form-hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .form-success {
+    padding: 32px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+
+  .form-success strong {
+    display: block;
+    color: #fff;
+    font-size: 28px;
+    letter-spacing: -0.05em;
+  }
+
+  .form-success p {
+    color: rgba(255,255,255,0.72);
+  }
+
+  @media (max-width: 980px) {
+    .cta-panel {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .fahrzeuge-cta {
+      padding: 28px 0 56px;
+    }
+
+    .cta-panel {
+      padding: 28px 18px;
+      border-radius: 22px;
+      gap: 28px;
+    }
+
+    .cta-contact,
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

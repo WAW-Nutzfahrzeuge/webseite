@@ -1,0 +1,888 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import FloatingContact from "../../components/FloatingContact.astro";
+import Footer from "../../components/Footer.astro";
+import SectionHead from "../../components/SectionHead.astro";
+import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import CityDetailSections from "../../components/CityDetailSections.astro";
+
+import { cities } from "../../data/cities";
+import { site } from "../../data/site";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
+
+export async function getStaticPaths() {
+    return cities.map((city) => ({
+        params: {
+            city: city.slug
+        },
+        props: {
+            city
+        }
+    }));
+}
+
+const { city } = Astro.props;
+const cityKeywords = city.keywords || [];
+const citySearchTerms = city.searchTerms || cityKeywords;
+const cityTransportSignals = city.transportSignals || [];
+const nearbyLinkedCities = (city.nearbyCities || [])
+    .map((nearbyName: string) => cities.find((entry) => entry.name === nearbyName))
+    .filter((entry): entry is (typeof cities)[number] => Boolean(entry));
+const heroBenefits = [
+    "Faire Preise",
+    "Schnelle Rückmeldung",
+    "Deutschland- und europaweite Abwicklung",
+    `Direkt in ${city.name} anfragen`,
+];
+const proofStats = [
+    { value: "17+", label: "Jahre Erfahrung" },
+    { value: "Direkt", label: "persönliche Abstimmung" },
+    { value: "DE", label: "deutschland- und europaweit aktiv" },
+];
+const serviceCards = [
+    {
+        title: `LKW Ankauf ${city.name}`,
+        text: "Gebrauchte LKW, Kipper, Koffer-, Kühl- und Planenfahrzeuge direkt bei WAW anbieten.",
+        iconSrc: "/icons/lkw.png",
+    },
+    {
+        title: "Auflieger Ankauf",
+        text: "Planenauflieger, Kühlauflieger, Tieflader, Kipper und Spezialauflieger verkaufen.",
+        iconSrc: "/icons/auflieger.png",
+    },
+    {
+        title: "Anhänger Ankauf",
+        text: "Deichselanhänger, Zentralachsanhänger, Kofferanhänger und gewerbliche Anhänger anbieten.",
+        iconSrc: "/icons/anhaenger.png",
+    },
+    {
+        title: "Transporter Ankauf",
+        text: "Einzelne Transporter und leichte Nutzfahrzeuge aus Gewerbe, Handel oder Fuhrpark anfragen.",
+        iconSrc: "/icons/transporter.png",
+    },
+    {
+        title: "Baumaschinen",
+        text: "Bagger, Radlader, Betonmischer, Krane und weitere Maschinen aus Bau und Gewerbe.",
+        iconSrc: "/icons/bagger.png",
+    },
+    {
+        title: "Fuhrpark Ankauf",
+        text: "Gemischte Fahrzeugpakete, mehrere LKW oder komplette Fuhrparks direkt anbieten.",
+        iconSrc: "/icons/fuhrpark.png",
+    },
+];
+
+const canonical = absoluteUrl(`/lkw-verkaufen/${city.slug}`);
+const schema = [
+    createFaqSchema(city.faq),
+    createBreadcrumbSchema([
+        { name: "Startseite", url: absoluteUrl("/") },
+        { name: "Standorte", url: absoluteUrl("/standorte") },
+        { name: `LKW verkaufen ${city.name}`, url: canonical },
+    ]),
+];
+---
+
+<BaseLayout
+        title={city.metaTitle}
+        description={city.metaDescription}
+        canonical={canonical}
+        schema={schema}
+>
+    <Header transparent={true} />
+
+    <main>
+        <section class="city-hero">
+            <div class="city-hero-bg" aria-hidden="true"></div>
+            <div class="container city-hero-grid">
+                <div class="city-hero-copy" data-animate>
+                    <span class="city-kicker">LKW ANKAUF {city.name.toUpperCase()}</span>
+
+                    <h1>{city.heroTitle}</h1>
+
+                    <p class="hero-text">
+                        Wir kaufen LKW, Nutzfahrzeuge, Auflieger, Anhänger, Transporter,
+                        Baumaschinen und Fuhrparks in {city.name} und Umgebung an -
+                        direkt, fachlich und mit persönlicher Abstimmung.
+                    </p>
+
+                    <div class="city-hero-actions" aria-label={`Kontaktmöglichkeiten für LKW Ankauf in ${city.name}`}>
+                        <a href={site.whatsappHref} target="_blank" rel="noopener" class="hero-btn hero-btn-primary">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <path d="M16.03 3C8.88 3 3.08 8.73 3.08 15.8c0 2.25.6 4.45 1.73 6.38L3 29l7-1.78a13.1 13.1 0 0 0 6.03 1.47C23.18 28.69 29 22.96 29 15.9 29 8.82 23.18 3 16.03 3Zm0 23.35a10.7 10.7 0 0 1-5.45-1.5l-.39-.23-4.14 1.05 1.1-4-.26-.41a10.3 10.3 0 0 1-1.56-5.46c0-5.76 4.8-10.45 10.7-10.45 5.9 0 10.7 4.7 10.7 10.55 0 5.76-4.8 10.45-10.7 10.45Zm5.88-7.82c-.32-.16-1.9-.93-2.2-1.04-.29-.1-.5-.16-.72.16-.22.32-.83 1.04-1.02 1.25-.19.22-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.58-.96-.85-1.6-1.9-1.79-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.38.48-.56.16-.19.22-.32.32-.54.1-.22.05-.4-.03-.56-.08-.16-.72-1.72-.98-2.36-.26-.62-.52-.54-.72-.55h-.61c-.22 0-.56.08-.85.4-.29.32-1.12 1.1-1.12 2.68s1.15 3.1 1.31 3.32c.16.22 2.26 3.46 5.48 4.85.77.33 1.37.53 1.84.68.77.24 1.47.21 2.02.13.62-.1 1.9-.77 2.17-1.52.27-.75.27-1.4.19-1.52-.08-.13-.29-.21-.61-.37Z" />
+                            </svg>
+                            WhatsApp schreiben
+                        </a>
+                        <a href={`tel:${site.phoneHref}`} class="hero-btn hero-btn-secondary">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 19 19.5 19.5 0 0 1 5 12.81 19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.89.33 1.76.62 2.6a2 2 0 0 1-.45 2.11L8 9.66a16 16 0 0 0 6.34 6.34l1.23-1.23a2 2 0 0 1 2.11-.45c.84.29 1.71.5 2.6.62A2 2 0 0 1 22 16.92Z" />
+                            </svg>
+                            {site.phoneDisplay}
+                        </a>
+                    </div>
+
+                    <div class="hero-benefit-tags">
+                        {heroBenefits.map((benefit) => (
+                            <span>
+                                <svg viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M13.5 4.5 6.7 11.3 3 7.6" />
+                                </svg>
+                                {benefit}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
+                <aside class="city-hero-panel" data-animate>
+                    <span class="panel-label">Region {city.name}</span>
+                    <h2>Nutzfahrzeug oder Fuhrpark in {city.name} anbieten</h2>
+                    <p>{city.localProfile}</p>
+
+                    <div class="proof-grid">
+                        {proofStats.map((stat) => (
+                            <div>
+                                <strong>{stat.value}</strong>
+                                <span>{stat.label}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {cityTransportSignals.length > 0 && (
+                        <div class="panel-signals">
+                            {cityTransportSignals.slice(0, 5).map((signal) => (
+                                <span>{signal}</span>
+                            ))}
+                        </div>
+                    )}
+                </aside>
+            </div>
+        </section>
+
+        <section class="city-benefits-section">
+            <div class="container">
+                <div class="city-section-head" data-animate>
+                    <span>ANKAUF IN {city.name.toUpperCase()}</span>
+                    <h2>Welche Fahrzeuge kaufen wir in {city.name} an?</h2>
+                    <p>
+                        Vom einzelnen LKW bis zum kompletten Fuhrpark: Sie können
+                        uns verschiedene Nutzfahrzeuge anbieten und die weitere
+                        Abwicklung direkt mit uns abstimmen.
+                    </p>
+                </div>
+
+                <div class="city-service-grid">
+                    {serviceCards.map((card) => (
+                        <article class="city-service-card" data-animate>
+                            <div class="service-icon">
+                                <img src={card.iconSrc} alt="" loading="lazy" aria-hidden="true" />
+                            </div>
+                            <h3>{card.title}</h3>
+                            <p>{card.text}</p>
+                            <a href="/kontakt">Fahrzeug anfragen →</a>
+                        </article>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        <section class="city-content-section">
+            <div class="container content-grid">
+                <div>
+                    <h2>
+                        {city.sectionTitle}
+                    </h2>
+
+                    <p>
+                        {city.sectionText}
+                    </p>
+
+                    <p>
+                        Besonders für Unternehmen, Händler, Speditionen und Fuhrparks in
+                        {` ${city.name}`} ist eine direkte Abstimmung wichtig: Welche
+                        Fahrzeugart wird verkauft, wo steht das Fahrzeug, wie ist der
+                        Zustand und ob weitere Fahrzeuge gemeinsam angeboten werden sollen.
+                    </p>
+
+                    <p>
+                        Sie können Fahrzeuge aus {city.name}, {city.state} und dem regionalen
+                        Umfeld an. Dazu zählen LKW, Sattelzugmaschinen, Auflieger,
+                        Anhänger, Transporter, Baumaschinen und komplette Fuhrparks.
+                    </p>
+
+                    <div class="local-focus" data-animate>
+                        <span>LOKALE RELEVANZ</span>
+                        <h3>Warum {city.name} für den Nutzfahrzeugankauf relevant ist</h3>
+                        <p>{city.localFocus}</p>
+                        {cityTransportSignals.length > 0 && (
+                            <div class="signal-list">
+                                {cityTransportSignals.map((signal) => (
+                                    <span>{signal}</span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div class="intent-box" data-animate>
+                        <h3>Fahrzeuge, die in {city.name} häufig angeboten werden</h3>
+                        <p>
+                            Sie können uns LKW, Nutzfahrzeuge, Auflieger, Anhänger,
+                            Transporter, Baumaschinen und komplette Fuhrparks aus {city.name}
+                            direkt anbieten - auch mit Schäden, hoher Laufleistung oder ohne TÜV.
+                        </p>
+                        <div class="intent-list">
+                            {citySearchTerms.slice(0, 12).map((term) => (
+                                <span>{term}</span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div class="local-links" aria-label={`Weitere Standortseiten in der Umgebung von ${city.name}`}>
+                        <a href="/standorte">Alle Standorte</a>
+                        {nearbyLinkedCities.map((nearbyCity) => (
+                            <a href={`/lkw-verkaufen/${nearbyCity.slug}`}>
+                                LKW verkaufen {nearbyCity.name}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+
+                <div class="city-card" data-animate>
+                    <h3>Anfrage aus {city.name} senden</h3>
+
+                    <p>
+                        Senden Sie die wichtigsten Fahrzeugdaten. Wir melden uns
+                        schnellstmöglich zur weiteren Abstimmung.
+                    </p>
+
+                    <LeadForm compact={true} />
+                </div>
+            </div>
+        </section>
+
+        <CityDetailSections city={city} />
+
+        <section class="section">
+            <div class="container">
+                <SectionHead
+                        badge="FAQ"
+                        title={`Häufige Fragen zum LKW Verkauf in ${city.name}`}
+                />
+
+                <div class="faq-grid">
+                    {
+                        city.faq?.map((item) => (
+                                <article class="faq-item glass-reflect" data-animate>
+                                    <h3>{item.question}</h3>
+                                    <p>{item.answer}</p>
+                                </article>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+    <Footer />
+    <FloatingContact />
+    <ScrollAnimations />
+</BaseLayout>
+
+<style>
+    .city-hero {
+        position: relative;
+        overflow: hidden;
+        min-height: 760px;
+        padding: 156px 0 92px;
+        background:
+            linear-gradient(90deg, rgba(3, 10, 20, 0.94) 0%, rgba(5, 15, 30, 0.82) 44%, rgba(5, 15, 30, 0.42) 100%),
+            url("/images/hero-yard-sunset.png");
+        background-size: cover;
+        background-position: center right;
+        color: #fff;
+    }
+
+    .city-hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 18% 24%, rgba(255,107,0,0.24), transparent 26rem),
+            radial-gradient(circle at 86% 72%, rgba(255,107,0,0.14), transparent 24rem);
+        pointer-events: none;
+    }
+
+    .city-hero-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(330px, 0.7fr);
+        gap: clamp(34px, 5vw, 72px);
+        align-items: center;
+    }
+
+    .city-hero-copy {
+        max-width: 860px;
+    }
+
+    .city-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--orange);
+        font-size: 13px;
+        font-weight: 950;
+        letter-spacing: 0.16em;
+    }
+
+    .city-kicker::before {
+        content: "";
+        width: 32px;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--orange);
+    }
+
+    h1 {
+        margin: 18px 0 16px;
+        max-width: 940px;
+        color: #fff;
+        font-size: clamp(46px, 6.6vw, 92px);
+        line-height: 0.94;
+        letter-spacing: -0.065em;
+        text-wrap: balance;
+    }
+
+    .hero-text {
+        max-width: 760px;
+        color: rgba(255,255,255,0.78);
+        font-size: 20px;
+        line-height: 1.65;
+    }
+
+    .city-hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 30px;
+    }
+
+    .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 56px;
+        padding: 16px 22px;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 900;
+        transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease, border-color 220ms ease;
+    }
+
+    .hero-btn svg {
+        width: 19px;
+        height: 19px;
+        fill: currentColor;
+    }
+
+    .hero-btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .hero-btn-primary {
+        background: var(--orange);
+        color: #fff;
+        box-shadow: 0 18px 48px rgba(255,107,0,0.32);
+    }
+
+    .hero-btn-secondary {
+        border: 1px solid rgba(255,255,255,0.34);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        backdrop-filter: blur(16px);
+    }
+
+    .hero-benefit-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+    }
+
+    .hero-benefit-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 13px;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.86);
+        font-size: 14px;
+        font-weight: 800;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-benefit-tags svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: var(--orange);
+        stroke-width: 2.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .city-hero-panel {
+        padding: clamp(24px, 3vw, 34px);
+        border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 30px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
+        box-shadow: 0 34px 90px rgba(0,0,0,0.28);
+        backdrop-filter: blur(22px);
+    }
+
+    .panel-label {
+        color: var(--orange);
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.14em;
+    }
+
+    .city-hero-panel h2 {
+        margin: 14px 0 12px;
+        color: #fff;
+        font-size: clamp(28px, 3vw, 44px);
+        line-height: 1;
+        letter-spacing: -0.055em;
+    }
+
+    .city-hero-panel p {
+        margin: 0;
+        color: rgba(255,255,255,0.72);
+        line-height: 1.65;
+    }
+
+    .proof-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .proof-grid div {
+        padding: 15px 12px;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 18px;
+        background: rgba(0,0,0,0.18);
+    }
+
+    .proof-grid strong,
+    .proof-grid span {
+        display: block;
+    }
+
+    .proof-grid strong {
+        color: #fff;
+        font-size: 25px;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .proof-grid span {
+        margin-top: 7px;
+        color: rgba(255,255,255,0.62);
+        font-size: 12px;
+        line-height: 1.25;
+        font-weight: 750;
+    }
+
+    .panel-signals {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .panel-signals span {
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255,107,0,0.16);
+        color: rgba(255,255,255,0.88);
+        font-size: 12px;
+        font-weight: 850;
+    }
+
+    .city-benefits-section {
+        padding: clamp(72px, 8vw, 112px) 0;
+        background:
+            radial-gradient(circle at 86% 8%, rgba(255,107,0,0.1), transparent 22rem),
+            #fff;
+    }
+
+    .city-section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 34px;
+    }
+
+    .city-section-head span {
+        grid-column: 1 / -1;
+        color: var(--orange);
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.14em;
+    }
+
+    .city-section-head h2 {
+        margin: 0;
+        max-width: 760px;
+        font-size: clamp(36px, 5vw, 68px);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+        text-wrap: balance;
+    }
+
+    .city-section-head p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+    }
+
+    .city-service-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .city-service-card {
+        min-height: 290px;
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        border: 1px solid rgba(17,24,39,0.08);
+        border-radius: 28px;
+        background:
+            linear-gradient(180deg, #fff, #f8fafc);
+        box-shadow: 0 22px 60px rgba(17,24,39,0.08);
+        transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+    }
+
+    .city-service-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(255,107,0,0.28);
+        box-shadow: 0 32px 80px rgba(17,24,39,0.12), 0 0 0 5px rgba(255,107,0,0.05);
+    }
+
+    .service-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
+        margin-bottom: 28px;
+        border-radius: 18px;
+        background: rgba(255,107,0,0.12);
+        color: var(--orange);
+    }
+
+    .service-icon img {
+        width: 34px;
+        height: 34px;
+        display: block;
+        object-fit: contain;
+    }
+
+    .city-service-card h3 {
+        margin: 0 0 12px;
+        font-size: 24px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+    }
+
+    .city-service-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+    }
+
+    .city-service-card a {
+        margin-top: auto;
+        padding-top: 22px;
+        color: #111827;
+        font-size: 14px;
+        font-weight: 900;
+        transition: color 180ms ease, transform 180ms ease;
+    }
+
+    .city-service-card:hover a {
+        color: var(--orange);
+        transform: translateX(3px);
+    }
+
+    .city-content-section {
+        padding: clamp(72px, 8vw, 112px) 0;
+        background:
+            radial-gradient(circle at 10% 20%, rgba(7,26,51,0.08), transparent 22rem),
+            #f6f8fb;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
+        gap: clamp(28px, 4vw, 54px);
+        align-items: start;
+    }
+
+    .content-grid p {
+        color: var(--muted);
+
+        line-height: 1.7;
+
+        font-size: 18px;
+    }
+
+    .intent-box {
+        margin-top: 28px;
+        padding: 24px;
+        border: 1px solid rgba(15,23,42,0.08);
+        border-radius: 26px;
+        background:
+            radial-gradient(circle at top right, rgba(255,107,0,0.1), transparent 18rem),
+            rgba(255,255,255,0.72);
+        box-shadow: 0 18px 48px rgba(15,23,42,0.08);
+    }
+
+    .local-focus {
+        margin-top: 28px;
+        padding: 26px;
+        border-radius: 28px;
+        background: #07111f;
+        color: #fff;
+        box-shadow: 0 24px 64px rgba(7,17,31,0.16);
+    }
+
+    .local-focus span {
+        color: var(--orange);
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.1em;
+    }
+
+    .local-focus h3 {
+        margin: 14px 0 12px;
+        color: #fff;
+        font-size: clamp(26px, 3vw, 38px);
+        line-height: 1;
+        letter-spacing: -0.06em;
+    }
+
+    .local-focus p {
+        margin: 0;
+        color: rgba(255,255,255,0.74);
+        font-size: 17px;
+    }
+
+    .signal-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 18px;
+    }
+
+    .signal-list span {
+        display: inline-flex;
+        padding: 9px 12px;
+        border-radius: 999px;
+        color: rgba(255,255,255,0.86);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        font-size: 13px;
+        font-weight: 820;
+        letter-spacing: 0;
+    }
+
+    .intent-box h3 {
+        margin: 0 0 8px;
+        color: #111827;
+        font-size: 26px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+    }
+
+    .intent-box p {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .intent-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 18px;
+    }
+
+    .intent-list span {
+        display: inline-flex;
+        padding: 9px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid rgba(255,107,0,0.18);
+        color: #263241;
+        font-size: 13px;
+        font-weight: 820;
+    }
+
+    .city-card {
+        position: sticky;
+        top: 112px;
+        padding: 28px;
+
+        border-radius: 28px;
+
+        background: rgba(255,255,255,0.75);
+
+        border: 1px solid var(--card-border);
+
+        box-shadow: var(--shadow);
+    }
+
+    .city-card h3 {
+        margin-top: 0;
+
+        font-size: 30px;
+
+        letter-spacing: -0.05em;
+    }
+
+    .city-card p {
+        color: var(--muted);
+        line-height: 1.65;
+    }
+
+    .city-card ul {
+        padding-left: 20px;
+
+        color: var(--muted);
+
+        line-height: 2;
+    }
+
+    .local-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+    }
+
+    .local-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 42px;
+        padding: 10px 14px;
+        border: 1px solid rgba(255,107,0,0.22);
+        border-radius: 999px;
+        background: rgba(255,107,0,0.06);
+        color: #111827;
+        font-size: 14px;
+        font-weight: 850;
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .local-links a:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255,107,0,0.42);
+        background: rgba(255,107,0,0.1);
+    }
+
+    .faq-grid {
+        display: grid;
+        gap: 16px;
+    }
+
+    .faq-item {
+        padding: 24px;
+
+        border-radius: 24px;
+
+        background: rgba(255,255,255,0.75);
+
+        border: 1px solid var(--card-border);
+
+        box-shadow: var(--shadow);
+    }
+
+    .faq-item h3 {
+        margin-top: 0;
+
+        font-size: 24px;
+
+        letter-spacing: -0.04em;
+    }
+
+    .faq-item p {
+        margin-bottom: 0;
+
+        color: var(--muted);
+
+        line-height: 1.7;
+    }
+
+    @media (max-width: 980px) {
+        .city-hero {
+            min-height: auto;
+            padding: 126px 0 72px;
+            background:
+                linear-gradient(180deg, rgba(3,10,20,0.88), rgba(5,15,30,0.74)),
+                url("/images/hero-yard-sunset-mobile.png");
+            background-size: cover;
+            background-position: center top;
+        }
+
+        .city-hero-grid,
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .city-section-head {
+            grid-template-columns: 1fr;
+        }
+
+        .city-service-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .city-card {
+            position: static;
+        }
+    }
+
+    @media (max-width: 640px) {
+        h1 {
+            font-size: clamp(40px, 13vw, 58px);
+            letter-spacing: -0.055em;
+        }
+
+        .hero-text {
+            font-size: 17px;
+        }
+
+        .city-hero-actions,
+        .hero-btn {
+            width: 100%;
+        }
+
+        .city-service-grid,
+        .proof-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-benefit-tags span {
+            width: 100%;
+        }
+    }
+</style>

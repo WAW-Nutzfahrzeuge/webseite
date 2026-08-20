@@ -1,0 +1,208 @@
+<section class="trust-section">
+  <div class="trust-bg" aria-hidden="true"></div>
+
+  <div class="container trust-inner">
+    <div class="trust-copy" data-animate>
+      <span>VERTRAUEN DURCH ERFAHRUNG</span>
+      <h2>Direkter Ankauf für Gewerbe, Handel und Fuhrparks</h2>
+    </div>
+
+    <div class="trust-metrics">
+      <article class="metric" data-animate>
+        <div class="metric-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/>
+            <path d="m8.7 14.1-1.2 6 4.5-2.7 4.5 2.7-1.2-6"/>
+          </svg>
+        </div>
+        <strong>17+</strong>
+        <p>im Nutzfahrzeughandel</p>
+      </article>
+
+      <article class="metric" data-animate>
+        <div class="metric-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"/>
+            <path d="M12 10.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+          </svg>
+        </div>
+        <strong>Deutschland- und europaweit</strong>
+        <p>für Sie im Einsatz</p>
+      </article>
+
+      <article class="metric" data-animate>
+        <div class="metric-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
+            <path d="M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/>
+            <path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M17 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <strong>Zufriedene Kunden</strong>
+        <p>setzen auf direkte Abwicklung</p>
+      </article>
+
+      <article class="metric" data-animate>
+        <div class="metric-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 20V8l8-4 8 4v12"/>
+            <path d="M8 20v-7h8v7"/>
+            <path d="M8 10h8"/>
+          </svg>
+        </div>
+        <strong>3.000 m²</strong>
+        <p>Standortfläche</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust-section {
+    position: relative;
+    overflow: hidden;
+    padding: 76px 0 86px;
+    color: #fff;
+    background: #05070a;
+  }
+
+  .trust-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.78) 0%, rgba(5,7,10,0.56) 44%, rgba(5,7,10,0.36) 100%),
+      linear-gradient(180deg, rgba(5,7,10,0.16), rgba(5,7,10,0.42)),
+      url("/images/about-photo.webp");
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+  }
+
+  .trust-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 0.68fr 1.32fr;
+    gap: 64px;
+    align-items: end;
+  }
+
+  .trust-copy span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .trust-copy h2 {
+    max-width: 520px;
+    margin: 16px 0 0;
+    color: #fff;
+    font-size: clamp(32px, 4vw, 54px);
+    line-height: 1.02;
+    letter-spacing: -0.06em;
+  }
+
+  .trust-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .metric {
+    min-height: 166px;
+    padding: 6px 20px 4px;
+    border-left: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .metric:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .metric-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 20px;
+    color: var(--orange);
+  }
+
+  .metric-icon svg {
+    width: 42px;
+    height: 42px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .metric strong {
+    display: block;
+    min-height: 48px;
+    color: #fff;
+    font-size: clamp(20px, 1.55vw, 25px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+
+  .metric p {
+    margin: 8px 0 0;
+    color: rgba(255,255,255,0.74);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 1050px) {
+    .trust-inner {
+      grid-template-columns: 1fr;
+      gap: 38px;
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .trust-section {
+      padding: 58px 0 64px;
+    }
+
+    .trust-metrics {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .trust-inner,
+    .trust-copy,
+    .metric {
+      text-align: center;
+    }
+
+    .trust-copy h2 {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .metric-icon {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .metric,
+    .metric:first-child {
+      min-height: auto;
+      padding: 0 0 22px;
+      border-left: none;
+      border-bottom: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .metric:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .metric strong {
+      min-height: 0;
+    }
+  }
+</style>

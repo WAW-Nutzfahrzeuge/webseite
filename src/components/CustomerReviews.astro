@@ -1,0 +1,407 @@
+---
+const reviews = [
+  {
+    name: "Jan Hendrik",
+    meta: "Local Guide · 23 Rezensionen · vor 3 Jahren",
+    text: "Freundliche Mitarbeiter, welche telefonisch gut erreichbar sind. Fahrzeug war wie vorab besprochen und es waren keine Mängel o.ä. vorhanden. Ich werde hier das nächste Mal wieder anfragen.",
+  },
+  {
+    name: "Ahmad",
+    meta: "7 Rezensionen · vor 3 Jahren",
+    text: "Sehr gute und vertrauenswürdige Firma. Abwicklung läuft gut und einwandfrei. Kompetente Mitarbeiter, die ihre Arbeit ernst nehmen. Von mir sind es 5 von 5 Sternen.",
+  },
+  {
+    name: "Enes Ramovic",
+    meta: "3 Rezensionen · vor 3 Jahren",
+    text: "Top Service! Fahrzeug hatte keine versteckten Mängel und war wie in der Anzeige beschrieben. Bei Bedarf immer wieder!",
+  },
+  {
+    name: "Farita Surie",
+    meta: "4 Rezensionen · vor 3 Jahren",
+    text: "Freundliche Mitarbeiter, immer telefonisch erreichbar und verkaufen gute Fahrzeuge. Sehr professionell und weiterzuempfehlen.",
+  },
+  {
+    name: "Musto Khan",
+    meta: "Local Guide · 24 Rezensionen · vor 3 Jahren",
+    text: "Sehr kompetentes Team, Fahrzeug war wie beschrieben, würde ich sehr gern weiterempfehlen.",
+  },
+  {
+    name: "ikbal qamari",
+    meta: "4 Rezensionen · vor 3 Jahren",
+    text: "Freundlich und zufrieden mit dem Kauf. Auf jeden Fall für beginnende Spediteure zu empfehlen.",
+  },
+  {
+    name: "Julia Fischer",
+    meta: "1 Rezension · vor 3 Jahren",
+    text: "Gute Abwicklung. Fahrzeug war wie beschrieben. Ich würde euch gerne weiter empfehlen.",
+  },
+  {
+    name: "Hadis Surie",
+    meta: "8 Rezensionen · vor 3 Jahren",
+    text: "Gute Abwicklung. Fahrzeug wie beschrieben. Gerne nochmal.",
+  },
+  {
+    name: "RRoman",
+    meta: "10 Rezensionen · vor 3 Jahren",
+    text: "Einfache Kommunikation, professionell und verlässlich.",
+  },
+];
+
+const loopedReviews = [...reviews, ...reviews];
+---
+
+<section class="home-reviews section" aria-labelledby="home-reviews-title">
+  <div class="container reviews-head" data-animate>
+    <div>
+      <h2 id="home-reviews-title">Kunden, die WAW bereits vertrauen</h2>
+      <p class="reviews-subtitle">
+        Bewertungen von
+        <img
+          class="reviews-google-logo"
+          src="/images/google_logo.webp"
+          alt="Google Rezensionen"
+          width="120"
+          height="35"
+          loading="lazy"
+        />
+      </p>
+    </div>
+  </div>
+
+  <div class="reviews-shell" data-animate>
+    <div class="reviews-track" data-review-track aria-label="Google Kundenbewertungen">
+      {loopedReviews.map((review, index) => (
+        <article class="review-card" aria-hidden={index >= reviews.length ? "true" : "false"}>
+          <div class="review-top">
+            <div>
+              <strong>{review.name}</strong>
+              <span>{review.meta}</span>
+            </div>
+            <div class="review-rating" aria-label="5 von 5 Sternen">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+          </div>
+          <p>“{review.text}”</p>
+          <small>Google Rezension</small>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const reviewTracks = document.querySelectorAll<HTMLElement>("[data-review-track]");
+
+  reviewTracks.forEach((track) => {
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let animationFrame = 0;
+    let resumeDelay = 0;
+
+    const getHalfWidth = () => track.scrollWidth / 2;
+
+    const normalizeScroll = () => {
+      const halfWidth = getHalfWidth();
+      const endBoundary = track.scrollWidth - track.clientWidth - 2;
+      if (halfWidth <= 0) return;
+
+      if (track.scrollLeft >= endBoundary) {
+        track.scrollLeft = track.scrollLeft - halfWidth;
+      } else if (track.scrollLeft < 1) {
+        track.scrollLeft = track.scrollLeft + halfWidth;
+      }
+    };
+
+    const setInitialScrollPosition = () => {
+      const halfWidth = getHalfWidth();
+      if (halfWidth > 0) {
+        track.scrollLeft = halfWidth;
+      }
+    };
+
+    const startAutoLoop = () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const tick = () => {
+        if (!isDragging) {
+          if (resumeDelay > 0) {
+            resumeDelay -= 1;
+          } else {
+            track.scrollLeft += 0.36;
+          }
+          normalizeScroll();
+        }
+        animationFrame = window.requestAnimationFrame(tick);
+      };
+
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    track.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      isDragging = true;
+      startX = event.clientX;
+      startScrollLeft = track.scrollLeft;
+      track.classList.add("is-dragging");
+      track.setPointerCapture(event.pointerId);
+    });
+
+    track.addEventListener("pointermove", (event) => {
+      if (!isDragging) return;
+      event.preventDefault();
+      const distance = event.clientX - startX;
+      track.scrollLeft = startScrollLeft - distance;
+      normalizeScroll();
+    });
+
+    const stopDragging = (event: PointerEvent) => {
+      if (!isDragging) return;
+      isDragging = false;
+      resumeDelay = 24;
+      track.classList.remove("is-dragging");
+      if (track.hasPointerCapture(event.pointerId)) {
+        track.releasePointerCapture(event.pointerId);
+      }
+      normalizeScroll();
+    };
+
+    track.addEventListener("pointerup", stopDragging);
+    track.addEventListener("pointercancel", stopDragging);
+    track.addEventListener("scroll", normalizeScroll, { passive: true });
+
+    window.requestAnimationFrame(() => {
+      setInitialScrollPosition();
+      startAutoLoop();
+    });
+
+    window.addEventListener("beforeunload", () => {
+      window.cancelAnimationFrame(animationFrame);
+    });
+  });
+</script>
+
+<style>
+  .home-reviews {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(255, 107, 0, 0.14), transparent 22rem),
+      linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+  }
+
+  .reviews-head {
+    display: block;
+    margin-bottom: 34px;
+  }
+
+  .reviews-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .reviews-google-logo {
+    display: inline-block;
+    width: 112px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .reviews-head h2 {
+    max-width: 720px;
+    margin: 12px 0 0;
+    font-size: clamp(34px, 4.7vw, 60px);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  .reviews-shell {
+    position: relative;
+    margin-inline: auto;
+  }
+
+  .reviews-shell::before,
+  .reviews-shell::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    width: min(9vw, 130px);
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .reviews-shell::before {
+    left: 0;
+    background: linear-gradient(90deg, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
+  }
+
+  .reviews-shell::after {
+    right: 0;
+    background: linear-gradient(270deg, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
+  }
+
+  .reviews-track {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 12px max(18px, calc((100vw - 1540px) / 2 + 36px)) 26px;
+    cursor: grab;
+    scrollbar-width: none;
+    user-select: none;
+    touch-action: pan-x;
+  }
+
+  .reviews-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reviews-track.is-dragging {
+    cursor: grabbing;
+  }
+
+  .review-card {
+    flex: 0 0 clamp(310px, 26vw, 420px);
+    min-height: 276px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    border-radius: 20px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86)),
+      #ffffff;
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 20px 56px rgba(15, 23, 42, 0.08);
+    transition:
+      transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 260ms ease,
+      box-shadow 260ms ease;
+  }
+
+  .review-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 107, 0, 0.22);
+    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.12);
+  }
+
+  .review-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .review-top strong,
+  .review-top span {
+    display: block;
+  }
+
+  .review-top strong {
+    color: var(--text);
+    font-size: 17px;
+    letter-spacing: -0.03em;
+  }
+
+  .review-top div:first-child span {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .review-rating {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 1px;
+    color: var(--orange);
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  .review-card p {
+    margin: 28px 0 22px;
+    color: #253044;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .review-card small {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  @media (max-width: 900px) {
+    .reviews-head {
+      margin-bottom: 28px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .home-reviews {
+      padding-bottom: 42px;
+    }
+
+    .reviews-head {
+      margin-bottom: 22px;
+    }
+
+    .reviews-subtitle {
+      font-size: 15px;
+    }
+
+    .reviews-google-logo {
+      width: 96px;
+    }
+
+    .review-card {
+      flex-basis: min(68vw, 286px);
+      min-height: 238px;
+      padding: 17px;
+      border-radius: 16px;
+    }
+
+    .reviews-track {
+      gap: 11px;
+      padding: 8px 14px 22px;
+    }
+
+    .review-top {
+      gap: 10px;
+    }
+
+    .review-top strong {
+      font-size: 15px;
+    }
+
+    .review-top div:first-child span {
+      font-size: 11.5px;
+    }
+
+    .review-rating {
+      font-size: 12px;
+    }
+
+    .review-card p {
+      margin: 18px 0 16px;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .review-card small {
+      font-size: 11.5px;
+    }
+
+    .reviews-shell::before,
+    .reviews-shell::after {
+      width: 30px;
+    }
+  }
+</style>

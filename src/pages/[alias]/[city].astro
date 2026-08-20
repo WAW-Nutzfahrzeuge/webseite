@@ -1,0 +1,25 @@
+---
+import { cities, cityAliasRoutes } from "../../data/cities";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+    return cityAliasRoutes.flatMap((alias) =>
+        cities.map((entry) => ({
+            params: {
+                alias,
+                city: entry.slug,
+            },
+        }))
+    );
+}
+
+const { alias, city } = Astro.params;
+const targetCity = cities.find((entry) => entry.slug === city);
+
+if (!alias || !city || !cityAliasRoutes.includes(alias) || !targetCity) {
+    return new Response("Not found", { status: 404 });
+}
+
+return Astro.redirect(`/lkw-verkaufen/${targetCity.slug}`, 301);
+---

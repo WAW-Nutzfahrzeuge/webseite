@@ -1,0 +1,237 @@
+---
+import { Building2, Handshake, Route } from "@lucide/astro";
+---
+
+<section class="services-split-hero">
+  <div class="container services-split-grid">
+    <div class="services-split-copy reveal">
+      <span class="services-kicker">LEISTUNGEN</span>
+      <h1>Ankauf von LKW und Nutzfahrzeugen jeder Art.</h1>
+      <p>
+        Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter,
+        Baumaschinen und komplette Fuhrparks deutschland- und europaweit an. Auch ältere
+        Fahrzeuge, hohe Laufleistungen oder Schäden sind grundsätzlich kein
+        Ausschlusskriterium.
+      </p>
+
+      <div class="services-hero-actions">
+        <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+        <a href="/ablauf" class="btn services-hero-secondary">Ablauf ansehen</a>
+      </div>
+
+      <div class="services-trustpoints" aria-label="Vorteile">
+        <span><Route size={18} stroke-width={2.4} />Deutschland- und europaweiter Ankauf</span>
+        <span><Handshake size={18} stroke-width={2.4} />Direkte Ansprechpartner</span>
+        <span><Building2 size={18} stroke-width={2.4} />Mehrere Fahrzeuge oder Fuhrparks</span>
+      </div>
+    </div>
+
+    <div class="services-hero-visual reveal delay-2">
+      <img
+        src="/images/leistungen-hero.webp"
+        alt="Reihe von LKW auf einem professionellen Nutzfahrzeughof"
+        width="2244"
+        height="701"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="services-hero-card">
+        <strong>LKW, Auflieger, Transporter & Fuhrparks</strong>
+        <span>Direkt anbieten und persönlich abstimmen</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-split-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(92px, 8vw, 128px) 0 clamp(68px, 7vw, 104px);
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255,107,0,0.1), transparent 26rem),
+      radial-gradient(circle at 88% 8%, rgba(7,26,51,0.08), transparent 28rem),
+      linear-gradient(180deg, #fff, #f5f7fa);
+  }
+
+  .services-split-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(15,23,42,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,23,42,0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(180deg, black, transparent 78%);
+    pointer-events: none;
+  }
+
+  .services-split-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.86fr) minmax(460px, 1.14fr);
+    gap: clamp(42px, 6vw, 86px);
+    align-items: center;
+  }
+
+  .services-kicker {
+    display: inline-block;
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.11em;
+  }
+
+  .services-split-copy h1 {
+    max-width: 760px;
+    margin: 16px 0 0;
+    color: #111827;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.94;
+    letter-spacing: -0.078em;
+  }
+
+  .services-split-copy p {
+    max-width: 690px;
+    margin: 26px 0 0;
+    color: #5b6675;
+    font-size: clamp(17px, 1.5vw, 20px);
+    line-height: 1.75;
+  }
+
+  .services-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+    margin-top: 32px;
+  }
+
+  .services-hero-secondary {
+    border: 1px solid rgba(17,24,39,0.12);
+    background: #fff;
+    color: #111827;
+    box-shadow: 0 12px 30px rgba(15,23,42,0.06);
+  }
+
+  .services-hero-secondary:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,107,0,0.35);
+    color: var(--orange);
+  }
+
+  .services-trustpoints {
+    display: grid;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .services-trustpoints span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 850;
+  }
+
+  .services-trustpoints svg {
+    color: var(--orange);
+    flex: 0 0 auto;
+  }
+
+  .services-hero-visual {
+    position: relative;
+    min-height: clamp(380px, 36vw, 560px);
+    overflow: hidden;
+    border: 1px solid rgba(17,24,39,0.08);
+    border-radius: 34px;
+    background: #e8edf3;
+    box-shadow: 0 34px 96px rgba(15,23,42,0.16);
+  }
+
+  .services-hero-visual img {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .services-hero-card {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    max-width: min(420px, calc(100% - 48px));
+    padding: 18px 20px;
+    border: 1px solid rgba(255,255,255,0.62);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 20px 54px rgba(15,23,42,0.18);
+    backdrop-filter: blur(16px);
+  }
+
+  .services-hero-card strong,
+  .services-hero-card span {
+    display: block;
+  }
+
+  .services-hero-card strong {
+    color: #111827;
+    font-size: 18px;
+    letter-spacing: -0.04em;
+  }
+
+  .services-hero-card span {
+    margin-top: 5px;
+    color: #5b6675;
+    font-size: 14px;
+    font-weight: 750;
+  }
+
+  @media (max-width: 1020px) {
+    .services-split-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .services-hero-visual {
+      min-height: 360px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .services-split-hero {
+      padding: 92px 0 58px;
+    }
+
+    .services-split-copy h1 {
+      font-size: clamp(42px, 13vw, 60px);
+    }
+
+    .services-hero-actions {
+      flex-direction: column;
+    }
+
+    .services-hero-actions .btn {
+      width: 100%;
+    }
+
+    .services-hero-visual {
+      min-height: 280px;
+      border-radius: 24px;
+    }
+
+    .services-hero-visual img {
+      object-position: center;
+    }
+
+    .services-hero-card {
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      max-width: none;
+      border-radius: 16px;
+    }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FloatingContact from "../../components/FloatingContact.astro";
+import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import AblaufHero from "../../components/AblaufHero.astro";
+import AblaufSteps from "../../components/AblaufSteps.astro";
+import AblaufBenefits from "../../components/AblaufBenefits.astro";
+import AblaufInfo from "../../components/AblaufInfo.astro";
+import AblaufFAQ from "../../components/AblaufFAQ.astro";
+import AblaufCTA from "../../components/AblaufCTA.astro";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
+
+const canonical = absoluteUrl("/ablauf");
+
+const faqs = [
+    {
+        question: "Wie schnell erhalte ich eine Rückmeldung?",
+        answer: "Nach Eingang Ihrer Fahrzeugdaten melden wir uns schnellstmöglich. Je vollständiger Angaben und Fotos sind, desto konkreter können wir antworten.",
+    },
+    {
+        question: "Entstehen für mich Kosten?",
+        answer: "Die Anfrage und erste Abstimmung sind unverbindlich. Kosten oder besondere Vereinbarungen werden vor einer möglichen Abwicklung klar besprochen.",
+    },
+    {
+        question: "Kaufen wir auch Fahrzeuge mit Schäden?",
+        answer: "Ja. Sie können auch LKW, Auflieger, Transporter, Baumaschinen und Fuhrparks mit Schäden, hoher Laufleistung oder älteren Baujahren anbieten.",
+    },
+    {
+        question: "Wie erfolgt die Zahlung?",
+        answer: "Die Zahlung erfolgt schnell und sicher nach Einigung und Fahrzeugübergabe. Details werden vorab klar mit Ihnen abgestimmt.",
+    },
+    {
+        question: "Welche Unterlagen werden benötigt?",
+        answer: "Hilfreich sind Fahrzeugschein, Fahrzeugbrief, vorhandene Wartungsunterlagen, TÜV-Berichte und aussagekräftige Fotos. Für den ersten Kontakt reichen Fahrzeugtyp, Standort und Ihre Kontaktdaten.",
+    },
+    {
+        question: "Muss ich das Fahrzeug selbst anliefern?",
+        answer: "Nach Einigung koordinieren wir Übergabe oder mögliche Abholung zum passenden Termin - deutschland- und europaweit.",
+    },
+];
+
+const schema = [
+    createBreadcrumbSchema([
+        { name: "Startseite", url: absoluteUrl("/") },
+        { name: "Ablauf", url: canonical },
+    ]),
+    createFaqSchema(faqs),
+];
+---
+
+<BaseLayout
+    title="Ablauf | LKW verkaufen in 5 Schritten | WAW Nutzfahrzeuge"
+    description="So läuft der Verkauf Ihres LKW oder Nutzfahrzeugs an WAW ab: Fahrzeugdaten senden, Rückmeldung erhalten, Angebot abstimmen, Zahlung und Abholung koordinieren."
+    canonical={canonical}
+    schema={schema}
+>
+    <Header transparent />
+
+    <main>
+        <AblaufHero />
+        <AblaufSteps />
+        <AblaufBenefits />
+        <AblaufInfo />
+        <AblaufFAQ faqs={faqs} />
+        <AblaufCTA />
+    </main>
+
+    <Footer />
+    <FloatingContact />
+    <ScrollAnimations />
+</BaseLayout>

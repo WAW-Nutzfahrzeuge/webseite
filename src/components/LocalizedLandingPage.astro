@@ -1,0 +1,1030 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import LeadForm from "./LeadForm.astro";
+import ScrollAnimations from "./ScrollAnimations.astro";
+import FahrzeugeHero from "./FahrzeugeHero.astro";
+import FahrzeugCards from "./FahrzeugCards.astro";
+import FahrzeugeBenefits from "./FahrzeugeBenefits.astro";
+import FahrzeugeDamageSection from "./FahrzeugeDamageSection.astro";
+import FahrzeugeCTA from "./FahrzeugeCTA.astro";
+import { site } from "../data/site";
+import { cities, navigationCities, type City } from "../data/cities";
+import { localizeCityPath, localizePath, type Locale, type RouteKey } from "../data/i18n";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
+
+type LocalizedPageKey = RouteKey | "city";
+
+const { lang, pageKey, city = null } = Astro.props as {
+  lang: Locale;
+  pageKey: LocalizedPageKey;
+  city?: City | null;
+};
+
+const copy = {
+  en: {
+    home: {
+      title: "WAW Commercial Vehicles | Sell trucks & commercial vehicles",
+      description: "WAW buys trucks, commercial vehicles, trailers, vans, construction machinery and fleets across Germany and Europe. Fast, direct and professional.",
+      kicker: "COMMERCIAL VEHICLE PURCHASE ACROSS GERMANY AND EUROPE",
+      h1: "Sell trucks, trailers and construction machinery.",
+      text: "Fast, straightforward and professional. We buy commercial vehicles across Germany and Europe.",
+    },
+    about: {
+      title: "About us | Direct truck & commercial vehicle purchase | WAW",
+      description: "Learn why companies, dealers and fleet operators sell trucks, trailers, construction machinery and fleets directly to WAW.",
+      kicker: "ABOUT WAW",
+      h1: "A direct partner when selling commercial vehicles.",
+      text: "WAW helps companies, dealers and fleet operators sell trucks, trailers, construction machinery and fleets with clear communication, fast handling and professional coordination.",
+    },
+    services: {
+      title: "Services | Sell trucks & commercial vehicles | WAW",
+      description: "WAW buys trucks, tractor units, semi-trailers, trailers, vans, construction machinery and complete fleets across Germany and Europe.",
+      kicker: "SERVICES",
+      h1: "Purchase of every type of commercial vehicle.",
+      text: "Whether a single truck, a trailer, construction machinery or a complete fleet: WAW handles vehicle purchases directly, professionally and with clear communication.",
+    },
+    process: {
+      title: "Process | Sell trucks in clear steps | WAW",
+      description: "How selling your truck or commercial vehicle to WAW works: inquiry, response, offer, payment and pickup coordination.",
+      kicker: "PROCESS",
+      h1: "Simple. Fast. Reliable.",
+      text: "Selling a commercial vehicle should not be complicated. With WAW, the process is direct, transparent and clearly coordinated.",
+    },
+    vehicles: {
+      title: "Vehicles | Sell trucks, trailers & commercial vehicles | WAW",
+      description: "WAW buys trucks, tractor units, semi-trailers, trailers, vans, construction machinery and fleets across Germany and Europe.",
+      kicker: "VEHICLES",
+      h1: "All vehicle types at a glance.",
+      text: "From trucks and semi-trailers to vans, construction machinery and complete fleets: WAW purchases commercial vehicles professionally.",
+    },
+    locations: {
+      title: "Locations | Truck purchase across Germany | WAW",
+      description: "Find WAW location pages for truck purchase and commercial vehicle purchase across Germany and Europe.",
+      kicker: "LOCATIONS",
+      h1: "Truck purchase across Germany.",
+      text: "WAW buys trucks, commercial vehicles, trailers and construction machinery across Germany and Europe. Our city pages help you reach us regionally.",
+    },
+    contact: {
+      title: "Contact | Sell trucks & commercial vehicles | WAW",
+      description: "Contact WAW for truck, trailer, van, construction machinery and fleet purchase by form, WhatsApp or phone.",
+      kicker: "CONTACT",
+      h1: "We are here for you.",
+      text: "Would you like to sell a truck, trailer, van, construction machine or a complete fleet? Send us the details and we will get back to you quickly.",
+    },
+    legalNotice: {
+      title: "Legal notice | WAW Commercial Vehicles",
+      description: "Legal notice for WAW Commercial Vehicles.",
+      kicker: "LEGAL",
+      h1: "Legal notice.",
+      text: "The German legal notice remains authoritative. The information below provides the essential company contact details.",
+    },
+    privacy: {
+      title: "Privacy policy | WAW Commercial Vehicles",
+      description: "Privacy information for WAW Commercial Vehicles.",
+      kicker: "PRIVACY",
+      h1: "Privacy policy.",
+      text: "We process contact form data only to handle your inquiry. The German privacy policy remains legally authoritative.",
+    },
+    terms: {
+      title: "Terms | WAW Commercial Vehicles",
+      description: "Terms and conditions for WAW Commercial Vehicles.",
+      kicker: "TERMS",
+      h1: "Terms and conditions.",
+      text: "The German terms and conditions remain legally authoritative. This page provides a translated overview.",
+    },
+    city: {
+      title: (city: City) => `Sell trucks in ${city.name} | Commercial vehicle purchase | WAW`,
+      description: (city: City) => `Sell trucks, trailers, vans, construction machinery and fleets in ${city.name}. WAW buys commercial vehicles across Germany and Europe.`,
+      kicker: (city: City) => `TRUCK PURCHASE ${city.name.toUpperCase()}`,
+      h1: (city: City) => `Sell trucks in ${city.name}.`,
+      text: (city: City) => `WAW buys trucks, commercial vehicles, semi-trailers, trailers, vans, construction machinery and fleets in ${city.name} and the surrounding region. Fast, direct and professional.`,
+    },
+    sections: {
+      vehicleTypes: "Vehicle types we buy",
+      benefits: "Your advantages with WAW",
+      process: "How the sale works",
+      locations: "Important city pages",
+      faq: "Frequently asked questions",
+      finalCta: "Sell a commercial vehicle or fleet?",
+      finalText: "Send us the key vehicle details. We will review your inquiry and contact you as quickly as possible.",
+      formTitle: "Send a non-binding inquiry",
+      allLocations: "View all locations",
+    },
+    trust: ["Fair prices", "Fast handling", "Germany and Europe-wide"],
+    vehicles: ["Trucks", "Tractor units", "Semi-trailers", "Trailers", "Vans", "Construction machinery", "Fleets"],
+    benefits: [
+      ["Direct contact", "You coordinate your inquiry and all next steps directly with WAW."],
+      ["Fast response", "After receiving your vehicle data, we get back to you as quickly as possible."],
+      ["Professional handling", "Clear process from the first inquiry to payment and pickup coordination."],
+      ["Germany and Europe-wide", "We handle inquiries across Germany and Europe."],
+    ],
+    steps: ["Send inquiry", "Receive response", "Receive offer", "Coordinate sale"],
+    faqs: [
+      ["Which vehicles does WAW buy?", "We buy trucks, tractor units, semi-trailers, trailers, vans, construction machinery and complete fleets."],
+      ["Can I offer a damaged vehicle?", "Yes. Vehicles with damage, high mileage or missing inspection can be offered. We coordinate the details directly with you."],
+      ["How fast do I receive feedback?", "After receiving the most important vehicle data, we contact you as quickly as possible."],
+      ["Can I offer several vehicles?", "Yes. Companies, dealers and fleet operators can offer multiple vehicles or complete fleets."],
+    ],
+  },
+  fr: {
+    home: {
+      title: "WAW Véhicules Utilitaires | Vendre camions et utilitaires",
+      description: "WAW achète camions, véhicules utilitaires, remorques, fourgons, machines de chantier et flottes en Allemagne et en Europe.",
+      kicker: "RACHAT DE VÉHICULES UTILITAIRES EN ALLEMAGNE ET EN EUROPE",
+      h1: "Vendre camions, remorques et machines de chantier.",
+      text: "Rapide, simple et professionnel. Nous achetons des véhicules utilitaires en Allemagne et en Europe.",
+    },
+    about: {
+      title: "À propos | Rachat direct de camions et utilitaires | WAW",
+      description: "Découvrez pourquoi entreprises, concessionnaires et gestionnaires de flottes vendent camions, remorques, machines de chantier et flottes directement à WAW.",
+      kicker: "À PROPOS DE WAW",
+      h1: "Un partenaire direct pour vendre des véhicules utilitaires.",
+      text: "WAW accompagne entreprises, concessionnaires et gestionnaires de flottes dans la vente de camions, remorques, machines de chantier et flottes avec une communication claire et un processus professionnel.",
+    },
+    services: {
+      title: "Services | Vendre camions & utilitaires | WAW",
+      description: "WAW achète camions, tracteurs routiers, semi-remorques, remorques, fourgons, machines de chantier et flottes complètes.",
+      kicker: "SERVICES",
+      h1: "Rachat de véhicules utilitaires de tout type.",
+      text: "Qu'il s'agisse d'un camion, d'une remorque, d'une machine de chantier ou d'une flotte complète : WAW organise le rachat de manière directe et professionnelle.",
+    },
+    process: {
+      title: "Processus | Vendre un camion en étapes claires | WAW",
+      description: "Voici comment se déroule la vente de votre camion ou véhicule utilitaire à WAW : demande, réponse, offre, paiement et enlèvement.",
+      kicker: "PROCESSUS",
+      h1: "Simple. Rapide. Fiable.",
+      text: "La vente d'un véhicule utilitaire ne doit pas être compliquée. Avec WAW, le processus est direct, transparent et clairement coordonné.",
+    },
+    vehicles: {
+      title: "Véhicules | Vendre camions, remorques & utilitaires | WAW",
+      description: "WAW achète camions, tracteurs routiers, semi-remorques, remorques, fourgons, machines de chantier et flottes.",
+      kicker: "VÉHICULES",
+      h1: "Tous les types de véhicules en un coup d'oeil.",
+      text: "Des camions aux semi-remorques, fourgons, machines de chantier et flottes complètes : WAW achète des véhicules utilitaires de manière professionnelle.",
+    },
+    locations: {
+      title: "Implantations | Rachat de camions en Allemagne | WAW",
+      description: "Découvrez les pages régionales WAW pour le rachat de camions et véhicules utilitaires en Allemagne et en Europe.",
+      kicker: "IMPLANTATIONS",
+      h1: "Rachat de camions dans toute l'Allemagne.",
+      text: "WAW achète camions, véhicules utilitaires, remorques et machines de chantier en Allemagne et en Europe. Nos pages villes facilitent le contact régional.",
+    },
+    contact: {
+      title: "Contact | Vendre camions & utilitaires | WAW",
+      description: "Contactez WAW pour le rachat de camions, remorques, fourgons, machines de chantier et flottes par formulaire, WhatsApp ou téléphone.",
+      kicker: "CONTACT",
+      h1: "Nous sommes à votre disposition.",
+      text: "Vous souhaitez vendre un camion, une remorque, un fourgon, une machine de chantier ou une flotte complète ? Envoyez-nous les informations et nous vous recontactons rapidement.",
+    },
+    legalNotice: {
+      title: "Mentions légales | WAW Véhicules Utilitaires",
+      description: "Mentions légales de WAW Véhicules Utilitaires.",
+      kicker: "LÉGAL",
+      h1: "Mentions légales.",
+      text: "Les mentions légales allemandes font foi. Les informations ci-dessous donnent les coordonnées essentielles de l'entreprise.",
+    },
+    privacy: {
+      title: "Confidentialité | WAW Véhicules Utilitaires",
+      description: "Informations relatives à la protection des données de WAW.",
+      kicker: "CONFIDENTIALITÉ",
+      h1: "Politique de confidentialité.",
+      text: "Nous utilisons les données du formulaire uniquement pour traiter votre demande. La version allemande reste juridiquement déterminante.",
+    },
+    terms: {
+      title: "CGV | WAW Véhicules Utilitaires",
+      description: "Conditions générales de WAW Véhicules Utilitaires.",
+      kicker: "CGV",
+      h1: "Conditions générales.",
+      text: "Les conditions générales allemandes restent juridiquement déterminantes. Cette page fournit un aperçu traduit.",
+    },
+    city: {
+      title: (city: City) => `Vendre un camion à ${city.name} | Rachat utilitaires | WAW`,
+      description: (city: City) => `Vendre camions, remorques, fourgons, machines de chantier et flottes à ${city.name}. WAW achète des véhicules utilitaires en Allemagne et en Europe.`,
+      kicker: (city: City) => `RACHAT DE CAMIONS ${city.name.toUpperCase()}`,
+      h1: (city: City) => `Vendre un camion à ${city.name}.`,
+      text: (city: City) => `WAW achète camions, véhicules utilitaires, semi-remorques, remorques, fourgons, machines de chantier et flottes à ${city.name} et dans la région. Rapidement, directement et professionnellement.`,
+    },
+    sections: {
+      vehicleTypes: "Types de véhicules achetés",
+      benefits: "Vos avantages avec WAW",
+      process: "Comment se déroule la vente",
+      locations: "Pages villes importantes",
+      faq: "Questions fréquentes",
+      finalCta: "Vendre un véhicule utilitaire ou une flotte ?",
+      finalText: "Envoyez-nous les informations principales du véhicule. Nous examinons votre demande et vous contactons rapidement.",
+      formTitle: "Envoyer une demande sans engagement",
+      allLocations: "Voir toutes les implantations",
+    },
+    trust: ["Prix équitables", "Traitement rapide", "Allemagne et Europe"],
+    vehicles: ["Camions", "Tracteurs routiers", "Semi-remorques", "Remorques", "Fourgons", "Machines de chantier", "Flottes"],
+    benefits: [
+      ["Contact direct", "Vous coordonnez votre demande et les étapes suivantes directement avec WAW."],
+      ["Réponse rapide", "Après réception des données du véhicule, nous vous recontactons dans les meilleurs délais."],
+      ["Traitement professionnel", "Un processus clair de la demande au paiement et à l'enlèvement."],
+      ["Allemagne et Europe", "Nous traitons les demandes en Allemagne et en Europe."],
+    ],
+    steps: ["Envoyer la demande", "Recevoir une réponse", "Recevoir une offre", "Coordonner la vente"],
+    faqs: [
+      ["Quels véhicules WAW achète-t-il ?", "Nous achetons camions, tracteurs routiers, semi-remorques, remorques, fourgons, machines de chantier et flottes complètes."],
+      ["Puis-je proposer un véhicule endommagé ?", "Oui. Les véhicules avec dommages, kilométrage élevé ou sans contrôle technique peuvent être proposés. Nous coordonnons les détails directement avec vous."],
+      ["Quand recevrai-je une réponse ?", "Après réception des principales données du véhicule, nous vous contactons dans les meilleurs délais."],
+      ["Puis-je proposer plusieurs véhicules ?", "Oui. Les entreprises, concessionnaires et gestionnaires de flottes peuvent proposer plusieurs véhicules ou des flottes complètes."],
+    ],
+  },
+} as const;
+
+const c = copy[lang];
+const page = pageKey === "city" && city ? c.city : c[pageKey as Exclude<RouteKey, "home"> | "home"];
+const title = typeof page.title === "function" ? page.title(city as City) : page.title;
+const description = typeof page.description === "function" ? page.description(city as City) : page.description;
+const kicker = typeof page.kicker === "function" ? page.kicker(city as City) : page.kicker;
+const h1 = typeof page.h1 === "function" ? page.h1(city as City) : page.h1;
+const heroText = typeof page.text === "function" ? page.text(city as City) : page.text;
+const canonicalPath = pageKey === "city" && city ? localizeCityPath(city.slug, lang) : localizePath(pageKey as RouteKey, lang);
+const canonical = new URL(canonicalPath, site.url).toString();
+const faqSchemaItems = c.faqs.map(([question, answer]) => ({ question, answer }));
+const schema = [
+  createFaqSchema(faqSchemaItems),
+  createBreadcrumbSchema([
+    { name: "WAW", url: new URL(localizePath("home", lang), site.url).toString() },
+    { name: h1.replace(/\.$/, ""), url: canonical },
+  ]),
+];
+
+const detailText =
+  pageKey === "city" && city
+    ? `${city.name} is relevant for commercial vehicle sales because of regional businesses, transport companies, construction, trade and fleet operations. WAW is reachable for sellers in ${city.name}, ${city.state} and nearby areas.`
+    : lang === "en"
+      ? "WAW focuses on direct commercial vehicle purchase for companies, dealers, transport businesses and fleet operators. The goal is a clear process, reliable communication and a fast path from inquiry to sale."
+      : "WAW se concentre sur le rachat direct de véhicules utilitaires pour entreprises, concessionnaires, transporteurs et gestionnaires de flottes. L'objectif est un processus clair, une communication fiable et une vente rapide.";
+
+const localizedVehicleIcons = [
+  "/icons/lkw.png",
+  "/icons/sattelzugmaschine.png",
+  "/icons/auflieger.png",
+  "/icons/anhaenger.png",
+  "/icons/transporter.png",
+  "/icons/bagger.png",
+  "/icons/fuhrpark.png",
+];
+
+const localizedHeroImages: Partial<Record<LocalizedPageKey, string>> = {
+  home: "/images/hero-yard-sunset.png",
+  about: "/images/cta-trucks.webp?v=2",
+  services: "/images/leistungen-hero.webp",
+  process: "/images/ablauf-inspection.webp",
+  vehicles: "/images/fahrzeug_lkw.webp",
+  locations: "/images/about-photo.webp",
+  contact: "/images/kontakt-location.webp",
+};
+
+const localizedHeroImage = localizedHeroImages[pageKey] || "/images/cta-trucks.webp";
+
+const localizedVehiclePage = {
+  en: {
+    hero: {
+      kicker: "VEHICLES",
+      h1: "These vehicles can be offered to us.",
+      text: "Whether truck, tractor unit, semi-trailer, trailer, van, construction machine or complete fleet: we purchase commercial vehicles directly.",
+      trustline: ["Fair prices", "Fast handling", "Germany and Europe-wide"],
+    },
+    cards: {
+      introKicker: "OUR PURCHASE AREAS",
+      introTitle: "We buy many types of trucks and commercial vehicles",
+      introText: "Find the right category for your vehicle quickly. Every vehicle type can be offered individually or as part of a fleet.",
+      linkLabel: "More about purchase →",
+      items: [
+        {
+          id: "lkw",
+          title: "Truck purchase",
+          text: "Used trucks of different brands, weight classes and body types - including high mileage or defects.",
+          image: "/images/fahrzeug_lkw.webp",
+          iconSrc: "/icons/lkw.png",
+          href: `${localizePath("services", lang)}#lkw`,
+        },
+        {
+          id: "sattelzugmaschinen",
+          title: "Tractor unit purchase",
+          text: "Tractor units from different manufacturers and model years. Older vehicles or damaged units can also be offered.",
+          image: "/images/fahrzeug_sattelzugmaschine.webp",
+          iconSrc: "/icons/sattelzugmaschine.png",
+          href: `${localizePath("services", lang)}#sattelzugmaschinen`,
+        },
+        {
+          id: "auflieger",
+          title: "Semi-trailer purchase",
+          text: "Curtainsiders, refrigerated trailers, tippers, low loaders and special semi-trailers from commercial use.",
+          image: "/images/fahrzeug_auflieger.webp",
+          iconSrc: "/icons/auflieger.png",
+          href: `${localizePath("services", lang)}#auflieger`,
+        },
+        {
+          id: "anhaenger",
+          title: "Trailer purchase",
+          text: "Drawbar trailers, centre-axle trailers and special trailers for commercial use.",
+          image: "/images/fahrzeuge_anhaenger.webp",
+          iconSrc: "/icons/anhaenger.png",
+          href: `${localizePath("services", lang)}#anhaenger`,
+        },
+        {
+          id: "transporter",
+          title: "Van purchase",
+          text: "Vans and light commercial vehicles such as Sprinter, Crafter, Transit, Ducato and comparable models.",
+          image: "/images/fahrzeug_transporter.webp",
+          iconSrc: "/icons/transporter.png",
+          href: `${localizePath("services", lang)}#transporter`,
+        },
+        {
+          id: "baumaschinen",
+          title: "Construction machinery purchase",
+          text: "Excavators, wheel loaders, cranes, concrete mixers and other construction machinery - including defects.",
+          image: "/images/fahrzeug_baumaschine.webp",
+          iconSrc: "/icons/bagger.png",
+          href: `${localizePath("services", lang)}#baumaschinen`,
+        },
+        {
+          id: "fuhrpark",
+          title: "Fleet purchase",
+          text: "Offer several trucks, mixed vehicle packages or complete fleets together.",
+          image: "/images/fahrzeug_fuhrpark.webp",
+          iconSrc: "/icons/fuhrpark.png",
+          href: `${localizePath("services", lang)}#fuhrpark`,
+        },
+      ],
+      benefits: [
+        { label: "Many conditions possible", iconSrc: "/icons/lkw.png" },
+        { label: "Fast decision", iconSrc: "/icons/sattelzugmaschine.png" },
+        { label: "Pickup by agreement", iconSrc: "/icons/transporter.png" },
+        { label: "Direct payment", iconSrc: "/icons/auflieger.png" },
+        { label: "Discreet handling", iconSrc: "/icons/fuhrpark.png" },
+      ],
+    },
+    benefits: {
+      kicker: "WHY WAW?",
+      title: "Sell trucks and commercial vehicles directly to WAW",
+      items: [
+        { title: "Safe & reliable", text: "Clear coordination from first contact to handover.", iconKey: "shield" },
+        { title: "Fast handling", text: "We respond as quickly as possible and discuss the next steps directly.", iconKey: "clock" },
+        { title: "Fair prices", text: "Market-oriented offers based on vehicle data, condition and location.", iconKey: "euro" },
+        { title: "Germany and Europe-wide", text: "Vehicles from Germany and Europe can be offered to us directly.", iconKey: "map" },
+      ],
+    },
+    damage: {
+      kicker: "ALSO WITH DEFECTS",
+      title: "Vehicles with defects or damage are also relevant",
+      text: "Not every commercial vehicle is in perfect condition. We also buy vehicles with damage, high mileage, older model years or missing inspection.",
+      points: ["Engine damage", "Gearbox damage", "Accident damage", "Without inspection", "High mileage", "Older model years"],
+    },
+    cta: {
+      kicker: "SELL A VEHICLE?",
+      title: "Select vehicle type and send inquiry",
+      text: "Send us vehicle type, year, mileage, condition, location and available photos. If data is missing, we clarify it together.",
+      callLabel: "Call",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Write now",
+      placeholders: {
+        name: "Name",
+        phone: "Phone",
+        email: "Email",
+        vehicle: "Vehicle type (e.g. truck, trailer)",
+        year: "Year",
+        mileage: "Mileage (approx.)",
+        message: "Additional vehicle information",
+      },
+      submitLabel: "Send inquiry",
+      sendingLabel: "Sending...",
+      source: "Vehicles page EN",
+      privacyText: "Your data will be treated confidentially and will not be passed on to third parties.",
+      fallbackError: "The inquiry could not be sent. Please try again or call directly.",
+    },
+  },
+  fr: {
+    hero: {
+      kicker: "VÉHICULES",
+      h1: "Ces véhicules peuvent nous être proposés.",
+      text: "Camion, tracteur routier, semi-remorque, remorque, fourgon, machine de chantier ou flotte complète : nous achetons directement les véhicules utilitaires.",
+      trustline: ["Prix équitables", "Traitement rapide", "Allemagne et Europe"],
+    },
+    cards: {
+      introKicker: "NOS DOMAINES DE RACHAT",
+      introTitle: "Nous achetons de nombreux types de camions et utilitaires",
+      introText: "Trouvez rapidement la catégorie adaptée à votre véhicule. Chaque type de véhicule peut être proposé seul ou dans le cadre d'une flotte.",
+      linkLabel: "Plus sur le rachat →",
+      items: [
+        {
+          id: "lkw",
+          title: "Rachat de camions",
+          text: "Camions d'occasion de différentes marques, catégories de poids et carrosseries - même avec kilométrage élevé ou défauts.",
+          image: "/images/fahrzeug_lkw.webp",
+          iconSrc: "/icons/lkw.png",
+          href: `${localizePath("services", lang)}#lkw`,
+        },
+        {
+          id: "sattelzugmaschinen",
+          title: "Rachat de tracteurs routiers",
+          text: "Tracteurs routiers de différents fabricants et années. Les véhicules anciens ou endommagés peuvent aussi être proposés.",
+          image: "/images/fahrzeug_sattelzugmaschine.webp",
+          iconSrc: "/icons/sattelzugmaschine.png",
+          href: `${localizePath("services", lang)}#sattelzugmaschinen`,
+        },
+        {
+          id: "auflieger",
+          title: "Rachat de semi-remorques",
+          text: "Semi-remorques bâchées, frigorifiques, bennes, porte-engins et semi-remorques spéciales issues d'une utilisation professionnelle.",
+          image: "/images/fahrzeug_auflieger.webp",
+          iconSrc: "/icons/auflieger.png",
+          href: `${localizePath("services", lang)}#auflieger`,
+        },
+        {
+          id: "anhaenger",
+          title: "Rachat de remorques",
+          text: "Remorques à timon, remorques à essieu central et remorques spéciales pour usage professionnel.",
+          image: "/images/fahrzeuge_anhaenger.webp",
+          iconSrc: "/icons/anhaenger.png",
+          href: `${localizePath("services", lang)}#anhaenger`,
+        },
+        {
+          id: "transporter",
+          title: "Rachat de fourgons",
+          text: "Fourgons et véhicules utilitaires légers comme Sprinter, Crafter, Transit, Ducato et modèles comparables.",
+          image: "/images/fahrzeug_transporter.webp",
+          iconSrc: "/icons/transporter.png",
+          href: `${localizePath("services", lang)}#transporter`,
+        },
+        {
+          id: "baumaschinen",
+          title: "Rachat de machines de chantier",
+          text: "Pelles, chargeuses, grues, bétonnières et autres machines de chantier - même avec défauts.",
+          image: "/images/fahrzeug_baumaschine.webp",
+          iconSrc: "/icons/bagger.png",
+          href: `${localizePath("services", lang)}#baumaschinen`,
+        },
+        {
+          id: "fuhrpark",
+          title: "Rachat de flottes",
+          text: "Proposez plusieurs camions, lots mixtes de véhicules ou flottes complètes en une seule demande.",
+          image: "/images/fahrzeug_fuhrpark.webp",
+          iconSrc: "/icons/fuhrpark.png",
+          href: `${localizePath("services", lang)}#fuhrpark`,
+        },
+      ],
+      benefits: [
+        { label: "Nombreux états possibles", iconSrc: "/icons/lkw.png" },
+        { label: "Décision rapide", iconSrc: "/icons/sattelzugmaschine.png" },
+        { label: "Enlèvement sur accord", iconSrc: "/icons/transporter.png" },
+        { label: "Paiement direct", iconSrc: "/icons/auflieger.png" },
+        { label: "Traitement discret", iconSrc: "/icons/fuhrpark.png" },
+      ],
+    },
+    benefits: {
+      kicker: "POURQUOI WAW ?",
+      title: "Vendre camions et utilitaires directement à WAW",
+      items: [
+        { title: "Sûr & fiable", text: "Coordination claire du premier contact à la remise du véhicule.", iconKey: "shield" },
+        { title: "Traitement rapide", text: "Nous répondons rapidement et discutons directement des prochaines étapes.", iconKey: "clock" },
+        { title: "Prix équitables", text: "Offres conformes au marché selon les données, l'état et l'emplacement du véhicule.", iconKey: "euro" },
+        { title: "Allemagne et Europe", text: "Les véhicules situés en Allemagne et en Europe peuvent nous être proposés directement.", iconKey: "map" },
+      ],
+    },
+    damage: {
+      kicker: "AUSSI AVEC DÉFAUTS",
+      title: "Les véhicules avec défauts ou dommages nous intéressent aussi",
+      text: "Tous les utilitaires ne sont pas en parfait état. Nous achetons aussi des véhicules avec dommages, kilométrage élevé, années anciennes ou sans contrôle technique.",
+      points: ["Moteur endommagé", "Boîte de vitesses endommagée", "Dommage accidentel", "Sans contrôle technique", "Kilométrage élevé", "Années anciennes"],
+    },
+    cta: {
+      kicker: "VENDRE UN VÉHICULE ?",
+      title: "Sélectionner le type de véhicule et envoyer la demande",
+      text: "Envoyez-nous le type de véhicule, l'année, le kilométrage, l'état, l'emplacement et les photos disponibles. S'il manque des données, nous les clarifions ensemble.",
+      callLabel: "Appeler",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Écrire maintenant",
+      placeholders: {
+        name: "Nom",
+        phone: "Téléphone",
+        email: "E-mail",
+        vehicle: "Type de véhicule (camion, remorque, etc.)",
+        year: "Année",
+        mileage: "Kilométrage approx.",
+        message: "Informations supplémentaires sur le véhicule",
+      },
+      submitLabel: "Envoyer la demande",
+      sendingLabel: "Envoi...",
+      source: "Page véhicules FR",
+      privacyText: "Vos données sont traitées de manière confidentielle et ne sont pas transmises à des tiers.",
+      fallbackError: "La demande n'a pas pu être envoyée. Veuillez réessayer ou appeler directement.",
+    },
+  },
+}[lang];
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} schema={schema} lang={lang}>
+  <Header transparent lang={lang} />
+
+  <main>
+    {pageKey === "vehicles" ? (
+      <>
+        <FahrzeugeHero {...localizedVehiclePage.hero} />
+        <FahrzeugCards
+          introKicker={localizedVehiclePage.cards.introKicker}
+          introTitle={localizedVehiclePage.cards.introTitle}
+          introText={localizedVehiclePage.cards.introText}
+          vehicleItems={localizedVehiclePage.cards.items}
+          benefitItems={localizedVehiclePage.cards.benefits}
+          linkLabel={localizedVehiclePage.cards.linkLabel}
+        />
+        <FahrzeugeBenefits
+          kicker={localizedVehiclePage.benefits.kicker}
+          title={localizedVehiclePage.benefits.title}
+          items={localizedVehiclePage.benefits.items}
+        />
+        <FahrzeugeDamageSection {...localizedVehiclePage.damage} />
+        <FahrzeugeCTA {...localizedVehiclePage.cta} />
+      </>
+    ) : (
+      <>
+    <section class="localized-hero" style={`--localized-hero-image: url("${localizedHeroImage}")`}>
+      <div class="localized-hero-overlay"></div>
+      <div class="container localized-hero-grid">
+        <div class="localized-hero-copy" data-animate>
+          <p class="localized-kicker">{kicker}</p>
+          <h1>{h1}</h1>
+          <p>{heroText}</p>
+          <div class="localized-actions">
+            <a href={localizePath("contact", lang)} class="btn btn-primary">{lang === "en" ? "Start inquiry" : "Démarrer une demande"}</a>
+            <a href={`tel:${site.phoneHref}`} class="btn localized-outline">{lang === "en" ? "Call directly" : "Appeler directement"}</a>
+          </div>
+          <div class="localized-trust">
+            {c.trust.map((item) => <span>{item}</span>)}
+          </div>
+        </div>
+
+        <aside class="localized-hero-card" data-animate>
+          <strong>{pageKey === "city" && city ? city.name : "WAW"}</strong>
+          <span>{lang === "en" ? "Commercial vehicle purchase" : "Rachat de véhicules utilitaires"}</span>
+          <p>{lang === "en" ? "Trucks, trailers, vans, construction machinery and fleets." : "Camions, remorques, fourgons, machines de chantier et flottes."}</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="localized-section localized-light">
+      <div class="container localized-section-head" data-animate>
+        <span>{pageKey === "locations" ? c.sections.locations : c.sections.vehicleTypes}</span>
+        <h2>{pageKey === "locations" ? c.sections.locations : c.sections.vehicleTypes}</h2>
+        <p>{detailText}</p>
+      </div>
+
+      {pageKey === "locations" ? (
+        <div class="container localized-city-grid">
+          {navigationCities.map((entry) => (
+            <a href={localizeCityPath(entry.slug, lang)} class="localized-city-card" data-animate>
+              <span>{entry.state}</span>
+              <strong>{entry.name}</strong>
+              <p>{entry.cardText}</p>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="container localized-card-grid">
+          {c.vehicles.map((vehicle, index) => {
+            const iconSrc = localizedVehicleIcons[index] || localizedVehicleIcons[0];
+            return (
+            <a href={localizePath("contact", lang)} class="localized-card" data-animate>
+              <span class="localized-icon">
+                <img src={iconSrc} alt="" loading="lazy" aria-hidden="true" />
+              </span>
+              <h3>{vehicle}</h3>
+              <p>{lang === "en" ? "Offer this vehicle type directly to WAW." : "Proposez ce type de véhicule directement à WAW."}</p>
+            </a>
+            );
+          })}
+        </div>
+      )}
+    </section>
+
+    <section class="localized-section localized-dark">
+      <div class="container">
+        <div class="localized-section-head localized-section-head--dark" data-animate>
+          <span>{c.sections.benefits}</span>
+          <h2>{c.sections.benefits}</h2>
+        </div>
+        <div class="localized-card-grid localized-card-grid--dark">
+          {c.benefits.map(([title, text]) => (
+            <article class="localized-dark-card" data-animate>
+              <span class="localized-icon">✓</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="localized-section localized-light">
+      <div class="container localized-split">
+        <div data-animate>
+          <span class="localized-small-kicker">{c.sections.process}</span>
+          <h2>{c.sections.process}</h2>
+          <p>{lang === "en" ? "The sale is coordinated in a few clear steps, with direct contact and no unnecessary detours." : "La vente est coordonnée en quelques étapes claires, avec un contact direct et sans détour inutile."}</p>
+          <a href={localizePath("process", lang)} class="btn btn-primary">{lang === "en" ? "View process" : "Voir le processus"}</a>
+        </div>
+        <div class="localized-steps">
+          {c.steps.map((step, index) => (
+            <div class="localized-step" data-animate>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{step}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {pageKey !== "contact" && (
+      <section class="localized-section localized-light localized-locations-teaser">
+        <div class="container localized-section-head" data-animate>
+          <span>{c.sections.locations}</span>
+          <h2>{c.sections.locations}</h2>
+        </div>
+        <div class="container localized-city-row">
+          {navigationCities.slice(0, 8).map((entry) => (
+            <a href={localizeCityPath(entry.slug, lang)}>{entry.name}</a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="localized-section localized-light">
+      <div class="container localized-split localized-split--form">
+        <div data-animate>
+          <span class="localized-small-kicker">{c.sections.finalCta}</span>
+          <h2>{c.sections.finalCta}</h2>
+          <p>{c.sections.finalText}</p>
+          <div class="localized-contact-links">
+            <a href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>
+            <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a>
+          </div>
+        </div>
+        <LeadForm compact={true} lang={lang} />
+      </div>
+    </section>
+
+    <section class="localized-section localized-faq">
+      <div class="container localized-section-head" data-animate>
+        <span>FAQ</span>
+        <h2>{c.sections.faq}</h2>
+      </div>
+      <div class="container localized-faq-grid">
+        {c.faqs.map(([question, answer]) => (
+          <details class="localized-faq-item" data-animate>
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+      </>
+    )}
+  </main>
+
+  <Footer lang={lang} />
+  <FloatingContact lang={lang} />
+  <ScrollAnimations />
+</BaseLayout>
+
+<style>
+  .localized-hero {
+    position: relative;
+    min-height: 740px;
+    padding: 166px 0 90px;
+    color: #fff;
+    overflow: hidden;
+    background-image: var(--localized-hero-image);
+    background-size: cover;
+    background-position: center right;
+  }
+
+  .localized-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,107,0,0.24), transparent 28rem),
+      linear-gradient(90deg, rgba(3,10,20,0.88), rgba(3,10,20,0.54), rgba(3,10,20,0.2));
+  }
+
+  .localized-hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+    gap: clamp(34px, 5vw, 70px);
+    align-items: center;
+  }
+
+  .localized-hero-copy h1 {
+    margin: 0;
+    max-width: 860px;
+    color: #fff;
+    font-size: clamp(48px, 6.4vw, 92px);
+    line-height: 0.94;
+    letter-spacing: -0.065em;
+  }
+
+  .localized-hero-copy p {
+    max-width: 720px;
+    color: rgba(255,255,255,0.8);
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.65;
+  }
+
+  .localized-kicker,
+  .localized-small-kicker {
+    display: inline-flex;
+    margin: 0 0 18px;
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .localized-actions,
+  .localized-trust,
+  .localized-contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .localized-outline {
+    border: 1px solid rgba(255,255,255,0.36);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+  }
+
+  .localized-trust {
+    gap: 24px;
+    color: rgba(255,255,255,0.88);
+    font-weight: 850;
+  }
+
+  .localized-trust span::before {
+    content: "✓";
+    margin-right: 8px;
+    color: var(--orange);
+  }
+
+  .localized-hero-card {
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 26px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 26px 80px rgba(0,0,0,0.24);
+  }
+
+  .localized-hero-card strong,
+  .localized-hero-card span {
+    display: block;
+  }
+
+  .localized-hero-card strong {
+    font-size: clamp(34px, 4vw, 54px);
+    letter-spacing: -0.06em;
+  }
+
+  .localized-hero-card span {
+    color: var(--orange);
+    font-weight: 900;
+    margin-top: 8px;
+  }
+
+  .localized-section {
+    padding: 84px 0;
+  }
+
+  .localized-light {
+    background: #fff;
+  }
+
+  .localized-dark {
+    background:
+      radial-gradient(circle at top right, rgba(255,107,0,0.22), transparent 24rem),
+      linear-gradient(135deg, #031122, #071a33);
+    color: #fff;
+  }
+
+  .localized-section-head {
+    max-width: 860px;
+    margin-bottom: 34px;
+  }
+
+  .localized-section-head span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .localized-section-head h2,
+  .localized-split h2 {
+    margin: 10px 0 12px;
+    font-size: clamp(34px, 4.8vw, 62px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .localized-section-head p,
+  .localized-split p {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .localized-section-head--dark p,
+  .localized-section-head--dark h2,
+  .localized-dark-card p {
+    color: rgba(255,255,255,0.72);
+  }
+
+  .localized-card-grid,
+  .localized-city-grid,
+  .localized-faq-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .localized-card,
+  .localized-city-card,
+  .localized-dark-card,
+  .localized-faq-item {
+    padding: 24px;
+    border-radius: 22px;
+    border: 1px solid rgba(15,23,42,0.08);
+    background: #fff;
+    box-shadow: 0 16px 42px rgba(15,23,42,0.08);
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+
+  .localized-card:hover,
+  .localized-city-card:hover,
+  .localized-dark-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,107,0,0.32);
+    box-shadow: 0 26px 70px rgba(15,23,42,0.12);
+  }
+
+  .localized-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 16px;
+    border-radius: 999px;
+    background: var(--orange);
+    color: #fff;
+    font-weight: 950;
+  }
+
+  .localized-icon img {
+    width: 22px;
+    height: 22px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .localized-card h3,
+  .localized-dark-card h3 {
+    margin: 0 0 8px;
+    font-size: 21px;
+    letter-spacing: -0.04em;
+  }
+
+  .localized-card p,
+  .localized-city-card p {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .localized-dark-card {
+    background: rgba(255,255,255,0.075);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: none;
+  }
+
+  .localized-city-card span {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .localized-city-card strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 28px;
+    letter-spacing: -0.05em;
+  }
+
+  .localized-split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+    gap: clamp(32px, 5vw, 70px);
+    align-items: center;
+  }
+
+  .localized-steps {
+    display: grid;
+    gap: 12px;
+  }
+
+  .localized-step {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px;
+    border-radius: 18px;
+    background: #f7f8fa;
+    border: 1px solid rgba(15,23,42,0.08);
+  }
+
+  .localized-step span {
+    color: var(--orange);
+    font-weight: 950;
+  }
+
+  .localized-city-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .localized-city-row a,
+  .localized-contact-links a {
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: rgba(255,107,0,0.1);
+    color: var(--text);
+    font-weight: 850;
+  }
+
+  .localized-faq {
+    background: #f6f7f9;
+  }
+
+  .localized-faq-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .localized-faq-item summary {
+    cursor: pointer;
+    font-weight: 900;
+    color: var(--text);
+  }
+
+  .localized-faq-item p {
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 980px) {
+    .localized-hero-grid,
+    .localized-split {
+      grid-template-columns: 1fr;
+    }
+
+    .localized-card-grid,
+    .localized-city-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .localized-hero {
+      min-height: auto;
+      padding: 126px 0 64px;
+      background-image: var(--localized-hero-image);
+      background-position: center top;
+    }
+
+    .localized-hero-card {
+      display: none;
+    }
+
+    .localized-actions {
+      flex-direction: column;
+    }
+
+    .localized-card-grid,
+    .localized-city-grid,
+    .localized-faq-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,867 @@
+---
+import {
+  BadgeCheck,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  Globe2,
+  Handshake,
+  PhoneCall,
+  ShieldCheck,
+  Truck,
+  UsersRound,
+  Warehouse,
+} from "@lucide/astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FloatingContact from "../components/FloatingContact.astro";
+import LeadForm from "../components/LeadForm.astro";
+import ScrollAnimations from "../components/ScrollAnimations.astro";
+import CustomerReviews from "../components/CustomerReviews.astro";
+import { site } from "../data/site";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
+
+const canonical = absoluteUrl("/ueber-uns");
+
+const heroStats = [
+  { value: "1995", label: "Erfahrung im Nutzfahrzeughandel" },
+  { value: "EU", label: "deutschland- und europaweite Anfrage" },
+  { value: "1:1", label: "Direkte Ansprechpartner statt Umwege" },
+];
+
+const reasons = [
+  {
+    icon: Handshake,
+    title: "Direkter Ankauf statt langem Inserieren",
+    text: "Sie sprechen direkt mit uns. Keine Plattform, keine unnötigen Zwischenschritte, keine langen Verkaufsverhandlungen mit unklaren Interessenten.",
+  },
+  {
+    icon: Globe2,
+    title: "Starker Exportmarkt",
+    text: "Durch unsere europaweiten Kontakte sind auch ältere LKW, Fahrzeuge ohne TÜV, hohe Laufleistungen und Schäden für uns interessant.",
+  },
+  {
+    icon: Clock3,
+    title: "Schnelle Rückmeldung",
+    text: "Nach Ihrer Anfrage melden wir uns schnellstmöglich zurück und besprechen Fahrzeugdaten, Standort und nächste Schritte persönlich.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Seriöse Abwicklung",
+    text: "Vom ersten Kontakt bis zur Übergabe achten wir auf klare Kommunikation, verbindliche Abstimmung und eine professionelle Verkaufsabwicklung.",
+  },
+];
+
+const sellerGroups = [
+  {
+    icon: Building2,
+    title: "Unternehmen & Gewerbe",
+    text: "Für Betriebe, die einzelne Nutzfahrzeuge, Transporter, Baumaschinen oder Anhänger unkompliziert verkaufen möchten.",
+  },
+  {
+    icon: Truck,
+    title: "Speditionen & Fuhrparks",
+    text: "Für Speditionen und Fuhrparkbetreiber mit mehreren LKW, Sattelzugmaschinen, Aufliegern oder kompletten Fahrzeugpaketen.",
+  },
+  {
+    icon: Warehouse,
+    title: "Händler & Bestände",
+    text: "Für Händlerbestände, Rückläufer, ältere Fahrzeuge, Exportfahrzeuge und gemischte Nutzfahrzeug-Pakete.",
+  },
+];
+
+const keywords = [
+  "LKW verkaufen",
+  "Nutzfahrzeuge Ankauf",
+  "Auflieger verkaufen",
+  "Sattelzugmaschine verkaufen",
+  "Baumaschinen Ankauf",
+  "Fuhrpark verkaufen",
+  "LKW Export",
+  "Nutzfahrzeuge europaweit",
+];
+
+const steps = [
+  ["01", "Fahrzeugdaten senden", "Telefonisch, per WhatsApp oder über das Formular reichen die wichtigsten Angaben zum Start aus."],
+  ["02", "Persönlich abstimmen", "Wir klären Fahrzeugtyp, Zustand, Standort, Unterlagen und mögliche Schäden direkt mit Ihnen."],
+  ["03", "Verkauf abwickeln", "Nach Einigung koordinieren wir Übergabe, Zahlung und je nach Fall auch die Abholung."],
+];
+
+const faqs = [
+  {
+    question: "Warum sollte ich meinen LKW direkt an WAW verkaufen?",
+    answer:
+      "Weil Sie einen direkten Ansprechpartner haben und den Verkauf ohne Inserate, Besichtigungsstress und unklare Interessenten abstimmen können. Wir kaufen LKW, Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks professionell an.",
+  },
+  {
+    question: "Kauft WAW auch ältere oder beschädigte Nutzfahrzeuge?",
+    answer:
+      "Ja. Auch hohe Laufleistungen, Schäden, fehlender TÜV oder ältere Baujahre sind für uns kein Ausschlussgrund. Durch unseren Exportmarkt können viele Fahrzeuge interessant sein.",
+  },
+  {
+    question: "Ist WAW deutschland- und europaweit tätig?",
+    answer:
+      "Ja. Wir bearbeiten Anfragen aus Deutschland und Europa und stimmen die weitere Abwicklung je nach Fahrzeug, Standort und Umfang direkt mit Ihnen ab.",
+  },
+  {
+    question: "Kann ich mehrere Fahrzeuge oder einen Fuhrpark anbieten?",
+    answer:
+      "Ja. Gerade für Unternehmen, Händler, Speditionen und Fuhrparkbetreiber ist WAW ein passender Ansprechpartner für mehrere Fahrzeuge oder komplette Fahrzeugpakete.",
+  },
+  {
+    question: "Welche Daten sind für eine erste Anfrage hilfreich?",
+    answer:
+      "Hilfreich sind Fahrzeugtyp, Marke, Modell, Baujahr, Kilometerstand oder Betriebsstunden, Zustand, Standort und Fotos. Wenn etwas fehlt, klären wir die offenen Punkte gemeinsam.",
+  },
+];
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: "Startseite", url: absoluteUrl("/") },
+    { name: "Über uns", url: canonical },
+  ]),
+  createFaqSchema(faqs),
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${canonical}#about`,
+    name: "Über WAW Nutzfahrzeuge",
+    url: canonical,
+    description:
+      "WAW ist Ansprechpartner für den direkten Ankauf von LKW, Nutzfahrzeugen, Aufliegern, Anhängern, Transportern, Baumaschinen und Fuhrparks.",
+    mainEntity: {
+      "@id": `${site.url}/#localbusiness`,
+    },
+  },
+];
+---
+
+<BaseLayout
+  title="Über uns | LKW & Nutzfahrzeuge direkt verkaufen | WAW"
+  description="WAW kauft LKW, Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks direkt an. Für Unternehmen, Händler, Speditionen und Fuhrparks."
+  canonical={canonical}
+  schema={schema}
+>
+  <Header transparent />
+
+  <main class="about-page">
+    <section class="about-hero">
+      <div class="about-hero__overlay"></div>
+      <div class="container about-hero__grid">
+        <div class="about-hero__copy" data-animate>
+          <p class="about-kicker">ÜBER WAW NUTZFAHRZEUGE</p>
+          <h1>LKW verkaufen mit einem Partner, der Nutzfahrzeuge versteht.</h1>
+          <p>
+            Wir kaufen LKW, Auflieger, Anhänger, Transporter, Baumaschinen und komplette Fuhrparks direkt an.
+            Schnell, persönlich und deutschland- und europaweit abgestimmt.
+          </p>
+          <div class="about-actions">
+            <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+            <a href={`tel:${site.phoneHref}`} class="btn about-btn-outline">Direkt anrufen</a>
+          </div>
+          <div class="about-trustline" aria-label="Vorteile">
+            <span><CheckCircle2 size={16} /> Direkter Ankauf</span>
+            <span><CheckCircle2 size={16} /> Auch mit Schäden</span>
+            <span><CheckCircle2 size={16} /> Exportmarkt vorhanden</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-stats" aria-label="WAW Kennzahlen">
+      <div class="container about-stats__grid">
+        {heroStats.map((stat) => (
+          <article class="about-stat-card" data-animate>
+            <strong>{stat.value}</strong>
+            <span>{stat.label}</span>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="about-section about-intro">
+      <div class="container about-split">
+        <div data-animate>
+          <p class="about-kicker">WARUM WAW?</p>
+          <h2>Für Unternehmen, die eine klare Lösung statt langer Verkaufswege suchen.</h2>
+        </div>
+        <div class="about-copy" data-animate>
+          <p>
+            Wer einen gebrauchten LKW, eine Sattelzugmaschine, einen Auflieger oder einen kompletten Fuhrpark verkaufen möchte,
+            braucht vor allem schnelle Erreichbarkeit, Erfahrung und eine realistische Einordnung. Genau darauf ist WAW ausgerichtet.
+          </p>
+          <p>
+            Wir kaufen Nutzfahrzeuge aller Art an - auch Fahrzeuge mit hoher Laufleistung, fehlendem TÜV, technischen Mängeln,
+            Unfallschäden oder Exportpotenzial. Der Fokus liegt auf einer direkten, seriösen und unkomplizierten Abwicklung.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section about-reasons">
+      <div class="container about-section-head" data-animate>
+        <p class="about-kicker">IHRE VORTEILE</p>
+        <h2>Warum Unternehmen direkt bei WAW anfragen</h2>
+        <p>Für Unternehmen, Händler und Fuhrparks zählen kurze Wege, klare Kommunikation und ein Ansprechpartner, der den Nutzfahrzeugmarkt kennt.</p>
+      </div>
+      <div class="container about-reason-grid">
+        {reasons.map((reason) => {
+          const Icon = reason.icon;
+          return (
+            <article class="about-reason-card" data-animate>
+              <span class="about-icon"><Icon size={24} strokeWidth={2} /></span>
+              <h3>{reason.title}</h3>
+              <p>{reason.text}</p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <CustomerReviews />
+
+    <section class="about-dark">
+      <div class="about-dark__media" aria-hidden="true"></div>
+      <div class="container about-dark__grid">
+        <div data-animate>
+          <p class="about-kicker">ANKAUFSSPEKTRUM</p>
+          <h2>Vom einzelnen LKW bis zum kompletten Fuhrpark.</h2>
+          <p>
+            Wir sind Ansprechpartner für Unternehmen, Händler, Speditionen und Fuhrparkbetreiber, die Nutzfahrzeuge direkt und professionell verkaufen möchten.
+          </p>
+          <div class="about-keyword-row">
+            {keywords.map((keyword) => <a href="/leistungen">{keyword}</a>)}
+          </div>
+        </div>
+        <div class="about-seller-grid">
+          {sellerGroups.map((group) => {
+            const Icon = group.icon;
+            return (
+              <article class="about-seller-card" data-animate>
+                <Icon size={28} strokeWidth={1.9} />
+                <h3>{group.title}</h3>
+                <p>{group.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section about-process">
+      <div class="container about-section-head about-section-head--center" data-animate>
+        <p class="about-kicker">SO ARBEITEN WIR</p>
+        <h2>Direkt, verständlich und ohne unnötige Hürden.</h2>
+        <p>Der Verkauf Ihres Nutzfahrzeugs soll nicht kompliziert sein. Deshalb halten wir den Ablauf bewusst klar.</p>
+      </div>
+      <div class="container about-step-grid">
+        {steps.map(([number, title, text]) => (
+          <article class="about-step-card" data-animate>
+            <span>{number}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="about-section about-proof">
+      <div class="container about-proof__grid">
+        <div class="about-proof__image" data-animate>
+          <img src="/images/fuhrpark-aerial.webp" alt="Nutzfahrzeuge und Fuhrpark auf großem Hof" width="680" height="520" loading="lazy" />
+        </div>
+        <div data-animate>
+          <p class="about-kicker">VERTRAUEN IM ANKAUF</p>
+          <h2>Auch schwierige Fahrzeuge können interessant sein.</h2>
+          <p>
+            Nicht jeder LKW ist in perfektem Zustand. Für uns zählen die realen Fahrzeugdaten, der Standort und die weiteren Vermarktungsmöglichkeiten.
+            Durch unsere Erfahrung und Exportkontakte können auch Nutzfahrzeuge relevant sein, die im klassischen Privatverkauf schwer zu vermitteln sind.
+          </p>
+          <ul class="about-check-list">
+            <li><BadgeCheck size={18} /> LKW mit hoher Laufleistung</li>
+            <li><BadgeCheck size={18} /> Fahrzeuge ohne TÜV oder HU</li>
+            <li><BadgeCheck size={18} /> Motorschaden, Getriebeschaden oder Unfallschaden</li>
+            <li><BadgeCheck size={18} /> Auflieger, Anhänger, Baumaschinen und Fuhrparks</li>
+          </ul>
+          <a href="/fahrzeuge" class="about-text-link">Alle Fahrzeugtypen ansehen →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section about-faq">
+      <div class="container about-section-head about-section-head--center" data-animate>
+        <p class="about-kicker">FAQ</p>
+        <h2>Häufige Fragen zu WAW</h2>
+      </div>
+      <div class="container about-faq-grid">
+        {faqs.map((item) => (
+          <details class="about-faq-item" data-animate>
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="about-final">
+      <div class="container about-final__grid">
+        <div data-animate>
+          <p class="about-kicker">NUTZFAHRZEUG VERKAUFEN?</p>
+          <h2>Senden Sie uns Ihre Anfrage.</h2>
+          <p>
+            Hinterlassen Sie Ihre Kontaktdaten und die wichtigsten Informationen zum Fahrzeug. Wenn Ihnen Daten fehlen,
+            reicht der erste Kontakt trotzdem aus - wir klären den Rest gemeinsam.
+          </p>
+          <div class="about-contact-strip">
+            <a href={site.whatsappHref} target="_blank" rel="noopener"><UsersRound size={18} /> WhatsApp schreiben</a>
+            <a href={`tel:${site.phoneHref}`}><PhoneCall size={18} /> {site.phoneDisplay}</a>
+          </div>
+        </div>
+        <LeadForm compact={true} />
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>
+
+<style>
+  .about-page {
+    background: #fff;
+    color: var(--text);
+  }
+
+  .about-hero {
+    position: relative;
+    min-height: 780px;
+    padding: 164px 0 92px;
+    overflow: hidden;
+    color: #fff;
+    background: #05070a;
+  }
+
+  .about-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("/images/cta-trucks.webp?v=2");
+    background-size: cover;
+    background-position: center right;
+    transform: scale(1.01);
+  }
+
+  .about-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(circle at 22% 28%, rgba(255,107,0,0.26), transparent 26rem),
+      linear-gradient(90deg, rgba(4,8,13,0.88), rgba(7,17,31,0.58), rgba(7,17,31,0.18));
+  }
+
+  .about-hero__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .about-hero__copy {
+    max-width: 920px;
+  }
+
+  .about-kicker {
+    margin: 0 0 16px;
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .about-hero h1,
+  .about-section h2,
+  .about-dark h2,
+  .about-final h2 {
+    margin: 0;
+    letter-spacing: -0.065em;
+    line-height: 0.98;
+  }
+
+  .about-hero h1 {
+    max-width: 880px;
+    color: #fff;
+    font-size: clamp(48px, 6.2vw, 94px);
+  }
+
+  .about-hero__copy > p:not(.about-kicker) {
+    max-width: 690px;
+    margin: 22px 0 0;
+    color: rgba(255,255,255,0.82);
+    font-size: clamp(18px, 1.55vw, 22px);
+    line-height: 1.65;
+  }
+
+  .about-actions,
+  .about-trustline,
+  .about-keyword-row,
+  .about-contact-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .about-actions {
+    margin-top: 34px;
+  }
+
+  .about-btn-outline {
+    border: 1px solid rgba(255,255,255,0.34);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+  }
+
+  .about-trustline {
+    margin-top: 24px;
+    color: rgba(255,255,255,0.88);
+    font-weight: 850;
+  }
+
+  .about-trustline span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .about-trustline svg,
+  .about-check-list svg {
+    color: var(--orange);
+    flex: 0 0 auto;
+  }
+
+  .about-stats {
+    position: relative;
+    z-index: 2;
+    margin-top: -58px;
+    padding-bottom: 36px;
+  }
+
+  .about-stats__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .about-stat-card,
+  .about-reason-card,
+  .about-seller-card,
+  .about-step-card,
+  .about-faq-item {
+    border: 1px solid rgba(15,23,42,0.08);
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 18px 54px rgba(15,23,42,0.09);
+  }
+
+  .about-stat-card {
+    padding: 24px;
+  }
+
+  .about-stat-card strong {
+    display: block;
+    color: var(--orange);
+    font-size: clamp(34px, 4vw, 54px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .about-stat-card span {
+    display: block;
+    margin-top: 8px;
+    color: var(--muted);
+    font-weight: 850;
+  }
+
+  .about-section {
+    padding: clamp(72px, 9vw, 118px) 0;
+  }
+
+  .about-split,
+  .about-proof__grid,
+  .about-final__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(34px, 6vw, 82px);
+    align-items: center;
+  }
+
+  .about-section h2,
+  .about-dark h2,
+  .about-final h2 {
+    font-size: clamp(36px, 5vw, 70px);
+  }
+
+  .about-copy p,
+  .about-section-head p,
+  .about-dark p,
+  .about-proof p,
+  .about-final p {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  .about-copy p + p {
+    margin-top: 18px;
+  }
+
+  .about-intro {
+    padding-top: 58px;
+  }
+
+  .about-reasons,
+  .about-process,
+  .about-faq {
+    background:
+      radial-gradient(circle at top right, rgba(255,107,0,0.08), transparent 28rem),
+      #f7f8fa;
+  }
+
+  .about-section-head {
+    max-width: 850px;
+    margin-bottom: 34px;
+  }
+
+  .about-section-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .about-reason-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .about-reason-card,
+  .about-step-card,
+  .about-faq-item {
+    padding: 26px;
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+
+  .about-reason-card:hover,
+  .about-seller-card:hover,
+  .about-step-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,107,0,0.34);
+    box-shadow: 0 28px 74px rgba(15,23,42,0.13);
+  }
+
+  .about-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    background: rgba(255,107,0,0.12);
+    color: var(--orange);
+  }
+
+  .about-reason-card h3,
+  .about-seller-card h3,
+  .about-step-card h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+  }
+
+  .about-reason-card p,
+  .about-seller-card p,
+  .about-step-card p,
+  .about-faq-item p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .about-dark {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(78px, 9vw, 126px) 0;
+    color: #fff;
+    background:
+      radial-gradient(circle at 80% 12%, rgba(255,107,0,0.22), transparent 26rem),
+      linear-gradient(135deg, #05070a, #07111f 58%, #0e1f34);
+  }
+
+  .about-dark__media {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(90deg, rgba(5,7,10,0.9), rgba(5,7,10,0.68)), url("/images/leistungen-hero.webp");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
+  }
+
+  .about-dark__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(34px, 5vw, 74px);
+    align-items: center;
+  }
+
+  .about-dark p,
+  .about-final p {
+    color: rgba(255,255,255,0.74);
+  }
+
+  .about-keyword-row {
+    margin-top: 28px;
+  }
+
+  .about-keyword-row a {
+    padding: 10px 13px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    color: rgba(255,255,255,0.86);
+    background: rgba(255,255,255,0.08);
+    font-size: 13px;
+    font-weight: 850;
+    transition: 180ms ease;
+  }
+
+  .about-keyword-row a:hover {
+    border-color: rgba(255,107,0,0.62);
+    color: #fff;
+    background: rgba(255,107,0,0.18);
+  }
+
+  .about-seller-grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .about-seller-card {
+    padding: 24px;
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: none;
+  }
+
+  .about-seller-card svg {
+    color: var(--orange);
+    margin-bottom: 14px;
+  }
+
+  .about-seller-card p {
+    color: rgba(255,255,255,0.72);
+  }
+
+  .about-step-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .about-step-card span {
+    display: inline-flex;
+    margin-bottom: 30px;
+    color: var(--orange);
+    font-size: 15px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+  }
+
+  .about-proof__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  }
+
+  .about-proof__image {
+    min-height: 480px;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 28px 90px rgba(15,23,42,0.14);
+  }
+
+  .about-proof__image img {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .about-check-list {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    margin: 26px 0 24px;
+    list-style: none;
+  }
+
+  .about-check-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #111827;
+    font-weight: 850;
+  }
+
+  .about-text-link {
+    color: var(--orange);
+    font-weight: 950;
+  }
+
+  .about-faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+
+  .about-faq-item {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .about-faq-item summary {
+    cursor: pointer;
+    padding: 22px 24px;
+    color: #111827;
+    font-size: 17px;
+    font-weight: 900;
+    list-style: none;
+  }
+
+  .about-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .about-faq-item summary::after {
+    content: "+";
+    float: right;
+    color: var(--orange);
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .about-faq-item[open] summary::after {
+    content: "-";
+  }
+
+  .about-faq-item p {
+    padding: 0 24px 24px;
+  }
+
+  .about-final {
+    padding: clamp(78px, 9vw, 116px) 0;
+    color: #fff;
+    background:
+      radial-gradient(circle at top left, rgba(255,107,0,0.28), transparent 28rem),
+      linear-gradient(135deg, #05070a, #07111f);
+  }
+
+  .about-final__grid {
+    grid-template-columns: minmax(0, 0.86fr) minmax(320px, 0.72fr);
+  }
+
+  .about-contact-strip {
+    margin-top: 28px;
+  }
+
+  .about-contact-strip a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 15px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-weight: 900;
+  }
+
+  .about-contact-strip svg {
+    color: var(--orange);
+  }
+
+  @media (max-width: 1040px) {
+    .about-split,
+    .about-dark__grid,
+    .about-proof__grid,
+    .about-final__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-reason-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .about-hero {
+      min-height: auto;
+      padding: 132px 0 64px;
+    }
+
+    .about-hero::before {
+      background-position: center top;
+    }
+
+    .about-hero__overlay {
+      background:
+        radial-gradient(circle at 22% 22%, rgba(255,107,0,0.18), transparent 18rem),
+        linear-gradient(90deg, rgba(4,8,13,0.86), rgba(7,17,31,0.64));
+    }
+
+    .about-hero h1 {
+      font-size: clamp(42px, 12vw, 58px);
+    }
+
+    .about-actions .btn,
+    .about-contact-strip a {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .about-trustline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .about-stats {
+      margin-top: 0;
+      padding: 18px 0 0;
+    }
+
+    .about-stats__grid,
+    .about-reason-grid,
+    .about-step-grid,
+    .about-faq-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-section {
+      padding: 68px 0;
+    }
+
+    .about-section-head--center {
+      text-align: left;
+    }
+
+    .about-proof__image,
+    .about-proof__image img {
+      min-height: 320px;
+    }
+  }
+</style>

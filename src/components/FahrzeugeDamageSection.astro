@@ -1,0 +1,128 @@
+---
+import { CircleCheck } from "@lucide/astro";
+
+const damagePoints = [
+  "Motorschaden",
+  "Getriebeschaden",
+  "Unfallschaden",
+  "Ohne TÜV / HU",
+  "Hohe Laufleistung",
+  "Ältere Baujahre",
+];
+
+const {
+  kicker = "AUCH BEI MÄNGELN",
+  title = "Auch Fahrzeuge mit Mängeln oder Schäden",
+  text = "Nicht jedes Nutzfahrzeug ist in bestem Zustand. Wir kaufen auch Fahrzeuge mit Schäden, hoher Laufleistung, älteren Baujahren oder ohne TÜV.",
+  points = damagePoints,
+} = Astro.props as {
+  kicker?: string;
+  title?: string;
+  text?: string;
+  points?: string[];
+};
+---
+
+<section class="damage-section">
+  <div class="container damage-layout">
+    <div class="damage-copy" data-animate>
+      <span>{kicker}</span>
+      <h2>{title}</h2>
+    </div>
+
+    <div class="damage-content" data-animate>
+      <p>{text}</p>
+
+      <div class="damage-grid">
+        {points.map((point) => (
+          <div class="damage-point">
+            <CircleCheck aria-hidden="true" />
+            <strong>{point}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .damage-section {
+    padding: 84px 0 34px;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(255,107,0,0.05), transparent 18rem),
+      #fff;
+  }
+
+  .damage-layout {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 76px;
+    align-items: start;
+  }
+
+  .damage-copy span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .damage-copy h2 {
+    max-width: 620px;
+    margin: 14px 0 0;
+    font-size: clamp(36px, 5vw, 62px);
+    line-height: 1;
+    letter-spacing: -0.072em;
+  }
+
+  .damage-content p {
+    max-width: 700px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  .damage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 34px;
+    margin-top: 30px;
+  }
+
+  .damage-point {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .damage-point :global(svg) {
+    width: 20px;
+    height: 20px;
+    color: var(--orange);
+    flex: 0 0 auto;
+  }
+
+  .damage-point strong {
+    font-size: 16px;
+    color: #111827;
+  }
+
+  @media (max-width: 900px) {
+    .damage-layout {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .damage-section {
+      padding: 62px 0 26px;
+    }
+
+    .damage-grid {
+      grid-template-columns: 1fr;
+      gap: 13px;
+    }
+  }
+</style>

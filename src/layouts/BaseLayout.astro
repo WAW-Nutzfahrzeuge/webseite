@@ -1,0 +1,92 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site";
+import { createLocalBusinessSchema } from "../utils/seo";
+import { getAlternates, type Locale } from "../data/i18n";
+
+const {
+    title = "WAW Nutzfahrzeuge",
+    description = "",
+    canonical = "",
+    schema = [],
+    lang = "de"
+} = Astro.props;
+
+const currentLang = lang as Locale;
+const schemaItems = [
+    createLocalBusinessSchema(canonical || site.url, description || site.description),
+    ...(Array.isArray(schema) ? schema : [schema]),
+].filter(Boolean);
+
+const alternateLinks = getAlternates(Astro.url.pathname).map((item) => ({
+    hreflang: item.locale,
+    href: new URL(item.href, site.url).toString(),
+}));
+const xDefaultHref = new URL(getAlternates(Astro.url.pathname).find((item) => item.locale === "de")?.href || "/", site.url).toString();
+---
+
+<!doctype html>
+<html lang={currentLang}>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {canonical && <link rel="canonical" href={canonical} />}
+    {alternateLinks.map((item) => (
+        <link rel="alternate" hreflang={item.hreflang} href={item.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+
+    <title>{title}</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://www.wawnutzfahrzeuge.de/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://www.wawnutzfahrzeuge.de/og-image.png" />
+
+    <slot name="head" />
+
+    {schemaItems.map((item) => (
+        <script type="application/ld+json" set:html={JSON.stringify(item)} />
+    ))}
+</head>
+
+<body>
+<div class="bg-grid"></div>
+
+<slot />
+</body>
+</html>
+
+<style>
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .bg-grid {
+        position: fixed;
+        inset: 0;
+
+        background-image:
+                linear-gradient(rgba(15,23,42,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15,23,42,0.025) 1px, transparent 1px);
+
+        background-size: 64px 64px;
+
+        mask-image: radial-gradient(circle at center, black, transparent 92%);
+
+        pointer-events: none;
+
+        z-index: -3;
+    }
+</style>

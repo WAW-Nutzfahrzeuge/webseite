@@ -1,0 +1,17 @@
+---
+import LocalizedLandingPage from "../../components/LocalizedLandingPage.astro";
+import { locales, type Locale } from "../../data/i18n";
+
+export function getStaticPaths() {
+  return locales
+    .filter((locale) => locale !== "de")
+    .map((lang) => ({
+      params: { lang },
+      props: { lang },
+    }));
+}
+
+const { lang } = Astro.props as { lang: Locale };
+---
+
+<LocalizedLandingPage lang={lang} pageKey="home" />

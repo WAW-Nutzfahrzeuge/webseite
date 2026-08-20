@@ -1,0 +1,198 @@
+---
+import { CircleCheck, PhoneCall } from "@lucide/astro";
+import { site } from "../data/site";
+
+const defaultPoints = [
+  "Erfahrung seit 1995 im Nutzfahrzeughandel",
+      "Direkte Abstimmung mit Ansprechpartnern",
+  "Auch Fahrzeuge mit Schäden oder hoher Laufleistung",
+  "Alle Marken und Modelle",
+];
+
+const {
+  kicker = "TRANSPARENT & PROFESSIONELL",
+  title = "Ihr Nutzfahrzeugverkauf in erfahrenen Händen",
+  text = "Wir sind Ansprechpartner für den Ankauf von LKW, Aufliegern, Anhängern, Transportern, Baumaschinen und kompletten Fuhrparks. Unser Ziel ist eine klare Abwicklung ohne unnötige Zwischenschritte.",
+  points = defaultPoints,
+  imageAlt = "WAW Nutzfahrzeuge Ansprechpartner beim Fahrzeugankauf",
+  callLabel = "Direkt erreichbar",
+} = Astro.props;
+---
+
+<section class="ablauf-info">
+  <div class="container info-layout">
+    <div class="info-copy" data-animate>
+      <span>{kicker}</span>
+      <h2>{title}</h2>
+      <p>{text}</p>
+
+      <ul>
+        {points.map((point) => (
+          <li>
+            <CircleCheck aria-hidden="true" />
+            <span>{point}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="info-media" data-animate>
+      <img src="/images/about-photo.webp" alt={imageAlt} loading="eager" />
+      <a href={`tel:${site.phoneHref}`} class="media-call">
+        <span>
+          <PhoneCall aria-hidden="true" />
+        </span>
+        <div>
+          <small>{callLabel}</small>
+          <strong>{site.phoneDisplay}</strong>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ablauf-info {
+    padding: 88px 0;
+    background:
+      radial-gradient(circle at 72% 24%, rgba(15,23,42,0.07), transparent 22rem),
+      #fff;
+  }
+
+  .info-layout {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 72px;
+    align-items: center;
+  }
+
+  .info-copy span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .info-copy h2 {
+    margin: 14px 0 0;
+    font-size: clamp(36px, 5vw, 62px);
+    line-height: 1;
+    letter-spacing: -0.07em;
+  }
+
+  .info-copy p {
+    max-width: 640px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .info-copy ul {
+    display: grid;
+    gap: 12px;
+    margin: 30px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .info-copy li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-weight: 800;
+    line-height: 1.45;
+  }
+
+  .info-copy li :global(svg) {
+    width: 19px;
+    height: 19px;
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--orange);
+  }
+
+  .info-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    min-height: 420px;
+    box-shadow: var(--shadow);
+  }
+
+  .info-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .media-call {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 270px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.94);
+    border: 1px solid rgba(255,255,255,0.64);
+    box-shadow: 0 16px 46px rgba(15,23,42,0.16);
+  }
+
+  .media-call > span {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(255,107,0,0.12);
+    color: var(--orange);
+  }
+
+  .media-call :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+
+  .media-call small {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .media-call strong {
+    display: block;
+    color: #111827;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 900px) {
+    .info-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .ablauf-info {
+      padding: 64px 0;
+    }
+
+    .info-media,
+    .info-media img {
+      min-height: 300px;
+    }
+
+    .media-call {
+      min-width: 0;
+      width: calc(100% - 28px);
+    }
+  }
+</style>

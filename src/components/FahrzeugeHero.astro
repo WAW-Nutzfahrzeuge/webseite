@@ -1,0 +1,144 @@
+---
+const {
+  kicker = "FAHRZEUGE",
+  h1 = "Diese Fahrzeuge können Sie uns anbieten.",
+  text = "Ob LKW, Sattelzugmaschine, Auflieger, Anhänger, Transporter, Baumaschine oder kompletter Fuhrpark: Wir kaufen gewerbliche Fahrzeuge direkt an.",
+  trustline = ["Faire Preise", "Schnelle Abwicklung", "Deutschland- und europaweit"],
+} = Astro.props as {
+  kicker?: string;
+  h1?: string;
+  text?: string;
+  trustline?: string[];
+};
+---
+
+<section class="fahrzeuge-hero">
+  <div class="fahrzeuge-hero-bg" aria-hidden="true"></div>
+  <div class="container fahrzeuge-hero-inner">
+    <div class="fahrzeuge-hero-copy reveal">
+      <span class="fahrzeuge-kicker">{kicker}</span>
+      <h1>{h1}</h1>
+      <p>{text}</p>
+
+      <div class="fahrzeuge-trustline">
+        {trustline.map((item) => <span>{item}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fahrzeuge-hero {
+    position: relative;
+    min-height: 720px;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+    background: #05070a;
+  }
+
+  .fahrzeuge-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.82) 0%, rgba(5,7,10,0.5) 45%, rgba(5,7,10,0.12) 100%),
+      linear-gradient(180deg, rgba(5,7,10,0.12), rgba(5,7,10,0.44)),
+      url("/images/fahrzeug_lkw.webp");
+    background-size: cover;
+    background-position: center right;
+  }
+
+  .fahrzeuge-hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 34%, rgba(255,107,0,0.16), transparent 23rem),
+      linear-gradient(180deg, transparent 68%, rgba(5,7,10,0.24));
+  }
+
+  .fahrzeuge-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 128px 0 82px;
+  }
+
+  .fahrzeuge-hero-copy {
+    max-width: 720px;
+  }
+
+  .fahrzeuge-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .fahrzeuge-hero h1 {
+    max-width: 760px;
+    margin: 18px 0 0;
+    color: #fff;
+    font-size: clamp(54px, 7vw, 96px);
+    line-height: 0.92;
+    letter-spacing: -0.078em;
+  }
+
+  .fahrzeuge-hero p {
+    max-width: 620px;
+    margin: 28px 0 0;
+    color: rgba(255,255,255,0.82);
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.7;
+  }
+
+  .fahrzeuge-trustline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+    margin-top: 44px;
+    color: rgba(255,255,255,0.9);
+    font-size: 15px;
+    font-weight: 850;
+  }
+
+  .fahrzeuge-trustline span::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    border-radius: 999px;
+    background: var(--orange);
+    box-shadow: 0 0 0 4px rgba(255,107,0,0.16);
+  }
+
+  @media (max-width: 760px) {
+    .fahrzeuge-hero {
+      min-height: 720px;
+    }
+
+    .fahrzeuge-hero-bg {
+      background:
+        linear-gradient(180deg, rgba(5,7,10,0.48), rgba(5,7,10,0.74)),
+        linear-gradient(90deg, rgba(5,7,10,0.64), rgba(5,7,10,0.18)),
+        url("/images/fahrzeug_lkw.webp");
+      background-size: cover;
+      background-position: center top;
+    }
+
+    .fahrzeuge-hero-inner {
+      padding: 112px 0 58px;
+    }
+
+    .fahrzeuge-hero h1 {
+      font-size: clamp(44px, 13vw, 64px);
+    }
+
+    .fahrzeuge-trustline {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 30px;
+    }
+  }
+</style>

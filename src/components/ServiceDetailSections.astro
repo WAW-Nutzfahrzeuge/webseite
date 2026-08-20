@@ -1,0 +1,314 @@
+---
+import { ArrowRight, CircleCheck } from "@lucide/astro";
+
+interface Props {
+  services: any[];
+}
+
+const { services } = Astro.props;
+---
+
+<section class="service-details-modern" aria-labelledby="service-details-title">
+  <div class="container">
+    <div class="service-details-head" data-animate>
+      <span>LEISTUNGEN IM DETAIL</span>
+      <h2 id="service-details-title">Konkrete Ankaufbereiche für Unternehmen, Händler und Fuhrparks.</h2>
+      <p>
+        Hier finden Sie die wichtigsten Fahrzeugarten, typische Aufbauten und
+        Situationen, in denen sich eine Anfrage lohnt.
+      </p>
+    </div>
+
+    <div class="service-detail-list">
+      {services.map((service, index) => (
+        <article class={`service-detail-panel ${index % 2 === 1 ? "is-reversed" : ""}`} id={service.id} data-animate>
+          <div class="service-detail-copy">
+            <span>{service.eyebrow}</span>
+            <h2>{service.detailTitle}</h2>
+            <p>{service.description}</p>
+
+            <div class="service-detail-points">
+              {service.detailItems.map((item) => (
+                <div>
+                  <CircleCheck size={19} stroke-width={2.4} aria-hidden="true" />
+                  <strong>{item}</strong>
+                </div>
+              ))}
+            </div>
+
+            <div class="service-detail-actions">
+              <a href="/kontakt" class="btn btn-primary">
+                Fahrzeug anbieten
+                <ArrowRight size={17} stroke-width={2.5} aria-hidden="true" />
+              </a>
+              <a href="/ablauf" class="service-detail-link">Ablauf ansehen</a>
+              <a href="/fahrzeuge" class="service-detail-link">Alle Fahrzeugtypen</a>
+            </div>
+          </div>
+
+          <div class="service-detail-visual">
+            <img src={service.imageSrc} alt={`${service.title} bei WAW anbieten`} loading="lazy" />
+            <span class="service-detail-number">{String(index + 1).padStart(2, "0")}</span>
+            <strong>{service.title}</strong>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-details-modern {
+    padding: clamp(76px, 8vw, 120px) 0;
+    background:
+      radial-gradient(circle at 85% 8%, rgba(255,107,0,0.08), transparent 24rem),
+      linear-gradient(180deg, #f6f7f9, #eef2f6);
+  }
+
+  .service-details-head {
+    max-width: 920px;
+    margin-bottom: 38px;
+  }
+
+  .service-details-head span,
+  .service-detail-copy > span {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.11em;
+  }
+
+  .service-details-head h2 {
+    margin: 14px 0 0;
+    color: #111827;
+    font-size: clamp(38px, 5vw, 66px);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+
+  .service-details-head p {
+    max-width: 720px;
+    margin: 18px 0 0;
+    color: #5b6675;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .service-detail-list {
+    display: grid;
+    gap: 20px;
+  }
+
+  .service-detail-panel {
+    scroll-margin-top: 110px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.26fr) minmax(320px, 0.74fr);
+    gap: 0;
+    overflow: hidden;
+    align-items: center;
+    border: 1px solid rgba(17,24,39,0.08);
+    border-radius: 30px;
+    background: #fff;
+    box-shadow: 0 22px 74px rgba(15,23,42,0.08);
+  }
+
+  .service-detail-panel.is-reversed {
+    grid-template-columns: minmax(320px, 0.74fr) minmax(0, 1.26fr);
+  }
+
+  .service-detail-panel.is-reversed .service-detail-copy {
+    order: 2;
+  }
+
+  .service-detail-panel.is-reversed .service-detail-visual {
+    order: 1;
+  }
+
+  .service-detail-copy {
+    padding: clamp(28px, 4vw, 52px);
+  }
+
+  .service-detail-copy h2 {
+    max-width: 820px;
+    margin: 12px 0 0;
+    color: #111827;
+    font-size: clamp(30px, 4vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.065em;
+  }
+
+  .service-detail-copy p {
+    max-width: 860px;
+    margin: 20px 0 0;
+    color: #5b6675;
+    font-size: 17px;
+    line-height: 1.74;
+  }
+
+  .service-detail-points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .service-detail-points div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 13px;
+    border: 1px solid rgba(17,24,39,0.07);
+    border-radius: 15px;
+    background: #f8fafc;
+  }
+
+  .service-detail-points svg {
+    flex: 0 0 auto;
+    color: var(--orange);
+  }
+
+  .service-detail-points strong {
+    color: #1f2937;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .service-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .service-detail-actions .btn {
+    gap: 9px;
+  }
+
+  .service-detail-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 50px;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 0 6px;
+    text-decoration: none;
+  }
+
+  .service-detail-link:hover {
+    color: var(--orange);
+  }
+
+  .service-detail-visual {
+    position: relative;
+    display: grid;
+    align-content: end;
+    min-height: 0;
+    height: clamp(230px, 24vw, 330px);
+    margin: clamp(18px, 2.4vw, 30px);
+    padding: clamp(22px, 3vw, 32px);
+    border-radius: 24px;
+    color: #fff;
+    background: #07111f;
+    overflow: hidden;
+  }
+
+  .service-detail-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(circle at 28% 24%, rgba(255,107,0,0.24), transparent 18rem),
+      linear-gradient(180deg, rgba(7,17,31,0.1), rgba(7,17,31,0.78));
+  }
+
+  .service-detail-visual > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .service-detail-panel:hover .service-detail-visual > img {
+    transform: scale(1.045);
+  }
+
+  .service-detail-number {
+    position: absolute;
+    z-index: 2;
+    top: 28px;
+    right: 30px;
+    color: rgba(255,255,255,0.32);
+    font-size: 82px;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.08em;
+  }
+
+  .service-detail-visual strong {
+    position: relative;
+    z-index: 2;
+    max-width: 420px;
+    color: #fff;
+    font-size: clamp(27px, 3vw, 40px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  @media (max-width: 960px) {
+    .service-detail-panel,
+    .service-detail-panel.is-reversed {
+      grid-template-columns: 1fr;
+    }
+
+    .service-detail-panel.is-reversed .service-detail-copy,
+    .service-detail-panel.is-reversed .service-detail-visual {
+      order: initial;
+    }
+
+    .service-detail-visual {
+      height: 280px;
+      margin: 0 clamp(22px, 5vw, 42px) clamp(22px, 5vw, 42px);
+    }
+  }
+
+  @media (max-width: 680px) {
+    .service-details-modern {
+      padding: 64px 0;
+    }
+
+    .service-details-head h2,
+    .service-detail-copy h2 {
+      font-size: clamp(32px, 10vw, 46px);
+    }
+
+    .service-detail-panel {
+      border-radius: 22px;
+    }
+
+    .service-detail-visual {
+      height: 220px;
+      margin: 0 18px 18px;
+      border-radius: 18px;
+    }
+
+    .service-detail-points {
+      grid-template-columns: 1fr;
+    }
+
+    .service-detail-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .service-detail-link {
+      justify-content: center;
+    }
+  }
+</style>

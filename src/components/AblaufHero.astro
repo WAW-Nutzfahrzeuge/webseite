@@ -1,0 +1,171 @@
+---
+const {
+  kicker = "ABLAUF",
+  title = "LKW Verkauf klar abgewickelt.",
+  text = "Sie senden die wichtigsten Fahrzeugdaten. Wir melden uns zurück, klären offene Fragen und stimmen Angebot, Übergabe und mögliche Abholung direkt ab.",
+  primaryHref = "#anfrage",
+  primaryLabel = "Fahrzeug anbieten",
+  secondaryHref = "/leistungen",
+  secondaryLabel = "Leistungen ansehen",
+  trustline = ["Direkte Kommunikation", "Faire Preise", "Deutschland- und europaweit"],
+} = Astro.props;
+---
+
+<section class="ablauf-hero">
+  <div class="ablauf-hero-bg" aria-hidden="true"></div>
+  <div class="container ablauf-hero-inner">
+    <div class="ablauf-hero-copy reveal">
+      <span class="ablauf-kicker">{kicker}</span>
+      <h1>{title}</h1>
+      <p>{text}</p>
+
+      <div class="ablauf-hero-actions">
+        <a href={primaryHref} class="btn btn-primary">{primaryLabel}</a>
+        <a href={secondaryHref} class="btn ablauf-btn-secondary">{secondaryLabel}</a>
+      </div>
+
+      <div class="ablauf-trustline">
+        {trustline.map((item) => <span>{item}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ablauf-hero {
+    position: relative;
+    min-height: 760px;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+    background: #05070a;
+  }
+
+  .ablauf-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.82) 0%, rgba(5,7,10,0.52) 44%, rgba(5,7,10,0.1) 100%),
+      linear-gradient(180deg, rgba(5,7,10,0.18), rgba(5,7,10,0.5)),
+      url("/images/ablauf-inspection.webp");
+    background-size: cover;
+    background-position: center right;
+  }
+
+  .ablauf-hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 24% 38%, rgba(255,107,0,0.16), transparent 22rem),
+      linear-gradient(180deg, transparent 62%, rgba(5,7,10,0.24));
+  }
+
+  .ablauf-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 130px 0 86px;
+  }
+
+  .ablauf-hero-copy {
+    max-width: 690px;
+  }
+
+  .ablauf-kicker {
+    display: inline-block;
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .ablauf-hero h1 {
+    margin: 18px 0 0;
+    color: #fff;
+    font-size: clamp(54px, 7vw, 96px);
+    line-height: 0.92;
+    letter-spacing: -0.078em;
+  }
+
+  .ablauf-hero p {
+    max-width: 560px;
+    margin: 28px 0 0;
+    color: rgba(255,255,255,0.82);
+    font-size: clamp(17px, 1.55vw, 21px);
+    line-height: 1.7;
+  }
+
+  .ablauf-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 34px;
+  }
+
+  .ablauf-btn-secondary {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.34);
+  }
+
+  .ablauf-btn-secondary:hover {
+    background: rgba(255,255,255,0.16);
+    transform: translateY(-3px);
+  }
+
+  .ablauf-trustline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 42px;
+    color: rgba(255,255,255,0.9);
+    font-size: 15px;
+    font-weight: 850;
+  }
+
+  .ablauf-trustline span::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 9px;
+    border-radius: 999px;
+    background: var(--orange);
+    box-shadow: 0 0 0 4px rgba(255,107,0,0.16);
+  }
+
+  @media (max-width: 760px) {
+    .ablauf-hero {
+      min-height: 760px;
+    }
+
+    .ablauf-hero-bg {
+      background-position: 64% center;
+      background:
+        linear-gradient(180deg, rgba(5,7,10,0.5), rgba(5,7,10,0.76)),
+        linear-gradient(90deg, rgba(5,7,10,0.64), rgba(5,7,10,0.18)),
+        url("/images/ablauf-inspection.webp");
+      background-size: cover;
+      background-position: center top;
+    }
+
+    .ablauf-hero-inner {
+      padding: 112px 0 60px;
+    }
+
+    .ablauf-hero h1 {
+      font-size: clamp(46px, 14vw, 64px);
+    }
+
+    .ablauf-hero-actions {
+      flex-direction: column;
+    }
+
+    .ablauf-trustline {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 30px;
+    }
+  }
+</style>

@@ -1,0 +1,367 @@
+---
+import { ArrowRight, MapPin, PhoneCall, Route, Truck } from "@lucide/astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FloatingContact from "../../components/FloatingContact.astro";
+import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import { site } from "../../data/site";
+import { stateGroups } from "../../data/cities";
+import { absoluteUrl, createBreadcrumbSchema } from "../../utils/seo";
+
+export async function getStaticPaths() {
+  return stateGroups.map((group) => ({
+    params: { state: group.slug },
+    props: { group },
+  }));
+}
+
+const { group } = Astro.props;
+const stateCities = [...group.cities].sort((a, b) => a.name.localeCompare(b.name, "de"));
+const topCities = stateCities.slice(0, 12);
+const canonical = absoluteUrl(`/standorte/${group.slug}`);
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${canonical}#staedte`,
+    name: `LKW Ankauf ${group.name}`,
+    itemListElement: stateCities.map((city, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: `LKW verkaufen ${city.name}`,
+      url: absoluteUrl(`/lkw-verkaufen/${city.slug}`),
+    })),
+  },
+  createBreadcrumbSchema([
+    { name: "Startseite", url: absoluteUrl("/") },
+    { name: "Standorte", url: absoluteUrl("/standorte") },
+    { name: group.name, url: canonical },
+  ]),
+];
+---
+
+<BaseLayout
+  title={`LKW Ankauf ${group.name} | Nutzfahrzeuge anbieten | WAW`}
+  description={`LKW in ${group.name} verkaufen? WAW kauft Nutzfahrzeuge, Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks direkt an.`}
+  canonical={canonical}
+  schema={schema}
+>
+  <Header />
+
+  <main>
+    <section class="state-hero">
+      <div class="container state-hero-grid">
+        <div>
+          <span class="state-kicker">STANDORTE IN {group.name.toUpperCase()}</span>
+          <h1>LKW Ankauf in {group.name}.</h1>
+          <p>
+            Wir kaufen LKW, Nutzfahrzeuge, Auflieger, Anhänger, Transporter,
+            Baumaschinen und Fuhrparks in {group.name} direkt an. Wählen
+            Sie Ihre Stadt oder senden Sie uns direkt Ihre Fahrzeugdaten.
+          </p>
+          <div class="state-actions">
+            <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+            <a href={`tel:${site.phoneHref}`} class="state-call">
+              <PhoneCall size={18} stroke-width={2.4} aria-hidden="true" />
+              Direkt anrufen
+            </a>
+          </div>
+        </div>
+
+        <aside class="state-panel" aria-label={`Übersicht ${group.name}`}>
+          <div>
+            <Truck size={28} stroke-width={2.2} aria-hidden="true" />
+            <strong>{stateCities.length}</strong>
+            <span>Stadtseiten</span>
+          </div>
+          <div>
+            <Route size={28} stroke-width={2.2} aria-hidden="true" />
+            <strong>DE</strong>
+            <span>Deutschland- und europaweite Abwicklung</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="state-cities" aria-labelledby="state-cities-title">
+      <div class="container">
+        <div class="state-section-head">
+          <span>REGIONALE STADTSEITEN</span>
+          <h2 id="state-cities-title">LKW verkaufen in {group.name}</h2>
+          <p>
+            Finden Sie direkt die passende regionale Seite, wenn Sie einen LKW,
+            Auflieger, Transporter, eine Baumaschine oder mehrere Fahrzeuge verkaufen möchten.
+          </p>
+        </div>
+
+        <div class="state-city-grid">
+          {stateCities.map((city) => (
+            <a href={`/lkw-verkaufen/${city.slug}`} class="state-city-card">
+              <MapPin size={19} stroke-width={2.4} aria-hidden="true" />
+              <strong>{city.name}</strong>
+              <span>{city.cardText}</span>
+              <em>
+                LKW verkaufen {city.name}
+                <ArrowRight size={15} stroke-width={2.5} aria-hidden="true" />
+              </em>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="state-content">
+      <div class="container state-content-grid">
+        <article>
+          <span>LKW ANKAUF {group.name.toUpperCase()}</span>
+          <h2>Regional erreichbar, direkt mit uns verbunden.</h2>
+          <p>
+            Ob einzelne Zugmaschine, Auflieger, Transporter, Baumaschine oder
+            kompletter Fuhrpark: Sie können Fahrzeuge aus {group.name} direkt
+            anbieten und die weitere Abwicklung mit uns abstimmen.
+          </p>
+        </article>
+        <article>
+          <span>WICHTIGE REGIONEN</span>
+          <h3>Wichtige Städte in {group.name}</h3>
+          <p>
+            Besonders relevante Stadtseiten in {group.name}: {topCities.map((city) => city.name).join(", ")}.
+            Jede Stadtseite führt zu regional passenden Informationen und
+            Kontaktmöglichkeiten für den LKW und Nutzfahrzeuge Ankauf.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="state-final">
+      <div class="container state-final-panel">
+        <div>
+          <span>FAHRZEUG VERKAUFEN?</span>
+          <h2>Jetzt Nutzfahrzeug aus {group.name} anbieten.</h2>
+          <p>
+            Senden Sie uns die wichtigsten Fahrzeugdaten. Wir melden uns
+            schnellstmöglich zur weiteren Abstimmung.
+          </p>
+        </div>
+        <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>
+
+<style>
+  .state-kicker,
+  .state-section-head span,
+  .state-content span,
+  .state-final-panel span {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.11em;
+  }
+
+  .state-hero {
+    padding: clamp(82px, 9vw, 126px) 0 clamp(58px, 7vw, 94px);
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255,107,0,0.12), transparent 28rem),
+      linear-gradient(180deg, #fff, #f5f7fa);
+  }
+
+  .state-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+    gap: clamp(30px, 6vw, 82px);
+    align-items: center;
+  }
+
+  .state-hero h1 {
+    max-width: 880px;
+    margin: 16px 0 0;
+    color: #111827;
+    font-size: clamp(50px, 7vw, 98px);
+    line-height: 0.9;
+    letter-spacing: -0.08em;
+  }
+
+  .state-hero p {
+    max-width: 760px;
+    margin: 26px 0 0;
+    color: #5b6675;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.7;
+  }
+
+  .state-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .state-call {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid rgba(17,24,39,0.12);
+    border-radius: 999px;
+    background: #fff;
+    color: #111827;
+    font-weight: 900;
+    padding: 15px 23px;
+    box-shadow: 0 14px 36px rgba(15,23,42,0.08);
+  }
+
+  .state-panel {
+    display: grid;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 32px;
+    background: #07111f;
+    box-shadow: 0 28px 80px rgba(7,17,31,0.18);
+  }
+
+  .state-panel div {
+    display: grid;
+    gap: 8px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 22px;
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .state-panel svg { color: var(--orange); }
+  .state-panel strong { font-size: 42px; line-height: 1; letter-spacing: -0.07em; }
+  .state-panel span { color: rgba(255,255,255,0.7); font-weight: 780; }
+
+  .state-cities,
+  .state-content,
+  .state-final {
+    padding: clamp(72px, 8vw, 112px) 0;
+    background: #fff;
+  }
+
+  .state-section-head {
+    max-width: 860px;
+    margin-bottom: 34px;
+  }
+
+  .state-section-head h2,
+  .state-content h2,
+  .state-final-panel h2 {
+    margin: 12px 0 0;
+    color: #111827;
+    font-size: clamp(36px, 5vw, 66px);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+
+  .state-section-head p,
+  .state-content p,
+  .state-final-panel p {
+    color: #5b6675;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .state-city-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .state-city-card {
+    display: grid;
+    gap: 10px;
+    min-height: 190px;
+    padding: 22px;
+    border: 1px solid rgba(15,23,42,0.08);
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 18px 48px rgba(15,23,42,0.07);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .state-city-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,107,0,0.28);
+    box-shadow: 0 24px 64px rgba(15,23,42,0.11);
+  }
+
+  .state-city-card svg { color: var(--orange); }
+  .state-city-card strong { color: #111827; font-size: 23px; letter-spacing: -0.04em; }
+  .state-city-card span { color: #5b6675; line-height: 1.55; }
+  .state-city-card em {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    color: var(--orange);
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  .state-content { background: #f5f7fa; }
+
+  .state-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 0.85fr;
+    gap: 18px;
+  }
+
+  .state-content article,
+  .state-final-panel {
+    padding: 34px;
+    border-radius: 30px;
+    background: #fff;
+    border: 1px solid rgba(15,23,42,0.08);
+    box-shadow: 0 18px 48px rgba(15,23,42,0.07);
+  }
+
+  .state-content h3 {
+    margin: 12px 0 0;
+    color: #111827;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .state-final {
+    background: #07111f;
+  }
+
+  .state-final-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background:
+      radial-gradient(circle at 12% 22%, rgba(255,107,0,0.18), transparent 24rem),
+      #0b1726;
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .state-final-panel h2 { color: #fff; }
+  .state-final-panel p { color: rgba(255,255,255,0.72); }
+
+  @media (max-width: 1020px) {
+    .state-city-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .state-content-grid,
+    .state-hero-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .state-city-grid { grid-template-columns: 1fr; }
+    .state-final-panel { align-items: stretch; flex-direction: column; }
+    .state-actions a,
+    .state-final-panel a { width: 100%; }
+  }
+</style>

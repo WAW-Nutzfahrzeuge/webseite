@@ -1,0 +1,194 @@
+---
+import { BadgeEuro, ClockCheck, Lock, ShieldCheck, Truck } from "@lucide/astro";
+
+const iconMap = {
+  shield: ShieldCheck,
+  clock: ClockCheck,
+  euro: BadgeEuro,
+  truck: Truck,
+  lock: Lock,
+};
+
+const defaultBenefits = [
+  {
+    iconKey: "shield",
+    title: "Sicher & zuverlässig",
+    text: "Klare Abstimmung und nachvollziehbare Schritte.",
+  },
+  {
+    iconKey: "clock",
+    title: "Schnelle Abwicklung",
+    text: "Wir melden uns schnellstmöglich und klären offene Fragen direkt.",
+  },
+  {
+    iconKey: "euro",
+    title: "Faire Preise",
+    text: "Angebote auf Basis von Fahrzeugdaten, Zustand und Standort.",
+  },
+  {
+    iconKey: "truck",
+    title: "Abholung möglich",
+    text: "Übergabe oder Abholung wird je nach Fahrzeug und Standort abgestimmt.",
+  },
+  {
+    iconKey: "lock",
+    title: "Diskrete Abwicklung",
+    text: "Professionelle und vertrauliche Bearbeitung.",
+  },
+];
+
+const {
+  kicker = "WARUM WAW?",
+  title = "Warum Unternehmen WAW direkt kontaktieren",
+  benefits = defaultBenefits,
+} = Astro.props;
+---
+
+<section class="contact-benefits">
+  <div class="container">
+    <div class="contact-benefits-head" data-animate>
+      <span>{kicker}</span>
+      <h2>{title}</h2>
+    </div>
+
+    <div class="contact-benefits-grid">
+      {benefits.map((benefit) => {
+        const Icon = iconMap[benefit.iconKey as keyof typeof iconMap] || ShieldCheck;
+        return (
+          <article class="contact-benefit-card" data-animate>
+            <div class="contact-benefit-icon">
+              <Icon size={26} stroke-width={2.2} />
+            </div>
+            <h3>{benefit.title}</h3>
+            <p>{benefit.text}</p>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-benefits {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(78px, 8vw, 118px) 0;
+    color: #fff;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.92), rgba(5,7,10,0.78)),
+      radial-gradient(circle at 82% 22%, rgba(255,107,0,0.2), transparent 24rem),
+      linear-gradient(135deg, #05070a, #07111f 52%, #071a33);
+    background-size: auto, auto, auto;
+    background-position: center;
+  }
+
+  .contact-benefits::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,107,0,0.18), transparent 25rem),
+      radial-gradient(circle at 78% 82%, rgba(255,255,255,0.08), transparent 24rem);
+    pointer-events: none;
+  }
+
+  .contact-benefits .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-benefits-head {
+    max-width: 760px;
+  }
+
+  .contact-benefits-head span {
+    color: #ffb06b;
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.11em;
+  }
+
+  .contact-benefits-head h2 {
+    margin: 14px 0 0;
+    color: #fff;
+    font-size: clamp(38px, 5vw, 66px);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+
+  .contact-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 42px;
+  }
+
+  .contact-benefit-card {
+    min-height: 220px;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 22px;
+    background: rgba(255,255,255,0.065);
+    box-shadow: 0 24px 66px rgba(0,0,0,0.22);
+    backdrop-filter: blur(16px);
+    transition: transform 190ms ease, border-color 190ms ease, background 190ms ease;
+  }
+
+  .contact-benefit-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,107,0,0.44);
+    background: rgba(255,255,255,0.09);
+  }
+
+  .contact-benefit-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: rgba(255,107,0,0.14);
+    color: var(--orange);
+  }
+
+  .contact-benefit-card h3 {
+    margin: 26px 0 10px;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: -0.035em;
+  }
+
+  .contact-benefit-card p {
+    margin: 0;
+    color: rgba(239,244,250,0.72);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1100px) {
+    .contact-benefits-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .contact-benefits {
+      padding: 68px 0;
+    }
+
+    .contact-benefits-head {
+      text-align: center;
+    }
+
+    .contact-benefits-head h2 {
+      font-size: clamp(34px, 11vw, 48px);
+    }
+
+    .contact-benefits-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-benefit-card {
+      min-height: 0;
+      text-align: center;
+    }
+  }
+</style>

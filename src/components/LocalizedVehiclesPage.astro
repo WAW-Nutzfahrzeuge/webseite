@@ -1,0 +1,208 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import ScrollAnimations from "./ScrollAnimations.astro";
+import FahrzeugeHero from "./FahrzeugeHero.astro";
+import FahrzeugCards from "./FahrzeugCards.astro";
+import FahrzeugeBenefits from "./FahrzeugeBenefits.astro";
+import FahrzeugeDamageSection from "./FahrzeugeDamageSection.astro";
+import FahrzeugeCTA from "./FahrzeugeCTA.astro";
+import { localizePath, type Locale } from "../data/i18n";
+import { absoluteUrl, createBreadcrumbSchema } from "../utils/seo";
+
+const { lang } = Astro.props as { lang: Exclude<Locale, "de"> };
+
+const copy = {
+  en: {
+    title: "Vehicles | Sell trucks, trailers & commercial vehicles | WAW",
+    description:
+      "WAW buys trucks, tractor units, semi-trailers, trailers, vans, construction machinery and fleets across Germany and Europe.",
+    breadcrumb: "Vehicles",
+    hero: {
+      kicker: "VEHICLES",
+      h1: "These vehicles can be offered to us.",
+      text:
+        "Whether truck, tractor unit, semi-trailer, trailer, van, construction machine or complete fleet: we purchase commercial vehicles directly.",
+      trustline: ["Fair prices", "Fast handling", "Germany and Europe-wide"],
+    },
+    cards: {
+      introKicker: "OUR PURCHASE AREAS",
+      introTitle: "We buy many types of trucks and commercial vehicles",
+      introText:
+        "Find the right category for your vehicle quickly. Every vehicle type can be offered individually or as part of a fleet.",
+      linkLabel: "More about purchase ->",
+      benefits: [
+        { label: "Many conditions possible", iconSrc: "/icons/lkw.png" },
+        { label: "Fast decision", iconSrc: "/icons/sattelzugmaschine.png" },
+        { label: "Pickup by agreement", iconSrc: "/icons/transporter.png" },
+        { label: "Direct payment", iconSrc: "/icons/auflieger.png" },
+        { label: "Discreet handling", iconSrc: "/icons/fuhrpark.png" },
+      ],
+      items: [
+        ["lkw", "Truck purchase", "Used trucks of different brands, weight classes and body types - including high mileage or defects.", "/images/fahrzeug_lkw.webp", "/icons/lkw.png"],
+        ["sattelzugmaschinen", "Tractor unit purchase", "Tractor units from different manufacturers and model years. Older vehicles or damaged units can also be offered.", "/images/fahrzeug_sattelzugmaschine.webp", "/icons/sattelzugmaschine.png"],
+        ["auflieger", "Semi-trailer purchase", "Curtainsiders, refrigerated trailers, tippers, low loaders and special semi-trailers from commercial use.", "/images/fahrzeug_auflieger.webp", "/icons/auflieger.png"],
+        ["anhaenger", "Trailer purchase", "Drawbar trailers, centre-axle trailers and special trailers for commercial use.", "/images/fahrzeuge_anhaenger.webp", "/icons/anhaenger.png"],
+        ["transporter", "Van purchase", "Vans and light commercial vehicles such as Sprinter, Crafter, Transit, Ducato and comparable models.", "/images/fahrzeug_transporter.webp", "/icons/transporter.png"],
+        ["baumaschinen", "Construction machinery purchase", "Excavators, wheel loaders, cranes, concrete mixers and other construction machinery - including defects.", "/images/fahrzeug_baumaschine.webp", "/icons/bagger.png"],
+        ["fuhrpark", "Fleet purchase", "Offer several trucks, mixed vehicle packages or complete fleets together.", "/images/fahrzeug_fuhrpark.webp", "/icons/fuhrpark.png"],
+      ],
+    },
+    benefits: {
+      kicker: "WHY WAW?",
+      title: "Sell trucks and commercial vehicles directly to WAW",
+      items: [
+        { title: "Safe & reliable", text: "Clear coordination from first contact to handover.", iconKey: "shield" },
+        { title: "Fast handling", text: "We respond as quickly as possible and discuss the next steps directly.", iconKey: "clock" },
+        { title: "Fair prices", text: "Market-oriented offers based on vehicle data, condition and location.", iconKey: "euro" },
+        { title: "Germany and Europe-wide", text: "Vehicles from Germany and Europe can be offered to us directly.", iconKey: "map" },
+      ],
+    },
+    damage: {
+      kicker: "ALSO WITH DEFECTS",
+      title: "Vehicles with defects or damage are also relevant",
+      text:
+        "Not every commercial vehicle is in perfect condition. We also buy vehicles with damage, high mileage, older model years or missing inspection.",
+      points: ["Engine damage", "Gearbox damage", "Accident damage", "Without inspection", "High mileage", "Older model years"],
+    },
+    cta: {
+      kicker: "SELL A VEHICLE?",
+      title: "Select vehicle type and send inquiry",
+      text:
+        "Send us vehicle type, year, mileage, condition, location and available photos. If data is missing, we clarify it together.",
+      callLabel: "Call",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Write now",
+      placeholders: {
+        name: "Name",
+        phone: "Phone",
+        email: "Email",
+        vehicle: "Vehicle type (e.g. truck, trailer)",
+        year: "Year",
+        mileage: "Mileage (approx.)",
+        message: "Additional vehicle information",
+      },
+      submitLabel: "Send inquiry",
+      sendingLabel: "Sending...",
+      source: "Vehicles page EN",
+      privacyText: "Your data will be treated confidentially and will not be passed on to third parties.",
+      fallbackError: "The inquiry could not be sent. Please try again or call directly.",
+    },
+  },
+  fr: {
+    title: "Véhicules | Vendre camions, remorques & utilitaires | WAW",
+    description:
+      "WAW rachète camions, tracteurs routiers, semi-remorques, remorques, fourgons, machines de chantier et flottes en Allemagne et en Europe.",
+    breadcrumb: "Véhicules",
+    hero: {
+      kicker: "VÉHICULES",
+      h1: "Ces véhicules peuvent nous être proposés.",
+      text:
+        "Camion, tracteur routier, semi-remorque, remorque, fourgon, machine de chantier ou flotte complète : nous achetons directement les véhicules utilitaires.",
+      trustline: ["Prix équitables", "Traitement rapide", "Allemagne et Europe"],
+    },
+    cards: {
+      introKicker: "NOS DOMAINES DE RACHAT",
+      introTitle: "Nous achetons de nombreux types de camions et utilitaires",
+      introText:
+        "Trouvez rapidement la catégorie adaptée à votre véhicule. Chaque type de véhicule peut être proposé seul ou dans le cadre d'une flotte.",
+      linkLabel: "Plus sur le rachat ->",
+      benefits: [
+        { label: "Nombreux états possibles", iconSrc: "/icons/lkw.png" },
+        { label: "Décision rapide", iconSrc: "/icons/sattelzugmaschine.png" },
+        { label: "Enlèvement sur accord", iconSrc: "/icons/transporter.png" },
+        { label: "Paiement direct", iconSrc: "/icons/auflieger.png" },
+        { label: "Traitement discret", iconSrc: "/icons/fuhrpark.png" },
+      ],
+      items: [
+        ["lkw", "Rachat de camions", "Camions d'occasion de différentes marques, catégories de poids et carrosseries - même avec kilométrage élevé ou défauts.", "/images/fahrzeug_lkw.webp", "/icons/lkw.png"],
+        ["sattelzugmaschinen", "Rachat de tracteurs routiers", "Tracteurs routiers de différents fabricants et années. Les véhicules anciens ou endommagés peuvent aussi être proposés.", "/images/fahrzeug_sattelzugmaschine.webp", "/icons/sattelzugmaschine.png"],
+        ["auflieger", "Rachat de semi-remorques", "Semi-remorques bâchées, frigorifiques, bennes, porte-engins et semi-remorques spéciales issues d'une utilisation professionnelle.", "/images/fahrzeug_auflieger.webp", "/icons/auflieger.png"],
+        ["anhaenger", "Rachat de remorques", "Remorques à timon, remorques à essieu central et remorques spéciales pour usage professionnel.", "/images/fahrzeuge_anhaenger.webp", "/icons/anhaenger.png"],
+        ["transporter", "Rachat de fourgons", "Fourgons et véhicules utilitaires légers comme Sprinter, Crafter, Transit, Ducato et modèles comparables.", "/images/fahrzeug_transporter.webp", "/icons/transporter.png"],
+        ["baumaschinen", "Rachat de machines de chantier", "Pelles, chargeuses, grues, bétonnières et autres machines de chantier - même avec défauts.", "/images/fahrzeug_baumaschine.webp", "/icons/bagger.png"],
+        ["fuhrpark", "Rachat de flottes", "Proposez plusieurs camions, lots mixtes de véhicules ou flottes complètes en une seule demande.", "/images/fahrzeug_fuhrpark.webp", "/icons/fuhrpark.png"],
+      ],
+    },
+    benefits: {
+      kicker: "POURQUOI WAW ?",
+      title: "Vendre camions et utilitaires directement à WAW",
+      items: [
+        { title: "Sûr & fiable", text: "Coordination claire du premier contact à la remise du véhicule.", iconKey: "shield" },
+        { title: "Traitement rapide", text: "Nous répondons rapidement et discutons directement des prochaines étapes.", iconKey: "clock" },
+        { title: "Prix équitables", text: "Offres conformes au marché selon les données, l'état et l'emplacement du véhicule.", iconKey: "euro" },
+        { title: "Allemagne et Europe", text: "Les véhicules situés en Allemagne et en Europe peuvent nous être proposés directement.", iconKey: "map" },
+      ],
+    },
+    damage: {
+      kicker: "AUSSI AVEC DÉFAUTS",
+      title: "Les véhicules avec défauts ou dommages nous intéressent aussi",
+      text:
+        "Tous les utilitaires ne sont pas en parfait état. Nous achetons aussi des véhicules avec dommages, kilométrage élevé, années anciennes ou sans contrôle technique.",
+      points: ["Moteur endommagé", "Boîte de vitesses endommagée", "Dommage accidentel", "Sans contrôle technique", "Kilométrage élevé", "Années anciennes"],
+    },
+    cta: {
+      kicker: "VENDRE UN VÉHICULE ?",
+      title: "Sélectionner le type de véhicule et envoyer la demande",
+      text:
+        "Envoyez-nous le type de véhicule, l'année, le kilométrage, l'état, l'emplacement et les photos disponibles. S'il manque des données, nous les clarifions ensemble.",
+      callLabel: "Appeler",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Écrire maintenant",
+      placeholders: {
+        name: "Nom",
+        phone: "Téléphone",
+        email: "E-mail",
+        vehicle: "Type de véhicule (camion, remorque, etc.)",
+        year: "Année",
+        mileage: "Kilométrage approx.",
+        message: "Informations supplémentaires sur le véhicule",
+      },
+      submitLabel: "Envoyer la demande",
+      sendingLabel: "Envoi...",
+      source: "Page véhicules FR",
+      privacyText: "Vos données sont traitées de manière confidentielle et ne sont pas transmises à des tiers.",
+      fallbackError: "La demande n'a pas pu être envoyée. Veuillez réessayer ou appeler directement.",
+    },
+  },
+}[lang];
+
+const canonical = absoluteUrl(localizePath("vehicles", lang));
+const schema = createBreadcrumbSchema([
+  { name: lang === "en" ? "Home" : "Accueil", url: absoluteUrl(localizePath("home", lang)) },
+  { name: copy.breadcrumb, url: canonical },
+]);
+const vehicleItems = copy.cards.items.map(([id, title, text, image, iconSrc]) => ({
+  id,
+  title,
+  text,
+  image,
+  iconSrc,
+  href: `${localizePath("services", lang)}#${id}`,
+}));
+---
+
+<BaseLayout title={copy.title} description={copy.description} canonical={canonical} schema={schema} lang={lang}>
+  <Header transparent lang={lang} />
+
+  <main>
+    <FahrzeugeHero {...copy.hero} />
+    <FahrzeugCards
+      introKicker={copy.cards.introKicker}
+      introTitle={copy.cards.introTitle}
+      introText={copy.cards.introText}
+      vehicleItems={vehicleItems}
+      benefitItems={copy.cards.benefits}
+      linkLabel={copy.cards.linkLabel}
+    />
+    <FahrzeugeBenefits {...copy.benefits} />
+    <FahrzeugeDamageSection {...copy.damage} />
+    <FahrzeugeCTA {...copy.cta} />
+  </main>
+
+  <Footer lang={lang} />
+  <FloatingContact lang={lang} />
+  <ScrollAnimations />
+</BaseLayout>

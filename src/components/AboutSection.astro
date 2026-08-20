@@ -1,0 +1,204 @@
+<section class="about-section section" id="ueber-uns">
+    <div class="container about-grid">
+        <div class="about-visual" data-animate>
+            <img
+                src="/images/about-photo.webp"
+                class="about-bg-img"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+            <div class="about-card main">
+                <span>WAW</span>
+                <strong>Nutzfahrzeuge</strong>
+                <p>Ankauf & Verkauf von LKW, Nutzfahrzeugen und Baumaschinen.</p>
+            </div>
+
+            <div class="about-card small top" data-animate>
+                <strong>17+</strong>
+                <span>Jahre Erfahrung</span>
+            </div>
+
+            <div class="about-card small bottom" data-animate>
+                <strong>A24</strong>
+                <span>Standort Talkau</span>
+            </div>
+        </div>
+
+        <div class="about-copy" data-animate>
+            <span class="badge">Über WAW</span>
+
+            <h2>Erfahrung im Handel mit Nutzfahrzeugen.</h2>
+
+            <p>
+                WAW ist auf den An- und Verkauf von Nutzfahrzeugen, LKW, Anhängern,
+                Aufliegern und Baumaschinen spezialisiert. Der Fokus liegt auf einer
+                schnellen, transparenten und professionellen Abwicklung.
+            </p>
+
+            <p>
+                Durch Erfahrung im gewerblichen Fahrzeughandel ist WAW Ansprechpartner
+                für Unternehmen, Händler, Speditionen, Bauunternehmen und Fuhrparks.
+            </p>
+
+            <div class="about-points">
+                <span>Direkte Kommunikation</span>
+                <span>Faire Einschätzung</span>
+                <span>Deutschland- und europaweiter Ankauf</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .about-grid {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 32px;
+        align-items: center;
+    }
+
+    .about-visual {
+        position: relative;
+        min-height: 440px;
+        border-radius: 38px;
+        background:
+                linear-gradient(135deg, #f26100, #b83c00);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .about-bg-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 40%;
+        z-index: 0;
+        opacity: 0;
+        animation: aboutImgIn 1.8s ease 0.5s forwards;
+    }
+
+    @keyframes aboutImgIn {
+        to { opacity: 0.32; }
+    }
+
+    .about-visual::after {
+        content: "";
+        position: absolute;
+        inset: 20px;
+        border-radius: 30px;
+        border: 1px solid rgba(255,255,255,0.16);
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .about-card {
+        position: absolute;
+        z-index: 1;
+        border-radius: 28px;
+        background: rgba(255,255,255,0.82);
+        border: 1px solid rgba(255,255,255,0.55);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 22px 60px rgba(15,23,42,0.16);
+    }
+
+    .about-card.main {
+        left: 32px;
+        right: 32px;
+        bottom: 32px;
+        padding: 28px;
+    }
+
+    .about-card.main span {
+        display: block;
+        font-size: 58px;
+        font-weight: 950;
+        letter-spacing: -0.09em;
+        color: var(--text);
+    }
+
+    .about-card.main strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+    }
+
+    .about-card.main p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .about-card.small {
+        padding: 18px;
+        min-width: 150px;
+    }
+
+    .about-card.small.top {
+        top: 34px;
+        right: 34px;
+    }
+
+    .about-card.small.bottom {
+        top: 132px;
+        left: 34px;
+    }
+
+    .about-card.small strong {
+        display: block;
+        font-size: 32px;
+        letter-spacing: -0.06em;
+    }
+
+    .about-card.small span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .about-copy h2 {
+        margin: 18px 0 0;
+        font-size: clamp(38px, 5vw, 68px);
+        line-height: 0.96;
+        letter-spacing: -0.07em;
+    }
+
+    .about-copy p {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.75;
+    }
+
+    .about-points {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .about-points span {
+        padding: 12px 15px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.78);
+        border: 1px solid var(--card-border);
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about-visual {
+            min-height: 360px;
+        }
+    }
+</style>

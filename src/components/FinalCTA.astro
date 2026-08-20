@@ -1,0 +1,228 @@
+---
+import { site } from "../data/site";
+---
+
+<section class="final-cta" id="anfrage">
+    <div class="container final-cta-card" data-animate>
+        <img
+            src="/images/cta-trucks.webp"
+            class="cta-bg-img"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+        />
+        <div class="cta-glow"></div>
+
+        <div class="cta-content">
+            <span class="badge">Unverbindliche Anfrage</span>
+
+            <h2>LKW oder Nutzfahrzeug verkaufen?</h2>
+
+            <p>
+                Senden Sie uns Fahrzeugtyp, Baujahr, Kilometerstand, Zustand,
+                Standort und Bilder. Wenn Daten fehlen, reichen zunächst Ihre Kontaktdaten.
+            </p>
+
+            <div class="cta-actions">
+                <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+                <a href={`tel:${site.phoneHref}`} class="btn btn-secondary">Direkt anrufen</a>
+            </div>
+        </div>
+
+        <div class="cta-metrics">
+            <div data-animate>
+                <strong>01</strong>
+                <span>Daten senden</span>
+            </div>
+
+            <div data-animate>
+                <strong>02</strong>
+                <span>Rückmeldung erhalten</span>
+            </div>
+
+            <div data-animate>
+                <strong>03</strong>
+                <span>Verkauf abwickeln</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .final-cta {
+        padding: 54px 0 72px;
+    }
+
+    .final-cta-card {
+        position: relative;
+        overflow: hidden;
+
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 28px;
+        align-items: center;
+
+        padding: 42px;
+
+        border-radius: 38px;
+
+        background:
+                radial-gradient(circle at top right, rgba(255,107,0,0.30), transparent 24rem),
+                linear-gradient(135deg, var(--navy-deep), var(--navy) 52%, var(--navy-soft));
+
+        color: white;
+
+        box-shadow:
+                0 30px 90px rgba(15,23,42,0.18);
+    }
+
+    .cta-bg-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 60%;
+        z-index: 0;
+        border-radius: 38px;
+        opacity: 0;
+        animation: ctaBgIn 2s ease 0.8s forwards;
+    }
+
+    @keyframes ctaBgIn {
+        to { opacity: 0.32; }
+    }
+
+    .cta-glow {
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        right: -120px;
+        top: -160px;
+
+        border-radius: 999px;
+
+        background: radial-gradient(circle, rgba(255,255,255,0.28), transparent 62%);
+
+        animation: ctaFloat 7s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .final-cta .badge {
+        background: rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.82);
+        border-color: rgba(255,255,255,0.18);
+    }
+
+    .final-cta h2 {
+        margin: 18px 0 0;
+
+        max-width: 720px;
+
+        font-size: clamp(42px, 6vw, 82px);
+        line-height: 0.94;
+        letter-spacing: -0.075em;
+
+        color: white;
+    }
+
+    .final-cta p {
+        max-width: 620px;
+
+        margin-top: 18px;
+
+        color: rgba(255,255,255,0.68);
+
+        font-size: 19px;
+        line-height: 1.65;
+    }
+
+    .cta-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+
+        margin-top: 28px;
+    }
+
+    .final-cta .btn-primary {
+        background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+        color: white;
+    }
+
+    .final-cta .btn-secondary {
+        background: rgba(255,255,255,0.1);
+        color: white;
+        border-color: rgba(255,255,255,0.18);
+    }
+
+    .cta-metrics {
+        position: relative;
+        z-index: 1;
+
+        display: grid;
+        gap: 14px;
+    }
+
+    .cta-metrics div {
+        padding: 22px;
+
+        border-radius: 26px;
+
+        background: rgba(255,255,255,0.1);
+
+        border: 1px solid rgba(255,255,255,0.14);
+
+        backdrop-filter: blur(18px);
+
+        transition: 240ms ease;
+    }
+
+    .cta-metrics div:hover {
+        transform: translateX(6px);
+        background: rgba(255,255,255,0.14);
+    }
+
+    .cta-metrics strong {
+        display: block;
+
+        font-size: 32px;
+
+        letter-spacing: -0.06em;
+
+        color: white;
+    }
+
+    .cta-metrics span {
+        display: block;
+
+        margin-top: 6px;
+
+        color: rgba(255,255,255,0.68);
+
+        font-weight: 800;
+    }
+
+    @keyframes ctaFloat {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+
+        50% {
+            transform: translateY(24px) scale(1.08);
+        }
+    }
+
+    @media (max-width: 900px) {
+        .final-cta-card {
+            grid-template-columns: 1fr;
+            padding: 28px;
+        }
+    }
+</style>

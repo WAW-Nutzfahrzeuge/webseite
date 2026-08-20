@@ -1,0 +1,220 @@
+---
+import { BadgeEuro, MessageCircle, PhoneCall, Truck } from "@lucide/astro";
+
+const steps = [
+  {
+    number: "1",
+    title: "Anfrage senden",
+    text: "Senden Sie Fahrzeugtyp, Standort und Kontaktdaten per Formular, Telefon oder WhatsApp.",
+    icon: PhoneCall,
+  },
+  {
+    number: "2",
+    title: "Rückmeldung erhalten",
+    text: "Wir melden uns schnellstmöglich und klären offene Fragen direkt mit Ihnen.",
+    icon: MessageCircle,
+  },
+  {
+    number: "3",
+    title: "Angebot erhalten",
+    text: "Auf Basis der Fahrzeugdaten besprechen wir ein marktgerechtes Angebot.",
+    icon: BadgeEuro,
+  },
+  {
+    number: "4",
+    title: "Verkauf abschließen",
+    text: "Übergabe, Zahlung und mögliche Abholung werden klar abgestimmt.",
+    icon: Truck,
+  },
+];
+---
+
+<section class="home-process section" id="ablauf">
+  <div class="container">
+    <div class="process-head" data-animate>
+      <span>SO EINFACH GEHT'S</span>
+      <h2>LKW verkaufen in 4 klaren Schritten</h2>
+    </div>
+
+    <div class="steps-row">
+      {steps.map((step) => (
+        <article class="home-step" data-animate>
+          <span class="step-number">{step.number}</span>
+          <div class="step-icon">
+            <step.icon aria-hidden="true" />
+          </div>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="process-cta" data-animate>
+      <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-process {
+    background: #fff;
+  }
+
+  .process-head {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .process-head span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .process-head h2 {
+    margin: 12px 0 0;
+    color: #111827;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -0.06em;
+  }
+
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .home-step {
+    position: relative;
+    min-height: 210px;
+    padding: 8px 34px 0;
+  }
+
+  .home-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 38px;
+    right: 0;
+    width: 1px;
+    height: 128px;
+    background: rgba(17,24,39,0.12);
+  }
+
+  .step-number {
+    position: absolute;
+    top: -8px;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    box-shadow: 0 10px 20px rgba(17,24,39,0.18);
+  }
+
+  .step-icon {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.52), transparent 40%),
+      linear-gradient(135deg, rgba(255,107,0,0.14), rgba(255,107,0,0.04));
+    border: 1px solid rgba(255,107,0,0.18);
+    color: var(--orange);
+    box-shadow:
+      0 12px 26px rgba(255,107,0,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+
+  .step-icon :global(svg) {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .home-step h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+  }
+
+  .home-step p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .process-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+  }
+
+  @media (max-width: 980px) {
+    .steps-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 34px 0;
+    }
+
+    .home-step:nth-child(2)::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .process-head {
+      margin-bottom: 34px;
+    }
+
+    .steps-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .home-step {
+      min-height: auto;
+      padding: 0 0 28px 52px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(17,24,39,0.1);
+    }
+
+    .home-step:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .home-step::after {
+      display: none;
+    }
+
+    .step-number {
+      top: 0;
+      left: 0;
+    }
+
+    .step-icon {
+      width: 46px;
+      height: 46px;
+    }
+
+    .step-icon :global(svg) {
+      width: 25px;
+      height: 25px;
+    }
+  }
+</style>

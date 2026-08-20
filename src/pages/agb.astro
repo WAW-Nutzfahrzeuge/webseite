@@ -1,0 +1,375 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FloatingContact from "../components/FloatingContact.astro";
+import { site } from "../data/site";
+
+const canonical = `${site.url}/agb`;
+---
+
+<BaseLayout
+  title="AGB | WAW Nutzfahrzeuge"
+  description="Allgemeine Geschaeftsbedingungen von WAW Nutzfahrzeuge fuer Anfragen, Fahrzeugangebote und den Ankauf von LKW, Nutzfahrzeugen, Aufliegern und Baumaschinen."
+  canonical={canonical}
+>
+  <Header />
+
+  <main class="legal-page">
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <span class="legal-kicker">AGB</span>
+        <h1>Allgemeine Geschaeftsbedingungen</h1>
+        <p>
+          Bedingungen fuer die Nutzung der Website, unverbindliche
+          Fahrzeuganfragen und die Anbahnung von Ankaufsprozessen mit WAW
+          Nutzfahrzeuge.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-content">
+      <div class="container legal-grid">
+        <aside class="legal-toc" aria-label="Inhaltsuebersicht">
+          <strong>Uebersicht</strong>
+          <a href="#geltung">Geltungsbereich</a>
+          <a href="#anfragen">Anfragen</a>
+          <a href="#angaben">Fahrzeugangaben</a>
+          <a href="#angebot">Angebot & Vertrag</a>
+          <a href="#abholung">Abholung</a>
+          <a href="#zahlung">Zahlung</a>
+          <a href="#haftung">Haftung</a>
+          <a href="#schluss">Schlussbestimmungen</a>
+        </aside>
+
+        <article class="legal-card">
+          <section id="geltung">
+            <h2>1. Geltungsbereich</h2>
+            <p>
+              Diese Allgemeinen Geschaeftsbedingungen gelten fuer die Nutzung
+              dieser Website, fuer Kontakt- und Fahrzeuganfragen sowie fuer die
+              Anbahnung von Geschaeften mit {site.name}. Sie gelten, soweit im
+              Einzelfall nichts Abweichendes schriftlich vereinbart wird.
+            </p>
+            <p>
+              {site.name} betreibt keinen Fahrzeug-Onlineshop und keine
+              Bewertungsplattform. Die Website dient der Kontaktaufnahme und der
+              Vorbereitung eines moeglichen Ankaufs von LKW, Nutzfahrzeugen,
+              Aufliegern, Anhaengern, Transportern, Baumaschinen und Fuhrparks.
+            </p>
+          </section>
+
+          <section id="anfragen">
+            <h2>2. Unverbindliche Anfrage ueber die Website</h2>
+            <p>
+              Die Uebermittlung einer Anfrage ueber Formular, Telefon,
+              WhatsApp oder E-Mail stellt kein verbindliches Verkaufsangebot und
+              keine Annahme durch WAW dar. Sie dient zunaechst der ersten
+              Kontaktaufnahme und der Pruefung, ob ein Ankauf grundsaetzlich in
+              Betracht kommt.
+            </p>
+            <p>
+              Eine automatische Eingangsbestätigung bestaetigt lediglich den
+              Eingang der Anfrage. Sie stellt keine Zusage, kein verbindliches
+              Kaufangebot und keine Annahme eines Angebots dar.
+            </p>
+          </section>
+
+          <section id="angaben">
+            <h2>3. Angaben zum Fahrzeug</h2>
+            <p>
+              Der Anfragende ist verpflichtet, alle fuer die Pruefung
+              wesentlichen Informationen vollstaendig und wahrheitsgemaess
+              mitzuteilen. Dazu gehoeren insbesondere Fahrzeugart, Hersteller,
+              Modell, Baujahr, Laufleistung, Zustand, bekannte Maengel,
+              Unfallschaeden, technische Defekte, fehlende Unterlagen,
+              Eigentumsverhaeltnisse, Finanzierungen oder Rechte Dritter.
+            </p>
+            <p>
+              Fotos, Dokumente oder Fahrzeugdaten, die an WAW uebermittelt
+              werden, muessen dem tatsaechlichen Zustand entsprechen. Eine
+              spaetere Besichtigung oder Pruefung des Fahrzeugs kann zu einer
+              Anpassung oder Ablehnung eines zuvor unverbindlich genannten
+              Preisrahmens fuehren.
+            </p>
+          </section>
+
+          <section id="angebot">
+            <h2>4. Angebote und Vertragsschluss</h2>
+            <p>
+              Preisindikationen, erste Einschaetzungen oder muendlich
+              besprochene Werte sind unverbindlich, solange kein schriftlicher
+              Kaufvertrag oder eine eindeutige schriftliche Vereinbarung
+              geschlossen wurde.
+            </p>
+            <p>
+              Ein verbindlicher Vertrag kommt erst zustande, wenn beide Parteien
+              die wesentlichen Vertragsbestandteile, insbesondere Fahrzeug,
+              Kaufpreis, Zahlungsmodalitaeten, Uebergabe, Unterlagen und
+              Abholung, ausdruecklich vereinbart haben.
+            </p>
+          </section>
+
+          <section>
+            <h2>5. Eigentum, Verfuegungsberechtigung und Unterlagen</h2>
+            <p>
+              Der Verkaeufer versichert, dass er zur Verfuegung ueber das
+              angebotene Fahrzeug berechtigt ist und dass keine nicht
+              offengelegten Rechte Dritter bestehen. Bestehen Finanzierungen,
+              Leasingvertraege, Sicherungsuebereignungen oder sonstige
+              Belastungen, sind diese vor Vertragsschluss vollstaendig
+              offenzulegen.
+            </p>
+            <p>
+              Bei Uebergabe sind, soweit vorhanden und vereinbart,
+              Zulassungsbescheinigungen, Fahrzeugschluessel, Serviceunterlagen,
+              Pruefberichte, Rechnungen, Vollmachten und sonstige relevante
+              Dokumente zu uebergeben.
+            </p>
+          </section>
+
+          <section id="abholung">
+            <h2>6. Besichtigung, Uebergabe und Abholung</h2>
+            <p>
+              Ort und Zeitpunkt einer Besichtigung, Uebergabe oder Abholung
+              werden individuell abgestimmt. Eine Abholung ist je nach Fahrzeug,
+              Standort, technischer Situation und Vereinbarung moeglich.
+            </p>
+            <p>
+              Der Verkaeufer hat sicherzustellen, dass das Fahrzeug am
+              vereinbarten Ort zugaenglich ist und die Uebergabe ohne
+              vermeidbare Hindernisse erfolgen kann. Nicht fahrbereite Fahrzeuge
+              oder besondere Lade- und Transportanforderungen sind vorab
+              mitzuteilen.
+            </p>
+          </section>
+
+          <section id="zahlung">
+            <h2>7. Zahlung</h2>
+            <p>
+              Die Zahlungsweise wird im Einzelfall vereinbart. Zahlungen erfolgen
+              grundsaetzlich erst nach Einigung ueber den Ankauf und nach
+              Klaerung der erforderlichen Unterlagen, Eigentumsverhaeltnisse und
+              Uebergabemodalitaeten.
+            </p>
+            <p>
+              Soweit nicht anders vereinbart, erfolgen Zahlungen per
+              Bankueberweisung. Etwaige abweichende Zahlungsarten beduerfen
+              einer ausdruecklichen Vereinbarung.
+            </p>
+          </section>
+
+          <section>
+            <h2>8. Gewaehrleistung und bekannte Maengel</h2>
+            <p>
+              Der Verkaeufer ist verpflichtet, bekannte Maengel, Schaeden,
+              Unfallschaeden, Manipulationen, fehlende Teile, ungewoehnliche
+              technische Probleme oder sonstige wertrelevante Umstaende vor
+              Vertragsschluss vollstaendig offenzulegen.
+            </p>
+            <p>
+              Die konkrete Gewaehrleistungsregelung richtet sich nach dem
+              jeweiligen Kaufvertrag und danach, ob der Verkaeufer als
+              Verbraucher, Unternehmer oder Kaufmann handelt.
+            </p>
+          </section>
+
+          <section id="haftung">
+            <h2>9. Haftung</h2>
+            <p>
+              WAW haftet unbeschraenkt fuer Schaeden aus der Verletzung des
+              Lebens, des Koerpers oder der Gesundheit sowie fuer Schaeden, die
+              auf Vorsatz oder grober Fahrlaessigkeit beruhen. Im Uebrigen
+              richtet sich die Haftung nach den gesetzlichen Vorschriften.
+            </p>
+            <p>
+              Fuer die staendige Verfuegbarkeit der Website, die fehlerfreie
+              Uebermittlung elektronischer Anfragen oder die Erreichbarkeit
+              externer Dienste kann keine Gewaehr uebernommen werden.
+            </p>
+          </section>
+
+          <section>
+            <h2>10. Nutzung der Website</h2>
+            <p>
+              Die Inhalte dieser Website dienen der allgemeinen Information und
+              Kontaktaufnahme. Sie stellen kein verbindliches Angebot zum Kauf
+              oder Verkauf eines bestimmten Fahrzeugs dar. Technische Fehler,
+              Schreibfehler und Aenderungen bleiben vorbehalten.
+            </p>
+          </section>
+
+          <section id="schluss">
+            <h2>11. Schlussbestimmungen</h2>
+            <p>
+              Es gilt das Recht der Bundesrepublik Deutschland. Zwingende
+              Verbraucherschutzvorschriften bleiben unberuehrt.
+            </p>
+            <p>
+              Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise
+              unwirksam sein oder werden, bleibt die Wirksamkeit der uebrigen
+              Bestimmungen unberuehrt.
+            </p>
+            <p>
+              Stand: August 2026
+            </p>
+          </section>
+
+          <p class="legal-note">
+            Hinweis: Diese AGB sind als projektspezifischer Entwurf fuer eine
+            Ankauf-Lead-Website erstellt. Sie ersetzen keine anwaltliche Pruefung,
+            insbesondere nicht bei B2B/B2C-Unterschieden, Gewaehrleistung,
+            Exportgeschaeften, Finanzierungen oder individuellen Kaufvertraegen.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: 0;
+    background: #f6f8fb;
+  }
+
+  .legal-hero {
+    padding: 86px 0 56px;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255, 107, 0, 0.18), transparent 24rem),
+      linear-gradient(135deg, #07111f, #0c223d);
+    color: #fff;
+  }
+
+  .legal-hero-inner {
+    max-width: 980px;
+  }
+
+  .legal-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 16px 0 18px;
+    max-width: 960px;
+    font-size: clamp(46px, 7vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+  }
+
+  .legal-hero p {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    padding: 58px 0 86px;
+  }
+
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .legal-toc,
+  .legal-card {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 24px 70px rgba(17, 24, 39, 0.08);
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 110px;
+    padding: 22px;
+  }
+
+  .legal-toc strong,
+  .legal-toc a {
+    display: block;
+  }
+
+  .legal-toc strong {
+    margin-bottom: 14px;
+    color: #111827;
+  }
+
+  .legal-toc a {
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+  }
+
+  .legal-toc a:hover {
+    color: var(--orange);
+  }
+
+  .legal-card {
+    padding: clamp(28px, 4vw, 54px);
+  }
+
+  .legal-card section + section {
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  p,
+  li {
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  a {
+    font-weight: 750;
+    color: #111827;
+  }
+
+  .legal-note {
+    margin-top: 38px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(255, 107, 0, 0.1);
+    color: #7a3600;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .legal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .legal-toc {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .legal-page {
+      padding-top: 0;
+    }
+
+    .legal-hero {
+      padding: 58px 0 42px;
+    }
+  }
+</style>

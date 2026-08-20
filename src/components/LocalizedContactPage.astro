@@ -1,0 +1,255 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import ScrollAnimations from "./ScrollAnimations.astro";
+import ContactHero from "./ContactHero.astro";
+import ContactMethods from "./ContactMethods.astro";
+import ContactBenefits from "./ContactBenefits.astro";
+import ContactMapSection from "./ContactMapSection.astro";
+import ContactFAQ from "./ContactFAQ.astro";
+import ContactCallBar from "./ContactCallBar.astro";
+import { site } from "../data/site";
+import { localizeCityPath, localizePath, type Locale } from "../data/i18n";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
+
+const { lang } = Astro.props as { lang: Locale };
+
+const content = {
+  en: {
+    title: "Contact | Sell trucks & commercial vehicles | WAW",
+    description:
+      "Contact WAW to sell trucks, trailers, vans, construction machinery and fleets by form, WhatsApp or phone.",
+    home: "Home",
+    current: "Contact",
+    hero: {
+      kicker: "CONTACT",
+      title: "Offer a truck or commercial vehicle.",
+      text:
+        "Would you like to sell a truck, semi-trailer, van, construction machine or complete fleet? Send us the key details and we will get back to you as quickly as possible.",
+      trustline: ["Fast response", "Direct communication", "Reachable across Germany and Europe"],
+    },
+    methods: {
+      kicker: "HOW TO REACH US",
+      title: "Contact us in the way that works best for you.",
+      text:
+        "Phone or WhatsApp are ideal for quick questions. For several vehicles, documents or vehicle lists, use the form or email.",
+      phoneLabel: "Phone",
+      phoneHours: "Mon-Fri 08:00-18:00 · Sat 09:00-14:00",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Write on WhatsApp",
+      whatsappHint: "Fast coordination with vehicle data and photos",
+      emailLabel: "Email",
+      emailHint: "For vehicle lists, documents and detailed information",
+      locationLabel: "Location",
+      locationCountry: "Germany",
+      form: {
+        kicker: "NON-BINDING INQUIRY",
+        title: "Send vehicle data",
+        text: "Send us the key details about your vehicle or fleet. We will get back to you as quickly as possible.",
+        help: "Do not have all data at hand? No problem. Your contact details are enough to start; we clarify missing information together.",
+        source: "Contact page EN",
+        submitLabel: "Send inquiry",
+        sendingLabel: "Sending...",
+        privacyText: "Your details are used only to process your inquiry.",
+        defaultError: "The inquiry could not be sent.",
+        fallbackError: "The inquiry could not be sent. Please call us directly or write via WhatsApp.",
+        labels: {
+          name: "Name *",
+          phone: "Phone *",
+          email: "Email",
+          company: "Company",
+          vehicle: "Vehicle type",
+          year: "Year",
+          mileage: "Mileage",
+          condition: "Condition / damage",
+          message: "Message",
+        },
+        placeholders: {
+          name: "Your name",
+          phone: "+49 ...",
+          email: "name@example.com",
+          company: "Optional",
+          vehicle: "e.g. truck, trailer",
+          year: "e.g. 2018",
+          mileage: "approx. mileage",
+          condition: "e.g. roadworthy, engine damage",
+          message: "Additional vehicle information",
+        },
+      },
+    },
+    benefitsTitle: "Why companies contact WAW directly",
+    benefits: [
+      { iconKey: "shield", title: "Safe & reliable", text: "Clear coordination and understandable steps." },
+      { iconKey: "clock", title: "Fast handling", text: "We respond quickly and clarify open questions directly." },
+      { iconKey: "euro", title: "Fair prices", text: "Offers based on vehicle data, condition and location." },
+      { iconKey: "truck", title: "Pickup possible", text: "Handover or pickup is coordinated depending on vehicle and location." },
+      { iconKey: "lock", title: "Discreet handling", text: "Professional and confidential processing." },
+    ],
+    map: {
+      routeLabel: "Plan route",
+      kicker: "ON THE ROAD ACROSS GERMANY AND EUROPE",
+      title: "Sell trucks and commercial vehicles in Germany and Europe",
+      text:
+        "Whether Hamburg, Berlin, Hanover, Bremen, Kiel or a smaller town: you can offer your commercial vehicle to us across Germany and Europe. We coordinate the next steps directly with you.",
+      bullets: ["Travel or pickup by agreement", "Reachable across Germany and Europe", "All vehicle types", "Vehicles with damage or high mileage"],
+      allLocationsHref: localizePath("locations", "en"),
+      allLocationsLabel: "View all locations",
+      cityLinks: ["hamburg", "berlin", "hannover", "bremen"].map((slug) => ({ href: localizeCityPath(slug, "en"), label: slug === "hannover" ? "Hanover" : slug[0].toUpperCase() + slug.slice(1) })),
+    },
+    faqTitle: "Frequently asked questions about vehicle inquiries",
+    faqs: [
+      { question: "How quickly will I receive feedback?", answer: "We get back to you as quickly as possible after receiving your inquiry. Complete details and photos help us respond more specifically." },
+      { question: "Which details are helpful for an inquiry?", answer: "Helpful details are vehicle type, make, model, year, mileage, condition, location and available photos or documents. If something is missing, your contact details are enough to start." },
+      { question: "Can I inquire via WhatsApp?", answer: "Yes. You can send vehicle data, photos and short notes directly via WhatsApp. We coordinate the next steps personally with you." },
+      { question: "Is the inquiry non-binding?", answer: "Yes. Contacting us and the first coordination are non-binding. We discuss all next steps directly with you." },
+      { question: "Can I offer several vehicles or a fleet?", answer: "Yes. We buy individual commercial vehicles as well as complete fleets from companies, dealers and fleet operators." },
+      { question: "Can I send photos and vehicle documents?", answer: "Yes. Photos, registration documents, maintenance records or other documents help us process your inquiry faster." },
+    ],
+    callBar: { eyebrow: "Do you have questions?", title: "Call us directly.", buttonLabel: "Call now" },
+  },
+  fr: {
+    title: "Contact | Vendre camions & véhicules utilitaires | WAW",
+    description:
+      "Contactez WAW pour vendre camions, remorques, fourgons, machines de chantier et flottes par formulaire, WhatsApp ou téléphone.",
+    home: "Accueil",
+    current: "Contact",
+    hero: {
+      kicker: "CONTACT",
+      title: "Proposer un camion ou véhicule utilitaire.",
+      text:
+        "Vous souhaitez vendre un camion, une semi-remorque, un fourgon, une machine de chantier ou une flotte complète ? Envoyez-nous les informations principales et nous vous recontactons rapidement.",
+      trustline: ["Réponse rapide", "Communication directe", "Joignable en Allemagne et en Europe"],
+    },
+    methods: {
+      kicker: "COMMENT NOUS JOINDRE",
+      title: "Contactez-nous comme cela vous convient.",
+      text:
+        "Le téléphone ou WhatsApp conviennent aux questions rapides. Pour plusieurs véhicules, documents ou listes, utilisez le formulaire ou l'e-mail.",
+      phoneLabel: "Téléphone",
+      phoneHours: "Lun-Ven 08:00-18:00 · Sam 09:00-14:00",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Écrire sur WhatsApp",
+      whatsappHint: "Coordination rapide avec données et photos du véhicule",
+      emailLabel: "E-mail",
+      emailHint: "Pour listes de véhicules, documents et informations détaillées",
+      locationLabel: "Site",
+      locationCountry: "Allemagne",
+      form: {
+        kicker: "DEMANDE SANS ENGAGEMENT",
+        title: "Envoyer les données du véhicule",
+        text: "Envoyez-nous les principales informations sur votre véhicule ou votre flotte. Nous vous recontactons rapidement.",
+        help: "Vous n'avez pas toutes les données ? Aucun problème. Vos coordonnées suffisent pour commencer ; nous clarifions le reste ensemble.",
+        source: "Contact FR",
+        submitLabel: "Envoyer la demande",
+        sendingLabel: "Envoi...",
+        privacyText: "Vos informations sont utilisées uniquement pour traiter votre demande.",
+        defaultError: "La demande n'a pas pu être envoyée.",
+        fallbackError: "La demande n'a pas pu être envoyée. Veuillez nous appeler directement ou écrire via WhatsApp.",
+        labels: {
+          name: "Nom *",
+          phone: "Téléphone *",
+          email: "E-mail",
+          company: "Entreprise",
+          vehicle: "Type de véhicule",
+          year: "Année",
+          mileage: "Kilométrage",
+          condition: "État / dommages",
+          message: "Message",
+        },
+        placeholders: {
+          name: "Votre nom",
+          phone: "+49 ...",
+          email: "nom@example.com",
+          company: "Optionnel",
+          vehicle: "par ex. camion, remorque",
+          year: "par ex. 2018",
+          mileage: "kilométrage env.",
+          condition: "par ex. roulant, panne moteur",
+          message: "Informations complémentaires sur le véhicule",
+        },
+      },
+    },
+    benefitsTitle: "Pourquoi les entreprises contactent WAW directement",
+    benefits: [
+      { iconKey: "shield", title: "Sûr & fiable", text: "Coordination claire et étapes compréhensibles." },
+      { iconKey: "clock", title: "Traitement rapide", text: "Nous répondons rapidement et clarifions les questions ouvertes directement." },
+      { iconKey: "euro", title: "Prix équitables", text: "Offres selon données, état et localisation du véhicule." },
+      { iconKey: "truck", title: "Enlèvement possible", text: "Remise ou enlèvement coordonné selon le véhicule et le lieu." },
+      { iconKey: "lock", title: "Traitement discret", text: "Traitement professionnel et confidentiel." },
+    ],
+    map: {
+      routeLabel: "Planifier l'itinéraire",
+      kicker: "EN ALLEMAGNE ET EN EUROPE",
+      title: "Vendre camions et véhicules utilitaires en Allemagne et en Europe",
+      text:
+        "Que vous soyez à Hambourg, Berlin, Hanovre, Brême, Kiel ou dans une plus petite ville : vous pouvez nous proposer votre véhicule utilitaire en Allemagne et en Europe. Nous coordonnons les prochaines étapes directement avec vous.",
+      bullets: ["Déplacement ou enlèvement après accord", "Joignable en Allemagne et en Europe", "Tous types de véhicules", "Véhicules avec dommages ou fort kilométrage"],
+      allLocationsHref: localizePath("locations", "fr"),
+      allLocationsLabel: "Voir toutes les implantations",
+      cityLinks: ["hamburg", "berlin", "hannover", "bremen"].map((slug) => ({ href: localizeCityPath(slug, "fr"), label: slug === "hannover" ? "Hanovre" : slug[0].toUpperCase() + slug.slice(1) })),
+    },
+    faqTitle: "Questions fréquentes sur la demande",
+    faqs: [
+      { question: "Quand recevrai-je un retour ?", answer: "Nous vous recontactons rapidement après réception de votre demande. Des informations et photos complètes nous aident à répondre plus précisément." },
+      { question: "Quelles informations sont utiles ?", answer: "Type de véhicule, marque, modèle, année, kilométrage, état, localisation et photos ou documents disponibles sont utiles. Si quelque chose manque, vos coordonnées suffisent pour commencer." },
+      { question: "Puis-je demander via WhatsApp ?", answer: "Oui. Vous pouvez envoyer données du véhicule, photos et courtes informations directement via WhatsApp. Nous coordonnons ensuite les étapes personnellement avec vous." },
+      { question: "La demande est-elle sans engagement ?", answer: "Oui. La prise de contact et la première coordination sont sans engagement. Nous discutons toute la suite directement avec vous." },
+      { question: "Puis-je proposer plusieurs véhicules ou une flotte ?", answer: "Oui. Nous achetons des véhicules utilitaires individuels ainsi que des flottes complètes d'entreprises, concessionnaires et gestionnaires de parc." },
+      { question: "Puis-je envoyer photos et documents ?", answer: "Oui. Photos, documents du véhicule, justificatifs d'entretien ou autres pièces nous aident à traiter votre demande plus rapidement." },
+    ],
+    callBar: { eyebrow: "Vous avez des questions ?", title: "Appelez-nous directement.", buttonLabel: "Appeler maintenant" },
+  },
+} as const;
+
+const copy = content[lang];
+const canonical = absoluteUrl(localizePath("contact", lang));
+const schema = [
+  createFaqSchema(copy.faqs),
+  createBreadcrumbSchema([
+    { name: copy.home, url: absoluteUrl(localizePath("home", lang)) },
+    { name: copy.current, url: canonical },
+  ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${canonical}#contact`,
+    url: canonical,
+    name: copy.title,
+    description: copy.description,
+    mainEntity: {
+      "@type": "AutoDealer",
+      "@id": `${site.url}/#localbusiness`,
+      name: site.name,
+      telephone: site.phoneDisplay,
+      email: site.email,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: site.address.street,
+        postalCode: site.address.postalCode,
+        addressLocality: site.address.locality,
+        addressRegion: site.address.region,
+        addressCountry: site.address.country,
+      },
+    },
+  },
+];
+---
+
+<BaseLayout title={copy.title} description={copy.description} canonical={canonical} schema={schema}>
+  <Header transparent />
+
+  <main>
+    <ContactHero {...copy.hero} />
+    <ContactMethods {...copy.methods} />
+    <ContactBenefits title={copy.benefitsTitle} benefits={copy.benefits} />
+    <ContactMapSection {...copy.map} />
+    <ContactFAQ faqs={copy.faqs} title={copy.faqTitle} />
+    <ContactCallBar {...copy.callBar} />
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>

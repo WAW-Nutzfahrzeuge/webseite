@@ -1,0 +1,222 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FloatingContact from "../../components/FloatingContact.astro";
+import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import ServicesSplitHero from "../../components/ServicesSplitHero.astro";
+import ServicesOverview from "../../components/ServicesOverview.astro";
+import ServiceDetailSections from "../../components/ServiceDetailSections.astro";
+import ServicesConditionSection from "../../components/ServicesConditionSection.astro";
+import ServicesTrustSection from "../../components/ServicesTrustSection.astro";
+import ServicesFAQ from "../../components/ServicesFAQ.astro";
+import ServicesCTA from "../../components/ServicesCTA.astro";
+import { site } from "../../data/site";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
+
+const services = [
+  {
+    id: "lkw",
+    title: "LKW Ankauf",
+    eyebrow: "LKW ANKAUF",
+    short: "Gebrauchte LKW verschiedener Gewichtsklassen, Marken und Aufbauten.",
+    description:
+      "Wir kaufen gebrauchte LKW verschiedener Hersteller, Gewichtsklassen und Aufbauten an. Auch Fahrzeuge mit hoher Laufleistung, technischen Mängeln oder ohne aktuelle Hauptuntersuchung können angeboten werden.",
+    cardBullets: ["Fernverkehr und Verteilerverkehr", "Kipper, Koffer, Plane, Kühlung", "hohe Laufleistung möglich"],
+    detailTitle: "LKW professionell und unkompliziert verkaufen",
+    detailItems: ["Fernverkehrs-LKW", "Verteilerfahrzeuge", "Kipper", "Kühlfahrzeuge", "Koffer- und Planenaufbauten", "Spezialfahrzeuge"],
+    iconSrc: "/icons/lkw.png",
+    imageSrc: "/images/fahrzeug_lkw.webp",
+    featured: true,
+  },
+  {
+    id: "nutzfahrzeuge",
+    title: "Nutzfahrzeuge Ankauf",
+    eyebrow: "NUTZFAHRZEUGE",
+    short: "Gewerbliche Fahrzeuge aus Transport, Bau, Handel und Fuhrpark.",
+    description:
+      "Vom einzelnen Nutzfahrzeug bis zum gemischten Fahrzeugbestand: Wir kaufen Fahrzeuge aus gewerblicher Nutzung und stimmen die weitere Abwicklung direkt mit Ihnen ab.",
+    cardBullets: ["für Unternehmen und Händler", "gemischte Fahrzeugarten", "deutschland- und europaweit anfragen"],
+    detailTitle: "Nutzfahrzeuge aus Gewerbe und Fuhrpark anbieten",
+    detailItems: ["gewerbliche Fahrzeuge", "Transportfahrzeuge", "Baufahrzeuge", "Händlerbestände", "Fuhrparkfahrzeuge", "Fahrzeuge mit Mängeln"],
+    iconSrc: "/icons/transporter.png",
+    imageSrc: "/images/leistungen-hero.webp",
+    featured: true,
+  },
+  {
+    id: "sattelzugmaschinen",
+    title: "Sattelzugmaschinen Ankauf",
+    eyebrow: "ZUGMASCHINEN",
+    short: "Zugmaschinen aller Marken, Baujahre und Laufleistungen.",
+    description:
+      "Ob ältere Zugmaschine, hohe Kilometerleistung oder moderner Euro-6-LKW: Wir besprechen Ihre Sattelzugmaschine direkt mit Ihnen und stimmen das weitere Vorgehen klar ab.",
+    cardBullets: ["MAN, Mercedes-Benz, Scania und mehr", "für Speditionen und Händler", "Daten- und Fotoprüfung"],
+    detailTitle: "Sattelzugmaschinen aller Marken anbieten",
+    detailItems: ["Euro-6-Zugmaschinen", "ältere Baujahre", "hohe Laufleistung", "Fernverkehr", "Speditionen", "Händlerfahrzeuge"],
+    iconSrc: "/icons/sattelzugmaschine.png",
+    imageSrc: "/images/fahrzeug_sattelzugmaschine.webp",
+  },
+  {
+    id: "auflieger",
+    title: "Auflieger Ankauf",
+    eyebrow: "AUFLIEGER",
+    short: "Planen-, Kühl-, Koffer-, Kipper-, Tiefbett- und Spezialauflieger.",
+    description:
+      "Wir kaufen Auflieger unterschiedlicher Bauarten an. Auch ältere Auflieger oder Fahrzeuge mit Beschädigungen können Sie direkt anbieten.",
+    cardBullets: ["Planen-, Kühl- und Kofferauflieger", "Kipper und Tieflader", "Spezialauflieger"],
+    detailTitle: "Auflieger und Spezialauflieger verkaufen",
+    detailItems: ["Planenauflieger", "Kühlauflieger", "Kofferauflieger", "Kipper", "Tieflader", "Spezialauflieger"],
+    iconSrc: "/icons/auflieger.png",
+    imageSrc: "/images/fahrzeug_auflieger.webp",
+  },
+  {
+    id: "anhaenger",
+    title: "Anhänger Ankauf",
+    eyebrow: "ANHÄNGER",
+    short: "Gewerbliche Anhänger für Transport, Bau und Logistik.",
+    description:
+      "Gewerbliche Anhänger für Transport, Bau und Logistik können direkt bei uns angeboten werden. Fahrzeugdaten und Fotos reichen für den ersten Kontakt aus.",
+    cardBullets: ["Zentralachs- und Deichselanhänger", "Koffer, Kühlung, Tieflader", "direkte Abstimmung"],
+    detailTitle: "Gewerbliche Anhänger unkompliziert anbieten",
+    detailItems: ["Zentralachsanhänger", "Deichselanhänger", "Kofferanhänger", "Kühlanhänger", "Tieflader", "Spezialanhänger"],
+    iconSrc: "/icons/anhaenger.png",
+    imageSrc: "/images/fahrzeuge_anhaenger.webp",
+  },
+  {
+    id: "transporter",
+    title: "Transporter Ankauf",
+    eyebrow: "TRANSPORTER",
+    short: "Transporter und leichte Nutzfahrzeuge aus gewerblicher Nutzung.",
+    description:
+      "Wir kaufen Transporter und leichte Nutzfahrzeuge aus gewerblicher Nutzung an. Auch Fahrzeuge mit hoher Laufleistung, älteren Baujahren oder deutlichen Gebrauchsspuren sind relevant.",
+    cardBullets: ["Kastenwagen und Pritsche", "Kühl- und Kofferaufbauten", "auch ältere Fahrzeuge"],
+    detailTitle: "Transporter und leichte Nutzfahrzeuge verkaufen",
+    detailItems: ["Kastenwagen", "Pritschenfahrzeuge", "Kühltransporter", "Kofferaufbauten", "ältere Baujahre", "hohe Laufleistung"],
+    iconSrc: "/icons/transporter.png",
+    imageSrc: "/images/fahrzeug_transporter.webp",
+  },
+  {
+    id: "baumaschinen",
+    title: "Baumaschinen Ankauf",
+    eyebrow: "BAU & GEWERBE",
+    short: "Baumaschinen und gewerbliche Maschinen aus Bau, Betrieb und Fuhrpark.",
+    description:
+      "Auch Baumaschinen und gewerbliche Geräte können Sie direkt bei uns anbieten. Hilfreich sind Angaben zu Zustand, Einsatzbereich, Unterlagen und Betriebsstunden.",
+    cardBullets: ["Bagger, Radlader, Mischer", "Betriebsstunden und Zustand", "direkte Abstimmung"],
+    detailTitle: "Baumaschinen aus Bau und Gewerbe verkaufen",
+    detailItems: ["Bagger", "Radlader", "Betonmischer", "Krane", "Teleskoplader", "Spezialmaschinen"],
+    iconSrc: "/icons/bagger.png",
+    imageSrc: "/images/fahrzeug_baumaschine.webp",
+  },
+  {
+    id: "fuhrpark",
+    title: "Fuhrpark Ankauf",
+    eyebrow: "FUHRPARK",
+    short: "Mehrere Fahrzeuge, Fahrzeugpakete oder komplette Fuhrparks verkaufen.",
+    description:
+      "Wir sind Ansprechpartner für Speditionen, Händler und Unternehmen, die mehrere Fahrzeuge oder einen kompletten Fuhrpark gemeinsam verkaufen möchten.",
+    cardBullets: ["mehrere Fahrzeuge in einer Anfrage", "gemischte Fahrzeugpakete", "diskrete Abwicklung"],
+    detailTitle: "Komplette Fuhrparks und Fahrzeugpakete verkaufen",
+    detailItems: ["mehrere Fahrzeuge in einer Anfrage", "gemischte Fahrzeugpakete", "LKW und Auflieger kombiniert", "direkte Abstimmung", "diskrete Abwicklung", "gebündelte Abholung"],
+    iconSrc: "/icons/fuhrpark.png",
+    imageSrc: "/images/fahrzeug_fuhrpark.webp",
+    featured: true,
+  },
+];
+
+const serviceFaqs = [
+  {
+    question: "Welche Nutzfahrzeuge kaufen wir an?",
+    answer:
+      "Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter, Baumaschinen, Spezialfahrzeuge und komplette Fuhrparks an. Auch LKW mit Motorschaden, Getriebeschaden, Unfallschaden, hoher Laufleistung oder ohne TÜV können Sie uns anbieten.",
+  },
+  {
+    question: "Kann ich ein Fahrzeug mit hoher Laufleistung anbieten?",
+    answer:
+      "Ja. Eine hohe Laufleistung ist bei gewerblichen Nutzfahrzeugen kein Ausschlusskriterium. Schicken Sie uns die vorhandenen Daten und Fotos, wir melden uns direkt zur weiteren Abstimmung.",
+  },
+  {
+    question: "Kauft WAW auch Fahrzeuge ohne TÜV?",
+    answer:
+      "Ja. TÜV spielt für uns im Einkauf keine Rolle, da wir über einen großen Exportmarkt verfügen, in den wir Fahrzeuge weiterverkaufen können.",
+  },
+  {
+    question: "Kann ich mehrere Fahrzeuge gleichzeitig anbieten?",
+    answer:
+      "Ja. Sie können mehrere Nutzfahrzeuge gesammelt übermitteln, zum Beispiel als Fahrzeugliste mit Baujahr, Kilometerstand, Zustand und Standort. Wir stimmen die weitere Abwicklung direkt mit Ihnen ab.",
+  },
+  {
+    question: "Ist ein Verkauf von kompletten Fuhrparks möglich?",
+    answer:
+      "Ja. Wir sind Ansprechpartner für Unternehmen, Händler und Speditionen, die komplette Fuhrparks oder Fahrzeugpakete verkaufen möchten.",
+  },
+  {
+    question: "Kauft WAW auch Baumaschinen und Spezialfahrzeuge?",
+    answer:
+      "Ja. Baumaschinen und Spezialfahrzeuge können ebenfalls angeboten werden. Wichtig sind Angaben zu Zustand, Baujahr, Betriebsstunden und Standort.",
+  },
+  {
+    question: "Wie läuft eine Anfrage ab?",
+    answer:
+      "Sie senden Fahrzeugdaten per Formular, Telefon oder WhatsApp. Danach melden wir uns zur Abstimmung und besprechen Angebot, Übergabe und mögliche Abholung direkt mit Ihnen.",
+  },
+  {
+    question: "Welche Fahrzeugdaten sollte ich angeben?",
+    answer:
+      "Hilfreich sind Fahrzeugtyp, Marke, Modell, Baujahr, Kilometerstand oder Betriebsstunden, Zustand, Standort, Unterlagen und aussagekräftige Fotos. Wenn Ihnen Daten fehlen, ist das kein Problem - wir können fehlende Informationen notfalls selbst organisieren.",
+  },
+];
+
+const canonical = absoluteUrl("/leistungen");
+const offerCatalogSchema = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  "@id": `${canonical}#angebote`,
+  name: "Leistungen im Nutzfahrzeugankauf",
+  itemListElement: services.map((service) => ({
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name: service.title,
+      description: service.description,
+      provider: {
+        "@id": `${site.url}/#localbusiness`,
+      },
+      areaServed: "DE",
+      url: `${canonical}#${service.id}`,
+    },
+  })),
+};
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: "Startseite", url: absoluteUrl("/") },
+    { name: "Leistungen", url: canonical },
+  ]),
+  createFaqSchema(serviceFaqs),
+  offerCatalogSchema,
+];
+---
+
+<BaseLayout
+  title="Leistungen | LKW Ankauf & Nutzfahrzeuge Ankauf | WAW"
+  description="Welche Fahrzeuge kauft WAW an? LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks deutschland- und europaweit anbieten."
+  canonical={canonical}
+  schema={schema}
+>
+  <Header />
+
+  <main>
+    <ServicesSplitHero />
+    <ServicesOverview services={services} />
+    <ServiceDetailSections services={services} />
+    <ServicesConditionSection />
+    <ServicesTrustSection />
+    <ServicesFAQ faqs={serviceFaqs} />
+    <ServicesCTA />
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>

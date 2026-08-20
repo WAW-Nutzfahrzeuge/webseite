@@ -1,0 +1,175 @@
+---
+import { ClockCheck, Handshake, Route, ShieldCheck } from "@lucide/astro";
+
+const benefits = [
+  {
+    icon: Handshake,
+    title: "Direkter Ansprechpartner",
+    text: "Sie stimmen Ihre Anfrage und alle weiteren Schritte direkt mit uns ab.",
+  },
+  {
+    icon: ClockCheck,
+    title: "Schnelle Rückmeldung",
+    text: "Nach Eingang Ihrer Fahrzeugdaten melden wir uns schnellstmöglich bei Ihnen.",
+  },
+  {
+    icon: Route,
+    title: "Deutschland- und europaweite Abwicklung",
+    text: "Anfragen aus Deutschland und Europa können direkt abgestimmt werden.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Erfahrung im Nutzfahrzeughandel",
+    text: "Wir kennen gewerblich genutzte LKW, Auflieger, Baumaschinen und Fuhrparks.",
+  },
+];
+---
+
+<section class="services-trust-dark">
+  <div class="container">
+    <div class="services-trust-head" data-animate>
+      <span>WARUM WAW?</span>
+      <h2>LKW verkaufen mit klarer Abstimmung und direktem Ansprechpartner.</h2>
+    </div>
+
+    <div class="services-trust-grid">
+      {benefits.map(({ icon: Icon, title, text }) => (
+        <article data-animate>
+          <div><Icon size={27} stroke-width={2.2} /></div>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-trust-dark {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(76px, 8vw, 116px) 0;
+    color: #fff;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(255,107,0,0.2), transparent 26rem),
+      linear-gradient(135deg, #05070a, #07111f 48%, #071a33);
+  }
+
+  .services-trust-dark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 58px 58px;
+    mask-image: radial-gradient(circle at 60% 45%, black, transparent 78%);
+    pointer-events: none;
+  }
+
+  .services-trust-dark .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .services-trust-head {
+    max-width: 920px;
+  }
+
+  .services-trust-head span {
+    color: #ffb06b;
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.11em;
+  }
+
+  .services-trust-head h2 {
+    margin: 14px 0 0;
+    color: #fff;
+    font-size: clamp(38px, 5vw, 66px);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+
+  .services-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 42px;
+  }
+
+  .services-trust-grid article {
+    min-height: 250px;
+    padding: 26px;
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 24px;
+    background: rgba(255,255,255,0.055);
+    transition: transform 210ms ease, border-color 210ms ease, background 210ms ease;
+  }
+
+  .services-trust-grid article:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,107,0,0.38);
+    background: rgba(255,255,255,0.082);
+  }
+
+  .services-trust-grid article > div {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(255,107,0,0.28);
+    border-radius: 18px;
+    background: rgba(255,107,0,0.13);
+    color: var(--orange);
+  }
+
+  .services-trust-grid h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.12;
+    letter-spacing: -0.045em;
+  }
+
+  .services-trust-grid p {
+    margin: 12px 0 0;
+    color: rgba(239,244,250,0.72);
+    line-height: 1.62;
+  }
+
+  @media (max-width: 1040px) {
+    .services-trust-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 680px) {
+    .services-trust-dark {
+      padding: 64px 0;
+    }
+
+    .services-trust-head {
+      text-align: center;
+    }
+
+    .services-trust-head h2 {
+      font-size: clamp(34px, 11vw, 48px);
+    }
+
+    .services-trust-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .services-trust-grid article {
+      min-height: 0;
+      text-align: center;
+    }
+
+    .services-trust-grid article > div {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+</style>

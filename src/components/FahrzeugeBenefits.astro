@@ -1,0 +1,193 @@
+---
+import { BadgeEuro, ClockCheck, MapPin, ShieldCheck } from "@lucide/astro";
+
+const iconMap = {
+  shield: ShieldCheck,
+  clock: ClockCheck,
+  euro: BadgeEuro,
+  map: MapPin,
+};
+
+const benefits = [
+  {
+    title: "Sicher & zuverlässig",
+    text: "Klare Abstimmung vom ersten Kontakt bis zur Übergabe.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Schnelle Abwicklung",
+    text: "Wir melden uns schnellstmöglich und besprechen die nächsten Schritte direkt.",
+    icon: ClockCheck,
+  },
+  {
+    title: "Faire Preise",
+    text: "Marktgerechte Angebote auf Basis von Fahrzeugdaten, Zustand und Standort.",
+    icon: BadgeEuro,
+  },
+  {
+    title: "Deutschland- und europaweit",
+    text: "Fahrzeuge aus Deutschland und Europa können Sie uns direkt anbieten.",
+    icon: MapPin,
+  },
+];
+
+const {
+  kicker = "WARUM WAW?",
+  title = "LKW und Nutzfahrzeuge direkt an WAW verkaufen",
+  items = benefits,
+} = Astro.props as {
+  kicker?: string;
+  title?: string;
+  items?: Array<(typeof benefits)[number] | { title: string; text: string; iconKey?: keyof typeof iconMap }>;
+};
+---
+
+<section class="fahrzeuge-benefits">
+  <div class="benefits-bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="benefits-head" data-animate>
+      <span>{kicker}</span>
+      <h2>{title}</h2>
+    </div>
+
+    <div class="benefits-grid">
+      {items.map((benefit) => {
+        const Icon =
+          "icon" in benefit
+            ? benefit.icon
+            : iconMap[(benefit.iconKey || "shield") as keyof typeof iconMap];
+        return (
+          <article class="benefit-card" data-animate>
+            <div class="benefit-icon">
+              <Icon aria-hidden="true" />
+            </div>
+            <h3>{benefit.title}</h3>
+            <p>{benefit.text}</p>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .fahrzeuge-benefits {
+    position: relative;
+    overflow: hidden;
+    padding: 88px 0;
+    color: #fff;
+    background: #05070a;
+  }
+
+  .benefits-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5,7,10,0.94), rgba(5,7,10,0.78)),
+      radial-gradient(circle at 78% 28%, rgba(255,107,0,0.2), transparent 24rem),
+      linear-gradient(135deg, #05070a, #07111f 52%, #071a33);
+    background-size: auto, auto, auto;
+    background-position: center;
+  }
+
+  .benefits-head,
+  .benefits-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  .benefits-head {
+    max-width: 740px;
+    margin: 0 auto 42px;
+    text-align: center;
+  }
+
+  .benefits-head span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .benefits-head h2 {
+    margin: 12px 0 0;
+    color: #fff;
+    font-size: clamp(34px, 5vw, 62px);
+    line-height: 1;
+    letter-spacing: -0.068em;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .benefit-card {
+    min-height: 238px;
+    padding: 28px;
+    border-radius: 24px;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(18px);
+    transition: transform 240ms ease, background 240ms ease;
+  }
+
+  .benefit-card:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.12);
+  }
+
+  .benefit-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 24px;
+    border-radius: 18px;
+    color: var(--orange);
+    background: rgba(255,107,0,0.12);
+    border: 1px solid rgba(255,107,0,0.28);
+  }
+
+  .benefit-icon :global(svg) {
+    width: 32px;
+    height: 32px;
+    stroke-width: 1.8;
+  }
+
+  .benefit-card h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.12;
+    letter-spacing: -0.045em;
+  }
+
+  .benefit-card p {
+    margin: 12px 0 0;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 980px) {
+    .benefits-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .fahrzeuge-benefits {
+      padding: 64px 0;
+    }
+
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .benefit-card {
+      min-height: auto;
+    }
+  }
+</style>

@@ -1,0 +1,291 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FloatingContact from "../components/FloatingContact.astro";
+import { site } from "../data/site";
+
+const canonical = `${site.url}/impressum`;
+---
+
+<BaseLayout
+  title="Impressum | WAW Nutzfahrzeuge"
+  description="Impressum und Anbieterkennzeichnung der Website von WAW Nutzfahrzeuge."
+  canonical={canonical}
+>
+  <Header />
+
+  <main class="legal-page">
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <span class="legal-kicker">RECHTLICHES</span>
+        <h1>Impressum</h1>
+        <p>
+          Anbieterkennzeichnung nach den gesetzlichen Informationspflichten fuer
+          die Website von {site.name}.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-content">
+      <div class="container legal-grid">
+        <aside class="legal-toc" aria-label="Inhaltsuebersicht">
+          <strong>Uebersicht</strong>
+          <a href="#anbieter">Anbieter</a>
+          <a href="#vertretung">Vertretung</a>
+          <a href="#register">Register & Steuer</a>
+          <a href="#kontakt">Kontakt</a>
+          <a href="#haftung">Haftung</a>
+          <a href="#streitbeilegung">Streitbeilegung</a>
+        </aside>
+
+        <article class="legal-card">
+          <section id="anbieter">
+            <h2>Angaben gemaess § 5 DDG / § 18 MStV</h2>
+            <p>
+              <strong>{site.name}</strong><br />
+              [PLATZHALTER: Rechtsform, z. B. Einzelunternehmen / GmbH / UG]<br />
+              {site.address.street}<br />
+              {site.address.postalCode} {site.address.locality}<br />
+              Deutschland
+            </p>
+          </section>
+
+          <section id="vertretung">
+            <h2>Vertreten durch</h2>
+            <p>
+              [PLATZHALTER: Name des Inhabers / der Geschaeftsfuehrung]
+            </p>
+          </section>
+
+          <section id="register">
+            <h2>Registereintrag und Umsatzsteuer</h2>
+            <p>
+              Registergericht: [PLATZHALTER: z. B. Amtsgericht ... oder "nicht eingetragen"]<br />
+              Registernummer: [PLATZHALTER: HRB/HRA ...]<br />
+              Umsatzsteuer-Identifikationsnummer gemaess § 27a UStG:
+              [PLATZHALTER: DE... oder "nicht vorhanden"]
+            </p>
+          </section>
+
+          <section id="kontakt">
+            <h2>Kontakt</h2>
+            <p>
+              Telefon: <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
+              E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+          </section>
+
+          <section>
+            <h2>Verantwortlich fuer den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <p>
+              [PLATZHALTER: Name der verantwortlichen Person]<br />
+              {site.address.street}<br />
+              {site.address.postalCode} {site.address.locality}
+            </p>
+          </section>
+
+          <section id="haftung">
+            <h2>Haftung fuer Inhalte</h2>
+            <p>
+              Als Diensteanbieter sind wir fuer eigene Inhalte auf diesen Seiten
+              nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht
+              verpflichtet, uebermittelte oder gespeicherte fremde Informationen
+              zu ueberwachen oder nach Umstaenden zu forschen, die auf eine
+              rechtswidrige Taetigkeit hinweisen.
+            </p>
+            <p>
+              Verpflichtungen zur Entfernung oder Sperrung der Nutzung von
+              Informationen nach den allgemeinen Gesetzen bleiben hiervon
+              unberuehrt. Eine diesbezuegliche Haftung ist jedoch erst ab dem
+              Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung moeglich.
+              Bei Bekanntwerden entsprechender Rechtsverletzungen entfernen wir
+              diese Inhalte umgehend.
+            </p>
+
+            <h2>Haftung fuer Links</h2>
+            <p>
+              Unser Angebot kann Links zu externen Websites Dritter enthalten,
+              auf deren Inhalte wir keinen Einfluss haben. Deshalb koennen wir
+              fuer diese fremden Inhalte keine Gewaehr uebernehmen. Fuer die
+              Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder
+              Betreiber der Seiten verantwortlich.
+            </p>
+
+            <h2>Urheberrecht</h2>
+            <p>
+              Die durch den Seitenbetreiber erstellten Inhalte und Werke auf
+              dieser Website unterliegen dem deutschen Urheberrecht. Beitraege
+              Dritter werden als solche gekennzeichnet. Vervielfaeltigung,
+              Bearbeitung, Verbreitung und jede Art der Verwertung ausserhalb
+              der Grenzen des Urheberrechts beduerfen der schriftlichen
+              Zustimmung des jeweiligen Rechteinhabers.
+            </p>
+          </section>
+
+          <section id="streitbeilegung">
+            <h2>Verbraucherstreitbeilegung</h2>
+            <p>
+              Wir sind nicht verpflichtet und nicht bereit, an
+              Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+              teilzunehmen, sofern gesetzlich nichts anderes zwingend gilt.
+            </p>
+          </section>
+
+          <p class="legal-note">
+            Hinweis: Die mit [PLATZHALTER] gekennzeichneten Angaben muessen vor
+            Veroeffentlichung durch die tatsaechlichen Unternehmensdaten ersetzt
+            und rechtlich geprueft werden.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: 0;
+    background: #f6f8fb;
+  }
+
+  .legal-hero {
+    padding: 86px 0 56px;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255, 107, 0, 0.18), transparent 24rem),
+      linear-gradient(135deg, #07111f, #0c223d);
+    color: #fff;
+  }
+
+  .legal-hero-inner {
+    max-width: 980px;
+  }
+
+  .legal-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 16px 0 18px;
+    max-width: 900px;
+    font-size: clamp(46px, 7vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+  }
+
+  .legal-hero p {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    padding: 58px 0 86px;
+  }
+
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .legal-toc,
+  .legal-card {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 24px 70px rgba(17, 24, 39, 0.08);
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 110px;
+    padding: 22px;
+  }
+
+  .legal-toc strong,
+  .legal-toc a {
+    display: block;
+  }
+
+  .legal-toc strong {
+    margin-bottom: 14px;
+    color: #111827;
+  }
+
+  .legal-toc a {
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+  }
+
+  .legal-toc a:hover {
+    color: var(--orange);
+  }
+
+  .legal-card {
+    padding: clamp(28px, 4vw, 54px);
+  }
+
+  .legal-card section + section {
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  p,
+  li {
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  a {
+    font-weight: 750;
+    color: #111827;
+  }
+
+  .legal-note {
+    margin-top: 38px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(255, 107, 0, 0.1);
+    color: #7a3600;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .legal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .legal-toc {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .legal-page {
+      padding-top: 0;
+    }
+
+    .legal-hero {
+      padding: 58px 0 42px;
+    }
+  }
+</style>

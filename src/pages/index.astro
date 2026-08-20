@@ -1,17 +1,68 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import FloatingContact from "../components/FloatingContact.astro";
+import Footer from "../components/Footer.astro";
+import ScrollAnimations from "../components/ScrollAnimations.astro";
+import TrustSection from "../components/TrustSection.astro";
+import HomeFAQ from "../components/HomeFAQ.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import CitySection from "../components/CitySection.astro";
+import HomeVehicleTypes from "../components/HomeVehicleTypes.astro";
+import HomeProcessSection from "../components/HomeProcessSection.astro";
+import CustomerReviews from "../components/CustomerReviews.astro";
+import { createFaqSchema } from "../utils/seo";
 
+const homeFaqs = [
+  {
+    question: "Welche Fahrzeuge kaufen wir an?",
+    answer:
+      "Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter, Baumaschinen und weitere gewerblich genutzte Nutzfahrzeuge an. Auch LKW mit Schäden, hoher Laufleistung oder fehlendem TÜV können Sie uns anbieten.",
+  },
+  {
+    question: "Kaufen wir auch Fahrzeuge mit hoher Laufleistung?",
+    answer:
+      "Ja. Hohe Laufleistung, Gebrauchsspuren oder ältere Baujahre sind im Nutzfahrzeughandel üblich. Senden Sie uns die wichtigsten Daten und Fotos, wir besprechen den Rest direkt.",
+  },
+  {
+    question: "Ist der Ankauf deutschland- und europaweit möglich?",
+    answer:
+      "Ja. Sie können uns Fahrzeuge aus Deutschland und Europa anbieten - vom einzelnen LKW bis zum kompletten Fuhrpark.",
+  },
+  {
+    question: "Wie schnell bekomme ich eine Rückmeldung?",
+    answer:
+      "Nach Eingang Ihrer Anfrage melden wir uns schnellstmöglich. Vollständige Fahrzeugdaten und Fotos helfen uns, konkreter zu antworten.",
+  },
+  {
+    question: "Kann ich auch mehrere Fahrzeuge oder einen Fuhrpark anbieten?",
+    answer:
+      "Ja. Mehrere LKW, gemischte Fahrzeugpakete oder komplette Fuhrparks können Sie gemeinsam anbieten.",
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="LKW & Nutzfahrzeuge verkaufen | WAW Nutzfahrzeuge"
+  description="LKW, Auflieger, Anhänger, Transporter, Baumaschinen oder Fuhrpark verkaufen? WAW kauft gewerbliche Nutzfahrzeuge deutschland- und europaweit an."
+  canonical="https://www.wawnutzfahrzeuge.de/"
+  schema={createFaqSchema(homeFaqs)}
+>
+  <Header transparent />
+  <Hero />
+
+  <main>
+    <HomeVehicleTypes />
+    <TrustSection />
+    <HomeProcessSection />
+    <CitySection />
+    <CustomerReviews />
+    <HomeFAQ />
+    <FinalCTA />
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>

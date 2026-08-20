@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FloatingContact from "../../components/FloatingContact.astro";
+import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import ContactHero from "../../components/ContactHero.astro";
+import ContactMethods from "../../components/ContactMethods.astro";
+import ContactBenefits from "../../components/ContactBenefits.astro";
+import ContactMapSection from "../../components/ContactMapSection.astro";
+import ContactFAQ from "../../components/ContactFAQ.astro";
+import ContactCallBar from "../../components/ContactCallBar.astro";
+import { site } from "../../data/site";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
+
+const faqs = [
+  {
+    question: "Wie schnell bekomme ich eine Rückmeldung?",
+    answer:
+      "Wir melden uns nach Eingang Ihrer Anfrage schnellstmöglich zurück. Vollständige Angaben und Fotos helfen uns, konkreter zu antworten.",
+  },
+  {
+    question: "Welche Angaben sind für eine Anfrage hilfreich?",
+    answer:
+      "Hilfreich sind Fahrzeugtyp, Marke, Modell, Baujahr, Kilometerstand, Zustand, Standort und vorhandene Fotos oder Unterlagen. Wenn etwas fehlt, reichen zunächst Ihre Kontaktdaten.",
+  },
+  {
+    question: "Kann ich auch per WhatsApp anfragen?",
+    answer:
+      "Ja. Sie können Fahrzeugdaten, Fotos und kurze Informationen direkt per WhatsApp senden. Wir stimmen die nächsten Schritte anschließend persönlich mit Ihnen ab.",
+  },
+  {
+    question: "Ist die Anfrage unverbindlich?",
+    answer:
+      "Ja. Die Kontaktaufnahme und erste Abstimmung sind unverbindlich. Alles Weitere besprechen wir direkt mit Ihnen.",
+  },
+  {
+    question: "Kann ich mehrere Fahrzeuge oder einen Fuhrpark anbieten?",
+    answer:
+      "Ja. Wir kaufen einzelne Nutzfahrzeuge ebenso wie komplette Fuhrparks von Unternehmen, Händlern und Fuhrparkbetreibern an.",
+  },
+  {
+    question: "Kann ich Bilder und Fahrzeugunterlagen mitsenden?",
+    answer:
+      "Ja. Bilder, Fahrzeugschein, Wartungsnachweise oder weitere Unterlagen helfen uns, Ihre Anfrage schneller und konkreter einzuordnen.",
+  },
+];
+
+const canonical = absoluteUrl("/kontakt");
+const schema = [
+  createFaqSchema(faqs),
+  createBreadcrumbSchema([
+    { name: "Startseite", url: absoluteUrl("/") },
+    { name: "Kontakt", url: canonical },
+  ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${canonical}#contact`,
+    url: canonical,
+    name: "Kontakt | WAW Nutzfahrzeuge",
+    description:
+      "Kontaktseite für den Ankauf von LKW, Aufliegern, Anhängern, Transportern, Baumaschinen und Fuhrparks.",
+    mainEntity: {
+      "@type": "AutoDealer",
+      "@id": `${site.url}/#localbusiness`,
+      name: site.name,
+      telephone: site.phoneDisplay,
+      email: site.email,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: site.address.street,
+        postalCode: site.address.postalCode,
+        addressLocality: site.address.locality,
+        addressRegion: site.address.region,
+        addressCountry: site.address.country,
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: site.phoneDisplay,
+        email: site.email,
+        contactType: "sales",
+        areaServed: "DE",
+        availableLanguage: ["de"],
+      },
+    },
+  },
+];
+---
+
+<BaseLayout
+  title="Kontakt | LKW & Nutzfahrzeuge verkaufen | WAW Nutzfahrzeuge"
+    description="LKW oder Nutzfahrzeug verkaufen? Kontaktieren Sie WAW per Formular, WhatsApp oder Telefon für den Ankauf von LKW, Aufliegern, Transportern, Baumaschinen und Fuhrparks."
+  canonical={canonical}
+  schema={schema}
+>
+  <Header transparent />
+
+  <main>
+    <ContactHero />
+    <ContactMethods />
+    <ContactBenefits />
+    <ContactMapSection />
+    <ContactFAQ faqs={faqs} />
+    <ContactCallBar />
+  </main>
+
+  <Footer />
+  <FloatingContact />
+  <ScrollAnimations />
+</BaseLayout>

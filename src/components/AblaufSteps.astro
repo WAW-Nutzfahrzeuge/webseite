@@ -1,0 +1,397 @@
+---
+import { BadgeEuro, CreditCard, FileText, MessageCircle, Truck } from "@lucide/astro";
+
+const iconMap = {
+  file: FileText,
+  message: MessageCircle,
+  euro: BadgeEuro,
+  payment: CreditCard,
+  truck: Truck,
+};
+
+const defaultSteps = [
+  {
+    number: "01",
+    title: "Anfrage senden",
+    text: "Senden Sie Fahrzeugtyp, Marke, Baujahr, Kilometerstand, Standort und nach Möglichkeit Fotos.",
+    iconKey: "file",
+  },
+  {
+    number: "02",
+    title: "Rückmeldung erhalten",
+    text: "Wir melden uns schnellstmöglich und klären offene Fragen direkt mit Ihnen.",
+    iconKey: "message",
+  },
+  {
+    number: "03",
+    title: "Angebot erhalten",
+    text: "Wir besprechen ein marktgerechtes Angebot auf Basis Ihrer Angaben, Fotos und Unterlagen.",
+    iconKey: "euro",
+  },
+  {
+    number: "04",
+    title: "Zahlung abstimmen",
+    text: "Zahlungsart und Zeitpunkt werden vor Übergabe klar mit Ihnen vereinbart.",
+    iconKey: "payment",
+  },
+  {
+    number: "05",
+    title: "Abholung koordinieren",
+    text: "Anschließend koordinieren wir Übergabe oder mögliche Abholung zum passenden Termin.",
+    iconKey: "truck",
+  },
+];
+
+const {
+  kicker = "SO EINFACH GEHT'S",
+  title = "In 5 Schritten zum LKW Verkauf",
+  steps = defaultSteps,
+} = Astro.props;
+---
+
+<section class="ablauf-steps" data-steps-section style="--progress: 0;">
+  <div class="steps-sticky">
+    <div class="container">
+      <div class="steps-head" data-animate>
+        <span>{kicker}</span>
+        <h2>{title}</h2>
+      </div>
+
+      <div class="steps-progress" aria-hidden="true">
+        <div class="progress-track"></div>
+        <div class="progress-fill"></div>
+        <div class="step-dots">
+          {steps.map((step, index) => (
+            <span class="step-dot" data-step-dot={index}>{index + 1}</span>
+          ))}
+        </div>
+      </div>
+
+      <div class="steps-grid">
+        {steps.map((step, index) => {
+          const Icon = iconMap[step.iconKey as keyof typeof iconMap] || FileText;
+          return (
+            <article class="step-card" data-step-card={index}>
+              <div class="step-icon">
+                <Icon aria-hidden="true" />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+              <span class="step-number">{step.number}</span>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>("[data-steps-section]");
+
+  if (section) {
+    const cards = Array.from(section.querySelectorAll<HTMLElement>("[data-step-card]"));
+    const dots = Array.from(section.querySelectorAll<HTMLElement>("[data-step-dot]"));
+    let ticking = false;
+
+    const clamp = (value: number) => Math.min(1, Math.max(0, value));
+
+    function updateProgress() {
+      const rect = section!.getBoundingClientRect();
+      const isDesktop = window.matchMedia("(min-width: 761px)").matches;
+      const scrollRange = isDesktop ? rect.height - window.innerHeight : rect.height + window.innerHeight * 0.15;
+      const raw = isDesktop
+        ? -rect.top / Math.max(1, scrollRange)
+        : (window.innerHeight * 0.72 - rect.top) / Math.max(1, scrollRange);
+      const progress = clamp(raw);
+      const activeIndex = Math.min(cards.length - 1, Math.max(0, Math.floor(progress * cards.length)));
+
+      section!.style.setProperty("--progress", progress.toFixed(4));
+
+      cards.forEach((card, index) => {
+        card.classList.toggle("is-active", index === activeIndex);
+        card.classList.toggle("is-complete", index < activeIndex);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("is-active", index === activeIndex);
+        dot.classList.toggle("is-complete", index < activeIndex);
+      });
+
+      ticking = false;
+    }
+
+    function requestUpdate() {
+      if (!ticking) {
+        requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    }
+
+    updateProgress();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+  }
+</script>
+
+<style>
+  .ablauf-steps {
+    position: relative;
+    height: 165vh;
+    background: #fff;
+  }
+
+  .steps-sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: grid;
+    align-items: center;
+    padding: 82px 0 74px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 12%, rgba(255,107,0,0.07), transparent 22rem),
+      #fff;
+  }
+
+  .steps-head {
+    text-align: center;
+    margin-bottom: 54px;
+  }
+
+  .steps-head span {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .steps-head h2 {
+    margin: 12px 0 0;
+    font-size: clamp(36px, 5vw, 62px);
+    line-height: 1;
+    letter-spacing: -0.07em;
+  }
+
+  .steps-progress {
+    position: relative;
+    width: min(1180px, 100%);
+    margin: 0 auto 46px;
+    height: 48px;
+  }
+
+  .progress-track,
+  .progress-fill {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    top: 50%;
+    height: 5px;
+    border-radius: 999px;
+    transform: translateY(-50%);
+  }
+
+  .progress-track {
+    background: #e6e9ee;
+  }
+
+  .progress-fill {
+    transform-origin: left center;
+    transform: translateY(-50%) scaleX(var(--progress));
+    background: var(--orange);
+    box-shadow: 0 0 24px rgba(255,107,0,0.28);
+  }
+
+  .step-dots {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .step-dot {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: #eef2f6;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 900;
+    transition: 220ms ease;
+  }
+
+  .step-dot.is-active,
+  .step-dot.is-complete {
+    color: #fff;
+    background: var(--orange);
+    box-shadow: 0 12px 28px rgba(255,107,0,0.28);
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .step-card {
+    position: relative;
+    min-height: 280px;
+    padding: 32px 24px 28px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(17,24,39,0.1);
+    box-shadow:
+      0 8px 24px rgba(15,23,42,0.04),
+      0 24px 70px rgba(15,23,42,0.06);
+    text-align: center;
+    transition:
+      transform 240ms ease,
+      border-color 240ms ease,
+      box-shadow 240ms ease;
+  }
+
+  .step-card.is-active {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(255,107,0,0.32);
+    box-shadow:
+      0 18px 38px rgba(15,23,42,0.08),
+      0 34px 86px rgba(255,107,0,0.12);
+  }
+
+  .step-card.is-complete {
+    border-color: rgba(255,107,0,0.2);
+  }
+
+  .step-icon {
+    width: 62px;
+    height: 62px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 22px;
+    border-radius: 20px;
+    color: #111827;
+    background: #f3f6fa;
+    transition: 220ms ease;
+  }
+
+  .step-card.is-active .step-icon,
+  .step-card.is-complete .step-icon {
+    color: var(--orange);
+    background: rgba(255,107,0,0.1);
+  }
+
+  .step-icon :global(svg) {
+    width: 34px;
+    height: 34px;
+    stroke-width: 1.8;
+  }
+
+  .step-card h3 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.18;
+    letter-spacing: -0.04em;
+  }
+
+  .step-card p {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.68;
+  }
+
+  .step-number {
+    position: absolute;
+    right: 18px;
+    bottom: 14px;
+    color: rgba(17,24,39,0.08);
+    font-size: 44px;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.08em;
+  }
+
+  @media (max-width: 1040px) and (min-width: 761px) {
+    .steps-grid {
+      gap: 10px;
+    }
+
+    .step-card {
+      padding: 28px 16px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ablauf-steps {
+      height: auto;
+      padding: 58px 0;
+      background: #fff;
+    }
+
+    .steps-sticky {
+      position: relative;
+      min-height: auto;
+      padding: 0;
+      display: block;
+      overflow: visible;
+    }
+
+    .steps-head {
+      margin-bottom: 34px;
+    }
+
+    .steps-progress {
+      position: absolute;
+      left: 14px;
+      top: 132px;
+      bottom: 8px;
+      width: 4px;
+      height: auto;
+      margin: 0;
+    }
+
+    .progress-track,
+    .progress-fill {
+      left: 0;
+      right: auto;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      height: auto;
+      transform: none;
+    }
+
+    .progress-fill {
+      transform-origin: top center;
+      transform: scaleY(var(--progress));
+    }
+
+    .step-dots {
+      display: none;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding-left: 28px;
+    }
+
+    .step-card {
+      min-height: auto;
+      padding: 24px 20px;
+      text-align: left;
+      border-radius: 20px;
+    }
+
+    .step-card.is-active {
+      transform: translateY(-3px);
+    }
+
+    .step-icon {
+      margin: 0 0 16px;
+    }
+  }
+</style>

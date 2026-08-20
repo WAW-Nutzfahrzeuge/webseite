@@ -1,0 +1,42 @@
+---
+import LocalizedLandingPage from "../../components/LocalizedLandingPage.astro";
+import { cities } from "../../data/cities";
+import {
+  cityRoutePrefixes,
+  locales,
+  routeMap,
+  type Locale,
+  type RouteKey,
+} from "../../data/i18n";
+
+type LocalizedPageKey = RouteKey | "city";
+
+export function getStaticPaths() {
+  const staticPaths: Array<{
+    params: { lang: Locale; slug: string };
+    props: { lang: Locale; pageKey: LocalizedPageKey; citySlug?: string };
+  }> = [];
+
+  for (const lang of locales.filter((locale) => locale !== "de")) {
+    const cityPrefix = cityRoutePrefixes[lang].replace(`/${lang}/`, "");
+    for (const city of cities) {
+      staticPaths.push({
+        params: { lang, slug: `${cityPrefix}/${city.slug}` },
+        props: { lang, pageKey: "city", citySlug: city.slug },
+      });
+    }
+  }
+
+  return staticPaths;
+}
+
+const { lang, pageKey, citySlug } = Astro.props as {
+  lang: Locale;
+  pageKey: LocalizedPageKey;
+  citySlug?: string;
+};
+
+const city = citySlug ? cities.find((entry) => entry.slug === citySlug) : null;
+---
+
+<LocalizedLandingPage lang={lang} pageKey={pageKey} city={city} />

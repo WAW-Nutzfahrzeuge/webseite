@@ -1,0 +1,225 @@
+<section class="home-faq section" id="faq">
+    <div class="container faq-wrap">
+        <div class="faq-copy" data-animate>
+            <span>FAQ</span>
+            <h2>Häufige Fragen zum LKW Verkauf</h2>
+            <p>
+                Antworten für Unternehmen, Händler, Speditionen und Fuhrparks,
+                die LKW oder andere Nutzfahrzeuge anbieten möchten.
+            </p>
+        </div>
+
+        <div class="faq-list">
+            <details class="faq-card glass-reflect" data-animate open>
+                <summary>Welche Fahrzeuge kaufen wir an?</summary>
+                <p>
+                    Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger,
+                    Transporter, Baumaschinen und weitere gewerblich genutzte
+                    Nutzfahrzeuge an. Auch LKW mit Schäden, hoher Laufleistung
+                    oder fehlendem TÜV können Sie uns anbieten.
+                </p>
+            </details>
+
+            <details class="faq-card glass-reflect" data-animate>
+                <summary>Kaufen wir auch Fahrzeuge mit hoher Laufleistung?</summary>
+                <p>
+                    Ja. Hohe Laufleistung, Gebrauchsspuren oder ältere Baujahre
+                    sind im Nutzfahrzeughandel üblich. Senden Sie uns die
+                    wichtigsten Daten und Fotos, wir besprechen den Rest direkt.
+                </p>
+            </details>
+
+            <details class="faq-card glass-reflect" data-animate>
+                <summary>Ist der Ankauf deutschland- und europaweit möglich?</summary>
+                <p>
+                    Ja. Sie können uns Fahrzeuge aus Deutschland und Europa
+                    anbieten - vom einzelnen LKW bis zum kompletten Fuhrpark.
+                </p>
+            </details>
+
+            <details class="faq-card glass-reflect" data-animate>
+                <summary>Wie schnell bekomme ich eine Rückmeldung?</summary>
+                <p>
+                    Nach Eingang Ihrer Anfrage melden wir uns schnellstmöglich.
+                    Vollständige Fahrzeugdaten und Fotos helfen uns, konkreter zu antworten.
+                </p>
+            </details>
+
+            <details class="faq-card glass-reflect" data-animate>
+                <summary>Kann ich auch mehrere Fahrzeuge oder einen Fuhrpark anbieten?</summary>
+                <p>
+                    Ja. Mehrere LKW, gemischte Fahrzeugpakete oder komplette
+                    Fuhrparks können Sie gemeinsam anbieten.
+                </p>
+            </details>
+        </div>
+    </div>
+</section>
+
+<script>
+    const faqCards = document.querySelectorAll(".faq-card");
+
+    faqCards.forEach((card) => {
+        card.addEventListener("toggle", () => {
+            if (card.open) {
+                faqCards.forEach((otherCard) => {
+                    if (otherCard !== card) {
+                        otherCard.removeAttribute("open");
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<style>
+    .home-faq {
+        background: linear-gradient(180deg, #f7f9fc, #ffffff);
+    }
+
+    .faq-wrap {
+        max-width: 980px;
+    }
+
+    .faq-copy {
+        max-width: 720px;
+        margin: 0 auto 34px;
+        text-align: center;
+    }
+
+    .faq-copy span {
+        display: inline-block;
+        color: var(--orange);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+    }
+
+    .faq-copy h2 {
+        margin: 12px 0 0;
+        font-size: clamp(31px, 4vw, 48px);
+        line-height: 1.02;
+        letter-spacing: -0.06em;
+    }
+
+    .faq-copy p {
+        max-width: 580px;
+        margin: 16px auto 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.65;
+    }
+
+    .faq-list {
+        display: grid;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 28px;
+        background: #ffffff;
+        border: 1px solid rgba(17,24,39,0.08);
+        box-shadow: 0 18px 60px rgba(15,23,42,0.07);
+    }
+
+    .faq-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 18px;
+        background: #f8fafc;
+        border: 1px solid rgba(17,24,39,0.06);
+        box-shadow: none;
+        transition:
+                transform 240ms ease,
+                background 240ms ease,
+                border-color 240ms ease;
+    }
+
+    .faq-card:hover {
+        background: #ffffff;
+        border-color: rgba(255,107,0,0.2);
+    }
+
+    .faq-card summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 20px 58px 20px 22px;
+        font-size: 18px;
+        font-weight: 850;
+        letter-spacing: -0.04em;
+        color: var(--text);
+        position: relative;
+    }
+
+    .faq-card summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .faq-card summary::after {
+        content: "+";
+        position: absolute;
+        right: 22px;
+        top: 50%;
+        width: 34px;
+        height: 34px;
+        transform: translateY(-50%);
+        border-radius: 999px;
+        background: var(--orange);
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        font-size: 21px;
+        transition: 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .faq-card[open] summary::after {
+        content: "−";
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    .faq-card p {
+        margin: 0;
+        padding: 0 22px 22px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.7;
+        animation: faqReveal 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .faq-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+                radial-gradient(circle at top right, rgba(255,255,255,0.9), transparent 16rem);
+        opacity: 0;
+        transition: 240ms ease;
+        pointer-events: none;
+    }
+
+    .faq-card[open]::before {
+        opacity: 1;
+    }
+
+    @keyframes faqReveal {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 620px) {
+        .faq-list {
+            padding: 8px;
+            border-radius: 22px;
+        }
+
+        .faq-card summary {
+            padding: 18px 54px 18px 18px;
+            font-size: 16px;
+        }
+    }
+</style>
