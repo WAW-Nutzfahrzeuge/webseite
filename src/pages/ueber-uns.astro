@@ -33,23 +33,23 @@ const heroStats = [
 const reasons = [
   {
     icon: Handshake,
-    title: "Direkter Ankauf statt langem Inserieren",
-    text: "Sie sprechen direkt mit uns. Keine Plattform, keine unnötigen Zwischenschritte, keine langen Verkaufsverhandlungen mit unklaren Interessenten.",
+    title: "Direkt statt langem Inserieren",
+    text: "Sie sprechen direkt mit uns – ohne Plattform, ohne Zwischenschritte und ohne endlose Verhandlungen mit unklaren Interessenten.",
   },
   {
     icon: Globe2,
     title: "Starker Exportmarkt",
-    text: "Durch unsere europaweiten Kontakte sind auch ältere LKW, Fahrzeuge ohne TÜV, hohe Laufleistungen und Schäden für uns interessant.",
+    text: "Über unsere Kontakte in ganz Europa sind auch ältere LKW, Fahrzeuge ohne TÜV, mit hoher Laufleistung oder Schäden für uns interessant.",
   },
   {
     icon: Clock3,
     title: "Schnelle Rückmeldung",
-    text: "Nach Ihrer Anfrage melden wir uns schnellstmöglich zurück und besprechen Fahrzeugdaten, Standort und nächste Schritte persönlich.",
+    text: "Nach Ihrer Anfrage melden wir uns zügig zurück und besprechen Fahrzeugdaten, Standort und nächste Schritte persönlich mit Ihnen.",
   },
   {
     icon: ShieldCheck,
     title: "Seriöse Abwicklung",
-    text: "Vom ersten Kontakt bis zur Übergabe achten wir auf klare Kommunikation, verbindliche Abstimmung und eine professionelle Verkaufsabwicklung.",
+    text: "Vom ersten Kontakt bis zur Übergabe: klare Kommunikation, verbindliche Absprachen und ein professioneller Verkaufsprozess.",
   },
 ];
 
@@ -151,13 +151,14 @@ const schema = [
       <div class="container about-hero__grid">
         <div class="about-hero__copy" data-animate>
           <p class="about-kicker">ÜBER WAW NUTZFAHRZEUGE</p>
-          <h1>LKW verkaufen mit einem Partner, der Nutzfahrzeuge versteht.</h1>
+          <h1>LKW verkaufen mit einem Partner, der den Nutzfahrzeugmarkt kennt.</h1>
           <p>
-            Wir kaufen LKW, Auflieger, Anhänger, Transporter, Baumaschinen und komplette Fuhrparks direkt an.
-            Schnell, persönlich und deutschland- und europaweit abgestimmt.
+            WAW kauft LKW, Auflieger, Anhänger, Transporter, Baumaschinen und
+            komplette Fuhrparks direkt an – schnell, persönlich und zu einem
+            fairen, marktgerechten Preis.
           </p>
           <div class="about-actions">
-            <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
+            <a href="/kontakt" class="btn btn-primary">Jetzt Fahrzeug verkaufen</a>
             <a href={`tel:${site.phoneHref}`} class="btn about-btn-outline">Direkt anrufen</a>
           </div>
           <div class="about-trustline" aria-label="Vorteile">
@@ -184,16 +185,20 @@ const schema = [
       <div class="container about-split">
         <div data-animate>
           <p class="about-kicker">WARUM WAW?</p>
-          <h2>Für Unternehmen, die eine klare Lösung statt langer Verkaufswege suchen.</h2>
+          <h2>Eine klare Lösung statt langer Verkaufswege.</h2>
         </div>
         <div class="about-copy" data-animate>
           <p>
-            Wer einen gebrauchten LKW, eine Sattelzugmaschine, einen Auflieger oder einen kompletten Fuhrpark verkaufen möchte,
-            braucht vor allem schnelle Erreichbarkeit, Erfahrung und eine realistische Einordnung. Genau darauf ist WAW ausgerichtet.
+            Sie möchten einen gebrauchten LKW, eine Sattelzugmaschine, einen
+            Auflieger oder einen kompletten Fuhrpark verkaufen? Dann zählt vor
+            allem eines: ein Ansprechpartner, der schnell erreichbar ist und
+            Ihr Fahrzeug realistisch einschätzt. Genau dafür steht WAW.
           </p>
           <p>
-            Wir kaufen Nutzfahrzeuge aller Art an - auch Fahrzeuge mit hoher Laufleistung, fehlendem TÜV, technischen Mängeln,
-            Unfallschäden oder Exportpotenzial. Der Fokus liegt auf einer direkten, seriösen und unkomplizierten Abwicklung.
+            Wir kaufen Nutzfahrzeuge aller Art an – auch mit hoher Laufleistung,
+            fehlendem TÜV, technischen Mängeln oder Unfallschaden. Im
+            Mittelpunkt steht eine direkte, seriöse und unkomplizierte
+            Abwicklung.
           </p>
         </div>
       </div>
@@ -203,7 +208,7 @@ const schema = [
       <div class="container about-section-head" data-animate>
         <p class="about-kicker">IHRE VORTEILE</p>
         <h2>Warum Unternehmen direkt bei WAW anfragen</h2>
-        <p>Für Unternehmen, Händler und Fuhrparks zählen kurze Wege, klare Kommunikation und ein Ansprechpartner, der den Nutzfahrzeugmarkt kennt.</p>
+        <p>Kurze Wege, klare Kommunikation und ein Ansprechpartner, der den Nutzfahrzeugmarkt kennt – das zählt für Unternehmen, Händler und Fuhrparks.</p>
       </div>
       <div class="container about-reason-grid">
         {reasons.map((reason) => {
@@ -228,7 +233,9 @@ const schema = [
           <p class="about-kicker">ANKAUFSSPEKTRUM</p>
           <h2>Vom einzelnen LKW bis zum kompletten Fuhrpark.</h2>
           <p>
-            Wir sind Ansprechpartner für Unternehmen, Händler, Speditionen und Fuhrparkbetreiber, die Nutzfahrzeuge direkt und professionell verkaufen möchten.
+            Wir sind Ansprechpartner für Unternehmen, Händler, Speditionen und
+            Fuhrparkbetreiber, die Nutzfahrzeuge direkt und professionell
+            verkaufen möchten.
           </p>
           <div class="about-keyword-row">
             {keywords.map((keyword) => <a href="/leistungen">{keyword}</a>)}
@@ -273,10 +280,13 @@ const schema = [
         </div>
         <div data-animate>
           <p class="about-kicker">VERTRAUEN IM ANKAUF</p>
-          <h2>Auch schwierige Fahrzeuge können interessant sein.</h2>
+          <h2>Auch schwierige Fahrzeuge sind bei uns willkommen.</h2>
           <p>
-            Nicht jeder LKW ist in perfektem Zustand. Für uns zählen die realen Fahrzeugdaten, der Standort und die weiteren Vermarktungsmöglichkeiten.
-            Durch unsere Erfahrung und Exportkontakte können auch Nutzfahrzeuge relevant sein, die im klassischen Privatverkauf schwer zu vermitteln sind.
+            Nicht jeder LKW ist in perfektem Zustand – das ist für uns kein
+            Problem. Entscheidend sind die realen Fahrzeugdaten, der Standort
+            und die weiteren Vermarktungsmöglichkeiten. Durch unsere Erfahrung
+            und Exportkontakte sind auch Nutzfahrzeuge interessant, die im
+            klassischen Privatverkauf schwer zu vermitteln sind.
           </p>
           <ul class="about-check-list">
             <li><BadgeCheck size={18} /> LKW mit hoher Laufleistung</li>
@@ -310,8 +320,9 @@ const schema = [
           <p class="about-kicker">NUTZFAHRZEUG VERKAUFEN?</p>
           <h2>Senden Sie uns Ihre Anfrage.</h2>
           <p>
-            Hinterlassen Sie Ihre Kontaktdaten und die wichtigsten Informationen zum Fahrzeug. Wenn Ihnen Daten fehlen,
-            reicht der erste Kontakt trotzdem aus - wir klären den Rest gemeinsam.
+            Hinterlassen Sie Ihre Kontaktdaten und die wichtigsten Angaben zum
+            Fahrzeug. Fehlen Ihnen Daten, reicht der erste Kontakt trotzdem
+            aus – wir klären den Rest gemeinsam mit Ihnen.
           </p>
           <div class="about-contact-strip">
             <a href={site.whatsappHref} target="_blank" rel="noopener"><UsersRound size={18} /> WhatsApp schreiben</a>

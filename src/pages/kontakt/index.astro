@@ -15,34 +15,34 @@ import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../util
 
 const faqs = [
   {
-    question: "Wie schnell bekomme ich eine Rückmeldung?",
+    question: "Wie schnell melden Sie sich zurück?",
     answer:
-      "Wir melden uns nach Eingang Ihrer Anfrage schnellstmöglich zurück. Vollständige Angaben und Fotos helfen uns, konkreter zu antworten.",
+      "In der Regel melden wir uns nach Eingang Ihrer Anfrage zeitnah bei Ihnen. Je vollständiger Ihre Angaben und Fotos sind, desto genauer können wir antworten.",
   },
   {
-    question: "Welche Angaben sind für eine Anfrage hilfreich?",
+    question: "Welche Angaben sollte ich mitsenden?",
     answer:
-      "Hilfreich sind Fahrzeugtyp, Marke, Modell, Baujahr, Kilometerstand, Zustand, Standort und vorhandene Fotos oder Unterlagen. Wenn etwas fehlt, reichen zunächst Ihre Kontaktdaten.",
+      "Hilfreich sind Fahrzeugtyp, Marke, Modell, Baujahr, Kilometerstand, Zustand, Standort sowie Fotos oder Unterlagen. Wenn noch nicht alles vorliegt, reichen für den Start auch Ihre Kontaktdaten.",
   },
   {
-    question: "Kann ich auch per WhatsApp anfragen?",
+    question: "Kann ich mein Fahrzeug auch per WhatsApp anbieten?",
     answer:
-      "Ja. Sie können Fahrzeugdaten, Fotos und kurze Informationen direkt per WhatsApp senden. Wir stimmen die nächsten Schritte anschließend persönlich mit Ihnen ab.",
+      "Ja. Sie können uns Fahrzeugdaten, Fotos und kurze Infos direkt per WhatsApp senden. Die nächsten Schritte besprechen wir anschließend persönlich mit Ihnen.",
   },
   {
-    question: "Ist die Anfrage unverbindlich?",
+    question: "Ist meine Anfrage unverbindlich?",
     answer:
-      "Ja. Die Kontaktaufnahme und erste Abstimmung sind unverbindlich. Alles Weitere besprechen wir direkt mit Ihnen.",
+      "Ja. Ihre Anfrage und die erste Abstimmung sind unverbindlich. Alles Weitere klären wir direkt mit Ihnen.",
   },
   {
-    question: "Kann ich mehrere Fahrzeuge oder einen Fuhrpark anbieten?",
+    question: "Kann ich mehrere Fahrzeuge oder einen ganzen Fuhrpark anbieten?",
     answer:
-      "Ja. Wir kaufen einzelne Nutzfahrzeuge ebenso wie komplette Fuhrparks von Unternehmen, Händlern und Fuhrparkbetreibern an.",
+      "Ja. Wir kaufen einzelne Nutzfahrzeuge genauso wie komplette Fuhrparks von Unternehmen, Händlern und Fuhrparkbetreibern.",
   },
   {
-    question: "Kann ich Bilder und Fahrzeugunterlagen mitsenden?",
+    question: "Kann ich Fotos und Unterlagen mitsenden?",
     answer:
-      "Ja. Bilder, Fahrzeugschein, Wartungsnachweise oder weitere Unterlagen helfen uns, Ihre Anfrage schneller und konkreter einzuordnen.",
+      "Ja. Fotos, Fahrzeugschein, Wartungsnachweise oder weitere Unterlagen helfen uns, Ihre Anfrage schneller einzuordnen.",
   },
 ];
 
@@ -60,7 +60,7 @@ const schema = [
     url: canonical,
     name: "Kontakt | WAW Nutzfahrzeuge",
     description:
-      "Kontaktseite für den Ankauf von LKW, Aufliegern, Anhängern, Transportern, Baumaschinen und Fuhrparks.",
+      "Kontaktseite für den unverbindlichen Ankauf von LKW, Nutzfahrzeugen, Aufliegern, Anhängern, Transportern, Baumaschinen und Fuhrparks.",
     mainEntity: {
       "@type": "AutoDealer",
       "@id": `${site.url}/#localbusiness`,
@@ -89,8 +89,8 @@ const schema = [
 ---
 
 <BaseLayout
-  title="Kontakt | LKW & Nutzfahrzeuge verkaufen | WAW Nutzfahrzeuge"
-    description="LKW oder Nutzfahrzeug verkaufen? Kontaktieren Sie WAW per Formular, WhatsApp oder Telefon für den Ankauf von LKW, Aufliegern, Transportern, Baumaschinen und Fuhrparks."
+  title="Kontakt | Fahrzeug anbieten | WAW Nutzfahrzeuge"
+    description="Kontaktieren Sie WAW per Formular, WhatsApp oder Telefon und bieten Sie LKW, Nutzfahrzeuge, Auflieger, Anhänger, Transporter, Baumaschinen oder Fuhrparks unverbindlich an."
   canonical={canonical}
   schema={schema}
 >

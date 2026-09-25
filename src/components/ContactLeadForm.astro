@@ -2,38 +2,38 @@
 import { Send } from "@lucide/astro";
 
 const {
-  kicker = "UNVERBINDLICHE ANFRAGE",
-  title = "Fahrzeugdaten senden",
-  text = "Senden Sie uns die wichtigsten Angaben zum Fahrzeug oder Fuhrpark. Wir melden uns schnellstmöglich bei Ihnen.",
-  help = "Nicht alle Daten zur Hand? Kein Problem. Kontaktdaten reichen zunächst aus, fehlende Informationen klären wir gemeinsam.",
+  kicker = "FORMULAR",
+  title = "Jetzt Fahrzeug anbieten",
+  text = "Senden Sie uns die wichtigsten Angaben zu Ihrem Fahrzeug oder Fuhrpark. Wir melden uns schnellstmöglich bei Ihnen zurück.",
+  help = "Nicht alle Daten zur Hand? Kein Problem. Name und Telefonnummer reichen für den ersten Kontakt.",
   labels = {
     name: "Name *",
     phone: "Telefon *",
     email: "E-Mail",
     company: "Unternehmen",
-    vehicle: "Fahrzeugtyp",
+    vehicle: "Fahrzeug / Fahrzeugtyp",
     year: "Baujahr",
     mileage: "Kilometerstand",
-    condition: "Zustand / Schäden",
-    message: "Nachricht",
+    condition: "Zustand / Besonderheiten",
+    message: "Ihre Nachricht",
   },
   placeholders = {
     name: "Ihr Name",
     phone: "+49 ...",
     email: "name@example.de",
-    company: "Optional",
-    vehicle: "z.B. LKW, Auflieger",
-    year: "z.B. 2018",
-    mileage: "ca. Kilometerstand",
-    condition: "z.B. fahrbereit, Motorschaden",
-    message: "Weitere Informationen zum Fahrzeug",
+    company: "Firmenname (optional)",
+    vehicle: "z. B. LKW, Auflieger oder Transporter",
+    year: "z. B. 2018",
+    mileage: "z. B. 420.000 km",
+    condition: "z. B. fahrbereit, Motorschaden, Unfall",
+    message: "Teilen Sie uns hier weitere Details oder Fragen mit",
   },
   source = "Kontaktseite",
-  submitLabel = "Anfrage absenden",
+  submitLabel = "Jetzt Fahrzeug anbieten",
   sendingLabel = "Wird gesendet...",
-  privacyText = "Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet.",
-  defaultError = "Die Anfrage konnte nicht gesendet werden.",
-  fallbackError = "Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns direkt an oder schreiben Sie per WhatsApp.",
+  privacyText = "Ihre Daten verwenden wir ausschließlich zur Bearbeitung Ihrer Anfrage.",
+  defaultError = "Ihre Anfrage konnte nicht gesendet werden.",
+  fallbackError = "Ihre Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns direkt an oder schreiben Sie uns per WhatsApp.",
 } = Astro.props;
 ---
 
@@ -165,7 +165,7 @@ const {
             result?.error ||
             Object.values(result?.errors || {})[0] ||
             form.dataset.defaultError ||
-            "Die Anfrage konnte nicht gesendet werden.";
+            "Ihre Anfrage konnte nicht gesendet werden.";
           throw new Error(String(errorMessage));
         }
 
@@ -176,13 +176,13 @@ const {
           status.textContent =
             error instanceof Error
               ? error.message
-              : form.dataset.fallbackError || "Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns direkt an oder schreiben Sie per WhatsApp.";
+              : form.dataset.fallbackError || "Ihre Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns direkt an oder schreiben Sie uns per WhatsApp.";
           status.classList.add("is-error");
         }
       } finally {
         if (button && buttonText) {
           button.disabled = false;
-          buttonText.textContent = form.dataset.submitLabel || "Anfrage absenden";
+          buttonText.textContent = form.dataset.submitLabel || "Jetzt Fahrzeug anbieten";
         }
       }
     });

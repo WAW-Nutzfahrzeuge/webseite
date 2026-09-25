@@ -3,10 +3,10 @@ import { MessageCircle, PhoneCall, Send } from "@lucide/astro";
 import { site } from "../data/site";
 
 const {
-  kicker = "FAHRZEUG VERKAUFEN?",
-  title = "Fahrzeugdaten senden und Rückmeldung erhalten",
-  text = "Senden Sie uns die wichtigsten Fahrzeugdaten. Wenn einzelne Angaben fehlen, reichen zunächst Ihre Kontaktdaten und eine kurze Beschreibung.",
-  callLabel = "Anrufen",
+  kicker = "FAHRZEUG ANBIETEN",
+  title = "Jetzt Fahrzeug anbieten und Rückmeldung erhalten",
+  text = "Senden Sie uns die wichtigsten Fahrzeugdaten. Wenn noch Unterlagen fehlen, reichen für den Start auch Ihre Kontaktdaten und eine kurze Beschreibung.",
+  callLabel = "Direkt anrufen",
   whatsappLabel = "WhatsApp",
   whatsappText = "Jetzt schreiben",
   placeholders = {
@@ -19,10 +19,10 @@ const {
     message: "Weitere Informationen zum Fahrzeug",
   },
   source = "Ablaufseite",
-  submitLabel = "Anfrage absenden",
+  submitLabel = "Jetzt Fahrzeug anbieten",
   sendingLabel = "Wird gesendet...",
-  privacyText = "Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.",
-  defaultError = "Die Anfrage konnte nicht gesendet werden.",
+  privacyText = "Ihre Daten behandeln wir vertraulich und geben sie nicht an Dritte weiter.",
+  defaultError = "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an.",
 } = Astro.props;
 ---
 
