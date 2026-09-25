@@ -1,4 +1,5 @@
 ---
+import { Home, Wrench, ListChecks, Truck, MapPin, Users, Mail } from "@lucide/astro";
 import { serviceLinks, site } from "../data/site";
 import { navigationCities } from "../data/cities";
 import {
@@ -131,11 +132,17 @@ const languageOptions = locales.map((locale) => ({
       </select>
     </label>
 
-    <a href={localized("home")} class={`sheet-link ${currentPath === localized("home") ? "is-active" : ""}`}>{nav.home}</a>
+    <a href={localized("home")} class={`sheet-link ${currentPath === localized("home") ? "is-active" : ""}`}>
+      <Home class="sheet-link-icon" aria-hidden="true" />
+      <span>{nav.home}</span>
+    </a>
 
     <div class={`sheet-group ${isActive(localized("services")) ? "is-active" : ""}`} id="sg-leistungen">
       <button class="sheet-group-btn" aria-expanded="false">
-        <span>{nav.services}</span>
+        <span class="sheet-group-label">
+          <Wrench class="sheet-link-icon" aria-hidden="true" />
+          <span>{nav.services}</span>
+        </span>
         <svg class="sheet-chevron" viewBox="0 0 16 16" aria-hidden="true">
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
@@ -148,12 +155,21 @@ const languageOptions = locales.map((locale) => ({
       </div>
     </div>
 
-    <a href={localized("process")} class={`sheet-link ${isActive(localized("process")) ? "is-active" : ""}`}>{nav.process}</a>
-    <a href={localized("vehicles")} class={`sheet-link ${isActive(localized("vehicles")) ? "is-active" : ""}`}>{nav.vehicles}</a>
+    <a href={localized("process")} class={`sheet-link ${isActive(localized("process")) ? "is-active" : ""}`}>
+      <ListChecks class="sheet-link-icon" aria-hidden="true" />
+      <span>{nav.process}</span>
+    </a>
+    <a href={localized("vehicles")} class={`sheet-link ${isActive(localized("vehicles")) ? "is-active" : ""}`}>
+      <Truck class="sheet-link-icon" aria-hidden="true" />
+      <span>{nav.vehicles}</span>
+    </a>
 
     <div class={`sheet-group ${isActive(localized("locations")) || currentPath.includes("/lkw-verkaufen/") || currentPath.includes("/sell-trucks/") || currentPath.includes("/vendre-camion/") ? "is-active" : ""}`} id="sg-standorte">
       <button class="sheet-group-btn" aria-expanded="false">
-        <span>{nav.locations}</span>
+        <span class="sheet-group-label">
+          <MapPin class="sheet-link-icon" aria-hidden="true" />
+          <span>{nav.locations}</span>
+        </span>
         <svg class="sheet-chevron" viewBox="0 0 16 16" aria-hidden="true">
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
@@ -168,8 +184,14 @@ const languageOptions = locales.map((locale) => ({
       </div>
     </div>
 
-    <a href={localized("about")} class={`sheet-link ${isActive(localized("about")) ? "is-active" : ""}`}>{nav.about}</a>
-    <a href={localized("contact")} class={`sheet-link ${isActive(localized("contact")) ? "is-active" : ""}`}>{nav.contact}</a>
+    <a href={localized("about")} class={`sheet-link ${isActive(localized("about")) ? "is-active" : ""}`}>
+      <Users class="sheet-link-icon" aria-hidden="true" />
+      <span>{nav.about}</span>
+    </a>
+    <a href={localized("contact")} class={`sheet-link ${isActive(localized("contact")) ? "is-active" : ""}`}>
+      <Mail class="sheet-link-icon" aria-hidden="true" />
+      <span>{nav.contact}</span>
+    </a>
   </nav>
 
   <div class="sheet-cta">
@@ -772,6 +794,7 @@ const languageOptions = locales.map((locale) => ({
   .sheet-link {
     display: flex;
     align-items: center;
+    gap: 12px;
     padding: 15px 16px;
     border-radius: 16px;
     font-size: 17px;
@@ -779,6 +802,20 @@ const languageOptions = locales.map((locale) => ({
     letter-spacing: -0.025em;
     color: #17181c;
     transition: background 160ms ease;
+  }
+
+  .sheet-link-icon {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    color: var(--muted);
+    stroke-width: 1.9;
+    transition: color 160ms ease;
+  }
+
+  .sheet-link.is-active .sheet-link-icon,
+  .sheet-group.is-active .sheet-link-icon {
+    color: var(--orange);
   }
 
   .sheet-link.is-active,
@@ -805,6 +842,12 @@ const languageOptions = locales.map((locale) => ({
     letter-spacing: -0.025em;
     color: #17181c;
     transition: background 160ms ease;
+  }
+
+  .sheet-group-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   .sheet-group-btn:hover { background: rgba(15,23,42,0.04); }
