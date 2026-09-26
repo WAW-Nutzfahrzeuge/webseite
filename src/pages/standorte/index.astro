@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Truck,
 } from "@lucide/astro";
+import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
@@ -20,6 +21,7 @@ import ScrollAnimations from "../../components/ScrollAnimations.astro";
 import { navigationCities, stateGroups } from "../../data/cities";
 import { site } from "../../data/site";
 import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
+import { getCityImage } from "../../utils/cityImages";
 
 const cityHighlights: Record<string, string> = {
   hamburg: "Hafen, Logistik & Nutzfahrzeuge",
@@ -39,6 +41,7 @@ const cityLinks = navigationCities.map((city, index) => ({
   ...city,
   subline: cityHighlights[city.slug] || city.cardText,
   index: String(index + 1).padStart(2, "0"),
+  image: getCityImage(city.name, city.slug),
 }));
 
 const stateLinks = stateGroups.map((group) => ({
@@ -248,12 +251,25 @@ const schema = [
           {cityLinks.map((city) => (
             <a
               href={`/lkw-verkaufen/${city.slug}`}
-              class="location-city-card"
+              class={`location-city-card${city.image ? " has-image" : ""}`}
               data-animate
               data-city-card
               data-city-search-text={`${city.name} ${city.slug} ${city.state} ${city.subline} ${city.cardText}`}
               aria-label={`LKW verkaufen ${city.name}`}
             >
+              {city.image && (
+                <>
+                  <Image
+                    src={city.image}
+                    alt=""
+                    width={480}
+                    height={360}
+                    loading="lazy"
+                    class="city-card-bg"
+                  />
+                  <span class="city-card-overlay" aria-hidden="true"></span>
+                </>
+              )}
               <span class="city-number">{city.index}</span>
               <div class="city-pin">
                 <MapPin size={21} stroke-width={2.4} aria-hidden="true" />
@@ -823,6 +839,48 @@ const schema = [
     transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
   }
 
+  .city-card-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .city-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(15,23,42,0.28) 0%, rgba(15,23,42,0.78) 100%);
+  }
+
+  .location-city-card.has-image {
+    background: #111827;
+  }
+
+  .location-city-card.has-image .city-number {
+    color: rgba(255,255,255,0.28);
+  }
+
+  .location-city-card.has-image strong {
+    color: #fff;
+  }
+
+  .location-city-card.has-image p {
+    color: rgba(255,255,255,0.82);
+  }
+
+  .location-city-card.has-image em {
+    color: #fff;
+  }
+
+  .location-city-card.has-image .city-pin {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.24);
+    color: #fff;
+  }
+
   .locations-state-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -892,6 +950,7 @@ const schema = [
     position: absolute;
     top: 20px;
     right: 22px;
+    z-index: 2;
     color: rgba(17,24,39,0.08);
     font-size: 54px;
     font-weight: 950;
@@ -900,6 +959,8 @@ const schema = [
   }
 
   .city-pin {
+    position: relative;
+    z-index: 2;
     display: grid;
     place-items: center;
     width: 52px;
@@ -912,6 +973,8 @@ const schema = [
   }
 
   .location-city-card strong {
+    position: relative;
+    z-index: 2;
     color: #111827;
     font-size: 28px;
     line-height: 1;
@@ -919,6 +982,8 @@ const schema = [
   }
 
   .location-city-card p {
+    position: relative;
+    z-index: 2;
     margin: 10px 0 0;
     color: #5b6675;
     font-size: 15px;
@@ -927,6 +992,8 @@ const schema = [
   }
 
   .location-city-card em {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 8px;

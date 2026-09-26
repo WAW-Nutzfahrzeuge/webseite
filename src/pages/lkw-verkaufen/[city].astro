@@ -1,4 +1,5 @@
 ---
+import { getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import LeadForm from "../../components/LeadForm.astro";
@@ -11,6 +12,7 @@ import CityDetailSections from "../../components/CityDetailSections.astro";
 import { cities } from "../../data/cities";
 import { site } from "../../data/site";
 import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
+import { getCityImage } from "../../utils/cityImages";
 
 export async function getStaticPaths() {
     return cities.map((city) => ({
@@ -74,6 +76,11 @@ const serviceCards = [
     },
 ];
 
+const cityImage = getCityImage(city.name, city.slug);
+const heroImage = cityImage
+    ? await getImage({ src: cityImage, width: 1600, format: "webp", quality: 75 })
+    : null;
+
 const canonical = absoluteUrl(`/lkw-verkaufen/${city.slug}`);
 const schema = [
     createFaqSchema(city.faq),
@@ -94,7 +101,7 @@ const schema = [
     <Header transparent={true} />
 
     <main>
-        <section class="city-hero">
+        <section class="city-hero" style={heroImage ? `background-image: linear-gradient(90deg, rgba(3, 10, 20, 0.94) 0%, rgba(5, 15, 30, 0.82) 44%, rgba(5, 15, 30, 0.42) 100%), url(${heroImage.src})` : undefined}>
             <div class="city-hero-bg" aria-hidden="true"></div>
             <div class="container city-hero-grid">
                 <div class="city-hero-copy" data-animate>
