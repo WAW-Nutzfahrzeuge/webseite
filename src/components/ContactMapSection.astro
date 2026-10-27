@@ -1,6 +1,20 @@
 ---
 import { CircleCheck, MapPin, Route } from "@lucide/astro";
 import { site } from "../data/site";
+import { getLocaleFromPath } from "../data/i18n";
+
+const lang = getLocaleFromPath(Astro.url.pathname);
+
+interface Props {
+  routeLabel?: string;
+  kicker?: string;
+  title?: string;
+  text?: string;
+  bullets?: readonly string[];
+  cityLinks?: readonly { href: string; label: string }[];
+  allLocationsHref?: string;
+  allLocationsLabel?: string;
+}
 
 const defaultBullets = [
   "Anfahrt oder Abholung nach Absprache",
@@ -24,7 +38,7 @@ const {
   bullets = defaultBullets,
   cityLinks = defaultCityLinks,
   allLocationsHref = "/standorte",
-  allLocationsLabel = "Alle Standorte ansehen",
+  allLocationsLabel = "Alle Ankaufgebiete ansehen",
 } = Astro.props;
 ---
 
@@ -41,7 +55,7 @@ const {
 
       <iframe
         src="https://www.openstreetmap.org/export/embed.html?bbox=10.5209%2C53.5578%2C10.6009%2C53.5978&layer=mapnik&marker=53.5778%2C10.5609"
-        title="Standort WAW Nutzfahrzeuge in Talkau"
+        title={lang === "en" ? "WAW Commercial Vehicles in Talkau" : lang === "fr" ? "WAW Véhicules Utilitaires à Talkau" : "Standort WAW Nutzfahrzeuge in Talkau"}
         loading="lazy"
         referrerpolicy="no-referrer"
       ></iframe>

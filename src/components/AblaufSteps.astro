@@ -1,6 +1,12 @@
 ---
 import { BadgeEuro, CreditCard, FileText, MessageCircle, Truck } from "@lucide/astro";
 
+interface Props {
+  kicker?: string;
+  title?: string;
+  steps?: readonly { number: string; title: string; text: string; iconKey: string }[];
+}
+
 const iconMap = {
   file: FileText,
   message: MessageCircle,
@@ -61,7 +67,7 @@ const {
         <div class="progress-track"></div>
         <div class="progress-fill"></div>
         <div class="step-dots">
-          {steps.map((step, index) => (
+          {steps.map((_, index) => (
             <span class="step-dot" data-step-dot={index}>{index + 1}</span>
           ))}
         </div>
@@ -89,7 +95,7 @@ const {
 <script>
   const section = document.querySelector<HTMLElement>("[data-steps-section]");
 
-  if (section) {
+  if (section && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const cards = Array.from(section.querySelectorAll<HTMLElement>("[data-step-card]"));
     const dots = Array.from(section.querySelectorAll<HTMLElement>("[data-step-dot]"));
     let ticking = false;
@@ -137,14 +143,13 @@ const {
 <style>
   .ablauf-steps {
     position: relative;
-    height: 165vh;
+    height: auto;
     background: #fff;
   }
 
   .steps-sticky {
-    position: sticky;
-    top: 0;
-    min-height: 100vh;
+    position: relative;
+    min-height: 0;
     display: grid;
     align-items: center;
     padding: 82px 0 74px;

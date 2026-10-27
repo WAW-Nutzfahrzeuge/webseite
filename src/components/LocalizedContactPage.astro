@@ -14,7 +14,7 @@ import { site } from "../data/site";
 import { localizeCityPath, localizePath, type Locale } from "../data/i18n";
 import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
 
-const { lang } = Astro.props as { lang: Locale };
+const { lang } = Astro.props as { lang: Exclude<Locale, "de"> };
 
 const content = {
   en: {
@@ -25,18 +25,18 @@ const content = {
     current: "Contact",
     hero: {
       kicker: "WE'RE HERE TO HELP",
-      title: "Sell your vehicle quickly and without obligation.",
+      title: "Offer your vehicle without obligation",
       text:
-        "Looking to sell a truck, semi-trailer, trailer, van, construction machine or an entire fleet? Send us the key details and we will get back to you personally as soon as possible.",
+        "Individual vehicle or fleet – including damaged or non-running vehicles and those without inspection. Your name and phone number are enough for the first contact.",
       trustline: ["Fast response", "No-obligation inquiry", "Direct point of contact"],
     },
     methods: {
       kicker: "CONTACT OPTIONS",
       title: "Get in touch in the way that suits you best.",
       text:
-        "Choose the quickest way for you. Phone or WhatsApp works well for short questions. For several vehicles or documents, use the form or email.",
+        "Use the form for your first inquiry, or call us. Send photos, documents and vehicle lists by email.",
       phoneLabel: "Call us directly",
-      phoneHours: "Mon-Fri 08:00-18:00 · Sat 09:00-14:00",
+      phoneHours: "Mon–Fri 08:30–17:30",
       whatsappLabel: "WhatsApp",
       whatsappText: "Message us on WhatsApp",
       whatsappHint: "Best for quick details, photos and questions",
@@ -46,7 +46,7 @@ const content = {
       locationCountry: "Germany",
       form: {
         kicker: "FORM",
-        title: "Sell your vehicle now",
+        title: "Offer your vehicle without obligation",
         text: "Send us the key details about your vehicle or fleet. We will get back to you as soon as possible.",
         help: "Do not have every detail ready? No problem. Your name and phone number are enough for the first contact.",
         source: "Contact page EN",
@@ -95,17 +95,17 @@ const content = {
         "Whether it is a single vehicle or an entire fleet, you can offer your commercial vehicle to us from anywhere in Germany and Europe. We coordinate the next steps with you directly.",
       bullets: ["Pickup or on-site handover by arrangement", "Single vehicles and complete fleets", "Also vehicles with damage or high mileage", "Direct personal coordination"],
       allLocationsHref: localizePath("locations", "en"),
-      allLocationsLabel: "View all locations",
+      allLocationsLabel: "View purchase areas",
       cityLinks: ["hamburg", "berlin", "hannover", "bremen"].map((slug) => ({ href: localizeCityPath(slug, "en"), label: slug === "hannover" ? "Hanover" : slug[0].toUpperCase() + slug.slice(1) })),
     },
     faqTitle: "Frequently asked questions",
     faqs: [
       { question: "How quickly will you get back to me?", answer: "We usually reply soon after receiving your inquiry. The more complete your details and photos are, the more precisely we can respond." },
       { question: "Which details should I send?", answer: "Helpful details include vehicle type, make, model, year, mileage, condition, location, plus photos or documents. If you do not have everything ready yet, your contact details are enough to get started." },
-      { question: "Can I offer my vehicle via WhatsApp?", answer: "Yes. You can send us vehicle details, photos and short notes directly on WhatsApp. We then discuss the next steps with you personally." },
+      { question: "Can I offer my vehicle via WhatsApp?", answer: site.whatsappHref ? "Yes. Use the WhatsApp link to send vehicle details and photos." : "No verified WhatsApp number is currently listed here. Please use the form, phone or email." },
       { question: "Is my inquiry non-binding?", answer: "Yes. Your inquiry and the initial discussion are non-binding. We clarify everything else directly with you." },
       { question: "Can I offer several vehicles or an entire fleet?", answer: "Yes. We buy single commercial vehicles as well as complete fleets from companies, dealers and fleet operators." },
-      { question: "Can I send photos and documents?", answer: "Yes. Photos, registration papers, maintenance records or other documents help us assess your inquiry faster." },
+      { question: "Can I send photos and documents?", answer: "Send photos, vehicle lists and documents by email or an available WhatsApp link. This form does not support file uploads." },
     ],
     callBar: { eyebrow: "Prefer to speak to us directly?", title: "Call us directly.", buttonLabel: "Call us directly" },
   },
@@ -117,18 +117,18 @@ const content = {
     current: "Contact",
     hero: {
       kicker: "NOUS SOMMES LÀ POUR VOUS",
-      title: "Vendez votre véhicule simplement, sans engagement.",
+      title: "Proposer votre véhicule sans engagement",
       text:
-        "Vous souhaitez vendre un camion, une semi-remorque, une remorque, un fourgon, une machine de chantier ou toute une flotte ? Envoyez-nous les informations essentielles. Nous vous recontactons rapidement et personnellement.",
+        "Véhicule seul ou flotte, même endommagé, non roulant ou sans contrôle technique : votre nom et votre téléphone suffisent pour un premier contact.",
       trustline: ["Réponse rapide", "Demande sans engagement", "Un interlocuteur direct"],
     },
     methods: {
       kicker: "MOYENS DE CONTACT",
       title: "Contactez-nous de la manière la plus simple pour vous.",
       text:
-        "Choisissez le canal qui vous convient le mieux. Pour une question rapide, le téléphone ou WhatsApp sont idéaux. Pour plusieurs véhicules ou des documents, utilisez le formulaire ou l'e-mail.",
+        "Utilisez le formulaire pour une première demande, ou appelez-nous. Envoyez photos, documents et listes de véhicules par e-mail.",
       phoneLabel: "Appeler directement",
-      phoneHours: "Lun-Ven 08:00-18:00 · Sam 09:00-14:00",
+      phoneHours: "Lun–ven 08:30–17:30",
       whatsappLabel: "WhatsApp",
       whatsappText: "Écrire sur WhatsApp",
       whatsappHint: "Idéal pour envoyer rapidement infos, photos et questions",
@@ -138,7 +138,7 @@ const content = {
       locationCountry: "Allemagne",
       form: {
         kicker: "FORMULAIRE",
-        title: "Vendre votre véhicule maintenant",
+        title: "Proposer votre véhicule sans engagement",
         text: "Envoyez-nous les informations essentielles sur votre véhicule ou votre flotte. Nous vous recontactons rapidement.",
         help: "Vous n'avez pas encore tous les détails ? Ce n'est pas un problème. Votre nom et votre numéro suffisent pour un premier contact.",
         source: "Contact FR",
@@ -187,17 +187,17 @@ const content = {
         "Qu'il s'agisse d'un seul véhicule ou d'une flotte complète, vous pouvez nous proposer votre véhicule utilitaire depuis toute l'Allemagne et l'Europe. Nous convenons directement avec vous de la suite.",
       bullets: ["Enlèvement ou remise sur place sur accord", "Véhicules seuls et flottes complètes", "Aussi pour véhicules endommagés ou fortement kilométrés", "Échange direct et personnel"],
       allLocationsHref: localizePath("locations", "fr"),
-      allLocationsLabel: "Voir toutes les implantations",
+      allLocationsLabel: "Voir les zones de rachat",
       cityLinks: ["hamburg", "berlin", "hannover", "bremen"].map((slug) => ({ href: localizeCityPath(slug, "fr"), label: slug === "hannover" ? "Hanovre" : slug[0].toUpperCase() + slug.slice(1) })),
     },
     faqTitle: "Questions fréquentes",
     faqs: [
       { question: "Sous quel délai me recontactez-vous ?", answer: "En règle générale, nous revenons vers vous rapidement après réception de votre demande. Plus vos informations et vos photos sont complètes, plus notre retour peut être précis." },
       { question: "Quelles informations dois-je envoyer ?", answer: "Le type de véhicule, la marque, le modèle, l'année, le kilométrage, l'état, le lieu ainsi que des photos ou documents sont utiles. Si vous n'avez pas encore tout, vos coordonnées suffisent pour commencer." },
-      { question: "Puis-je proposer mon véhicule via WhatsApp ?", answer: "Oui. Vous pouvez nous envoyer directement sur WhatsApp les informations du véhicule, des photos et quelques précisions. Nous échangeons ensuite avec vous sur la suite." },
+      { question: "Puis-je proposer mon véhicule via WhatsApp ?", answer: site.whatsappHref ? "Oui. Utilisez le lien WhatsApp pour envoyer les informations et photos du véhicule." : "Aucun numéro WhatsApp vérifié n'est actuellement indiqué ici. Utilisez le formulaire, le téléphone ou l'e-mail." },
       { question: "Ma demande est-elle sans engagement ?", answer: "Oui. Votre demande et le premier échange sont sans engagement. Nous clarifions ensuite directement avec vous la suite." },
       { question: "Puis-je proposer plusieurs véhicules ou toute une flotte ?", answer: "Oui. Nous achetons aussi bien des véhicules utilitaires à l'unité que des flottes complètes d'entreprises, de négociants et de gestionnaires de parc." },
-      { question: "Puis-je envoyer des photos et des documents ?", answer: "Oui. Les photos, la carte grise, les justificatifs d'entretien ou d'autres documents nous aident à évaluer votre demande plus rapidement." },
+      { question: "Puis-je envoyer des photos et des documents ?", answer: "Envoyez photos, listes et documents par e-mail ou via un lien WhatsApp disponible. Le formulaire ne permet pas de joindre des fichiers." },
     ],
     callBar: { eyebrow: "Vous préférez nous parler directement ?", title: "Appelez-nous directement.", buttonLabel: "Appeler directement" },
   },

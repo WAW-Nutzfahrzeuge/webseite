@@ -39,10 +39,13 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 110px;
+    scroll-padding-bottom: 125px;
 }
 
 body {
     margin: 0;
+    padding-bottom: 110px;
 
     font-family:
             Inter,
@@ -57,6 +60,49 @@ body {
     color: var(--text);
 
     -webkit-font-smoothing: antialiased;
+}
+
+.skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1000;
+    padding: 12px 18px;
+    background: #fff;
+    color: var(--navy-deep);
+    transform: translateY(-160%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+:focus-visible {
+    outline: 3px solid #bb4a00;
+    outline-offset: 4px;
+}
+
+input, textarea {
+    caret-color: var(--orange);
+}
+
+h1, h2, h3 {
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    letter-spacing: -0.035em !important;
+}
+
+@media (max-width: 720px) {
+    body { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+    body:has(input:focus, textarea:focus) .floating-contact { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 
 a {
@@ -125,7 +171,7 @@ select {
 
 .btn-primary {
     background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-    color: #fff;
+    color: var(--navy-deep);
     border: 1px solid transparent;
     box-shadow: 0 14px 34px rgba(255, 107, 0, 0.28);
 }
@@ -170,7 +216,7 @@ select {
 }
 
 .reveal {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(28px);
     animation: reveal 900ms ease forwards;
 }
@@ -188,7 +234,7 @@ select {
 
 ::selection {
     background: var(--orange);
-    color: white;
+    color: var(--navy-deep);
 }
 
 @media (max-width: 760px) {
@@ -220,20 +266,6 @@ html.js-animations [data-animate].is-visible,
         animation: none;
         transition: none;
     }
-}
-
-/* Premium Micro Interactions */
-
-a,
-button,
-.card,
-.vehicle-card,
-.showcase-card,
-.process-step,
-.city-item,
-.faq-card,
-.metric-card {
-    will-change: transform;
 }
 
 .btn,

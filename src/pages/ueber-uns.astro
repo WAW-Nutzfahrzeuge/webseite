@@ -25,7 +25,7 @@ import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/s
 const canonical = absoluteUrl("/ueber-uns");
 
 const heroStats = [
-  { value: "1995", label: "Erfahrung im Nutzfahrzeughandel" },
+  { value: "Direkt", label: "Ankauf von gewerblichen Fahrzeugen" },
   { value: "EU", label: "deutschland- und europaweite Anfrage" },
   { value: "1:1", label: "Direkte Ansprechpartner statt Umwege" },
 ];
@@ -38,8 +38,8 @@ const reasons = [
   },
   {
     icon: Globe2,
-    title: "Starker Exportmarkt",
-    text: "Über unsere Kontakte in ganz Europa sind auch ältere LKW, Fahrzeuge ohne TÜV, mit hoher Laufleistung oder Schäden für uns interessant.",
+    title: "Auch ältere und beschädigte Fahrzeuge",
+    text: "Bieten Sie uns auch LKW mit hoher Laufleistung, ohne HU, mit Schäden oder nicht fahrbereit an. Wir prüfen, ob ein Ankauf möglich ist.",
   },
   {
     icon: Clock3,
@@ -97,7 +97,7 @@ const faqs = [
   {
     question: "Kauft WAW auch ältere oder beschädigte Nutzfahrzeuge?",
     answer:
-      "Ja. Auch hohe Laufleistungen, Schäden, fehlender TÜV oder ältere Baujahre sind für uns kein Ausschlussgrund. Durch unseren Exportmarkt können viele Fahrzeuge interessant sein.",
+      "Ja. Bieten Sie auch Fahrzeuge mit hoher Laufleistung, Schäden, ohne HU oder aus älteren Baujahren an. Das gilt auch für nicht fahrbereite Fahrzeuge. Ob ein Ankauf möglich ist, prüfen wir anhand Ihrer Angaben.",
   },
   {
     question: "Ist WAW deutschland- und europaweit tätig?",
@@ -158,13 +158,13 @@ const schema = [
             fairen, marktgerechten Preis.
           </p>
           <div class="about-actions">
-            <a href="/kontakt" class="btn btn-primary">Jetzt Fahrzeug verkaufen</a>
+            <a href="/kontakt#kontaktformular" class="btn btn-primary">Fahrzeug unverbindlich anbieten</a>
             <a href={`tel:${site.phoneHref}`} class="btn about-btn-outline">Direkt anrufen</a>
           </div>
           <div class="about-trustline" aria-label="Vorteile">
             <span><CheckCircle2 size={16} /> Direkter Ankauf</span>
             <span><CheckCircle2 size={16} /> Auch mit Schäden</span>
-            <span><CheckCircle2 size={16} /> Exportmarkt vorhanden</span>
+            <span><CheckCircle2 size={16} /> Einzelfahrzeuge & Fuhrparks</span>
           </div>
         </div>
       </div>
@@ -215,7 +215,7 @@ const schema = [
           const Icon = reason.icon;
           return (
             <article class="about-reason-card" data-animate>
-              <span class="about-icon"><Icon size={24} strokeWidth={2} /></span>
+              <span class="about-icon"><Icon size={24} stroke-width={2} /></span>
               <h3>{reason.title}</h3>
               <p>{reason.text}</p>
             </article>
@@ -246,7 +246,7 @@ const schema = [
             const Icon = group.icon;
             return (
               <article class="about-seller-card" data-animate>
-                <Icon size={28} strokeWidth={1.9} />
+                <Icon size={28} stroke-width={1.9} />
                 <h3>{group.title}</h3>
                 <p>{group.text}</p>
               </article>
@@ -284,9 +284,8 @@ const schema = [
           <p>
             Nicht jeder LKW ist in perfektem Zustand – das ist für uns kein
             Problem. Entscheidend sind die realen Fahrzeugdaten, der Standort
-            und die weiteren Vermarktungsmöglichkeiten. Durch unsere Erfahrung
-            und Exportkontakte sind auch Nutzfahrzeuge interessant, die im
-            klassischen Privatverkauf schwer zu vermitteln sind.
+            und die weitere Abstimmung. Auch nicht fahrbereite Fahrzeuge können
+            Sie anbieten. Ob ein Ankauf möglich ist, prüfen wir im Einzelfall.
           </p>
           <ul class="about-check-list">
             <li><BadgeCheck size={18} /> LKW mit hoher Laufleistung</li>
@@ -325,7 +324,7 @@ const schema = [
             aus – wir klären den Rest gemeinsam mit Ihnen.
           </p>
           <div class="about-contact-strip">
-            <a href={site.whatsappHref} target="_blank" rel="noopener"><UsersRound size={18} /> WhatsApp schreiben</a>
+            {site.whatsappHref && <a href={site.whatsappHref} target="_blank" rel="noopener"><UsersRound size={18} /> WhatsApp schreiben</a>}
             <a href={`tel:${site.phoneHref}`}><PhoneCall size={18} /> {site.phoneDisplay}</a>
           </div>
         </div>

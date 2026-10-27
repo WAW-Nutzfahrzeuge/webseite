@@ -1,8 +1,9 @@
 ---
 import { ArrowRight, CircleCheck } from "@lucide/astro";
+import type { Service } from "../data/services";
 
 interface Props {
-  services: any[];
+  services: Service[];
 }
 
 const { services } = Astro.props;

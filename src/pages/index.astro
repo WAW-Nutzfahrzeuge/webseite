@@ -13,34 +13,7 @@ import HomeVehicleTypes from "../components/HomeVehicleTypes.astro";
 import HomeProcessSection from "../components/HomeProcessSection.astro";
 import CustomerReviews from "../components/CustomerReviews.astro";
 import { createFaqSchema } from "../utils/seo";
-
-const homeFaqs = [
-  {
-    question: "Welche Fahrzeuge kaufen wir an?",
-    answer:
-      "Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter, Baumaschinen und weitere gewerblich genutzte Nutzfahrzeuge an. Auch LKW mit Schäden, hoher Laufleistung oder fehlendem TÜV können Sie uns anbieten.",
-  },
-  {
-    question: "Kaufen wir auch Fahrzeuge mit hoher Laufleistung?",
-    answer:
-      "Ja. Hohe Laufleistung, Gebrauchsspuren oder ältere Baujahre sind im Nutzfahrzeughandel üblich. Senden Sie uns die wichtigsten Daten und Fotos, wir besprechen den Rest direkt.",
-  },
-  {
-    question: "Ist der Ankauf deutschland- und europaweit möglich?",
-    answer:
-      "Ja. Sie können uns Fahrzeuge aus Deutschland und Europa anbieten - vom einzelnen LKW bis zum kompletten Fuhrpark.",
-  },
-  {
-    question: "Wie schnell bekomme ich eine Rückmeldung?",
-    answer:
-      "Nach Eingang Ihrer Anfrage melden wir uns schnellstmöglich. Vollständige Fahrzeugdaten und Fotos helfen uns, konkreter zu antworten.",
-  },
-  {
-    question: "Kann ich auch mehrere Fahrzeuge oder einen Fuhrpark anbieten?",
-    answer:
-      "Ja. Mehrere LKW, gemischte Fahrzeugpakete oder komplette Fuhrparks können Sie gemeinsam anbieten.",
-  },
-];
+import { homeFaqs } from "../data/homeFaqs";
 ---
 
 <BaseLayout
@@ -50,9 +23,8 @@ const homeFaqs = [
   schema={createFaqSchema(homeFaqs)}
 >
   <Header transparent />
-  <Hero />
-
   <main>
+    <Hero />
     <HomeVehicleTypes />
     <TrustSection />
     <HomeProcessSection />

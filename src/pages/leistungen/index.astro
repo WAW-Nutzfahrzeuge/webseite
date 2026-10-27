@@ -138,7 +138,7 @@ const serviceFaqs = [
   {
     question: "Kauft WAW auch Fahrzeuge ohne TÜV?",
     answer:
-      "Ja. TÜV spielt für uns im Einkauf keine Rolle, da wir über einen großen Exportmarkt verfügen, in den wir Fahrzeuge weiterverkaufen können.",
+      "Ja. Sie können Fahrzeuge ohne gültige HU oder TÜV-Plakette anbieten. Teilen Sie uns bekannte Mängel und mit, ob das Fahrzeug fahrbereit ist. Ob ein Ankauf möglich ist und wie die Übergabe erfolgen kann, stimmen wir mit Ihnen ab.",
   },
   {
     question: "Kann ich mehrere Fahrzeuge gleichzeitig anbieten?",
@@ -208,9 +208,9 @@ const schema = [
 
   <main>
     <ServicesSplitHero />
+    <ServicesConditionSection />
     <ServicesOverview services={services} />
     <ServiceDetailSections services={services} />
-    <ServicesConditionSection />
     <ServicesTrustSection />
     <ServicesFAQ faqs={serviceFaqs} />
     <ServicesCTA />

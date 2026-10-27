@@ -1,17 +1,17 @@
 ---
 import { site } from "../data/site";
-import type { Locale } from "../data/i18n";
+import { getLocaleFromPath, type Locale } from "../data/i18n";
 
-const { lang = "de" } = Astro.props as { lang?: Locale };
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props as { lang?: Locale };
 const labels = {
   de: { phone: "Telefon", call: "Anrufen", whatsapp: "WhatsApp", inquiryLabel: "Anfrage", inquiry: "Anfrage" },
   en: { phone: "Phone", call: "Call", whatsapp: "WhatsApp", inquiryLabel: "Inquiry", inquiry: "Inquiry" },
   fr: { phone: "Téléphone", call: "Appeler", whatsapp: "WhatsApp", inquiryLabel: "Demande", inquiry: "Demande" },
 }[lang];
-const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" : "/fr/contact";
+const contactPath = `${lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" : "/fr/contact"}#kontaktformular`;
 ---
 
-<div class="floating-contact" aria-label="Schnellkontakt">
+<div class="floating-contact" role="navigation" aria-label={lang === "en" ? "Quick contact" : lang === "fr" ? "Contact rapide" : "Schnellkontakt"}>
     <a href={`tel:${site.phoneHref}`} class="float-btn">
     <span class="float-label">{labels.phone}</span>
     <span class="icon-wrap">
@@ -22,7 +22,7 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
         <strong>{labels.call}</strong>
     </a>
 
-    <a href={site.whatsappHref} target="_blank" rel="noopener" class="float-btn whatsapp">
+    {site.whatsappHref && <a href={site.whatsappHref} target="_blank" rel="noopener" class="float-btn whatsapp">
     <span class="float-label">{labels.whatsapp}</span>
     <span class="icon-wrap">
       <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -30,7 +30,7 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
       </svg>
     </span>
         <strong>{labels.whatsapp}</strong>
-    </a>
+    </a>}
 
     <a href={contactPath} class="float-btn primary">
     <span class="float-label">{labels.inquiryLabel}</span>
@@ -65,7 +65,6 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
                 0 18px 50px rgba(15, 23, 42, 0.12),
                 0 6px 18px rgba(15, 23, 42, 0.06);
 
-        animation: floatBar 5s ease-in-out infinite;
     }
 
     .float-btn {
@@ -182,7 +181,7 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
 
     .float-btn.primary {
         background: var(--orange);
-        color: #ffffff;
+        color: var(--navy-deep);
     }
 
     .float-btn.primary .icon-wrap {
@@ -201,7 +200,6 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
         inset: -4px;
         border-radius: inherit;
         border: 1px solid rgba(255,255,255,0.42);
-        animation: pulseRing 1.8s ease-out infinite;
     }
 
     @keyframes floatBar {
@@ -230,7 +228,7 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
         .floating-contact {
             left: 12px;
             right: 12px;
-            bottom: 12px;
+            bottom: max(12px, env(safe-area-inset-bottom));
 
             justify-content: space-between;
 
@@ -259,7 +257,7 @@ const contactPath = lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact" :
         }
 
         .float-btn.primary .float-label {
-            color: rgba(255, 255, 255, 0.86);
+            color: var(--navy-deep);
         }
 
         .icon-wrap {

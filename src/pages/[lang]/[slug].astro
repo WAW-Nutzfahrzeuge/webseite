@@ -37,6 +37,10 @@ const { lang, pageKey } = Astro.props as {
   lang: Locale;
   pageKey: StaticRouteKey;
 };
+const canonicalPath = routeMap[pageKey][lang];
+if (Astro.url.pathname.replace(/\/$/, "") !== canonicalPath) {
+  return Astro.redirect(canonicalPath, 301);
+}
 ---
 
 <LocalizedLandingPage lang={lang} pageKey={pageKey} />

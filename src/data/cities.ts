@@ -418,7 +418,7 @@ function createCity(seed: CitySeed): City {
             },
             {
                 question: `Kann ich in ${baseName} auch einen defekten LKW oder ein Fahrzeug ohne TÜV anbieten?`,
-                answer: `Ja. TÜV spielt für uns im Einkauf keine Rolle, da wir über einen großen Exportmarkt verfügen, in den wir Fahrzeuge weiterverkaufen können. Auch LKW mit hoher Laufleistung, Motorschaden oder Getriebeschaden können Sie direkt anbieten.`,
+                answer: `Ja. Auch ohne gültige HU, mit hoher Laufleistung, älterem Baujahr, Motor-, Getriebe- oder Unfallschaden und nicht fahrbereit können Sie Ihr Fahrzeug anbieten. Nennen Sie uns bekannte Mängel und den Fahrzeugstandort. Ob ein Ankauf möglich ist, prüfen wir anhand Ihrer Angaben.`,
             },
             {
                 question: `Ist WAW auch für LKW Export und Händler-Anfragen in ${baseName} relevant?`,
@@ -435,6 +435,9 @@ export const cities: City[] = allCitySeeds.map(createCity);
 export const featuredCities = cities.filter((city) => city.featured);
 
 export const navigationCities = cities.filter((city) => city.showInNavigation);
+
+// Generic generated pages remain reachable, but need individual editorial content before indexing.
+export const indexableCitySlugs = new Set(Object.keys(topCitySeoProfiles));
 
 export const stateGroups = Object.values(
     cities.reduce<Record<string, { name: string; slug: string; cities: City[] }>>((groups, city) => {

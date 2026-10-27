@@ -54,13 +54,14 @@ const schema = [
     <section class="state-hero">
       <div class="container state-hero-grid">
         <div>
-          <span class="state-kicker">STANDORTE IN {group.name.toUpperCase()}</span>
+          <span class="state-kicker">ANKAUFGEBIET {group.name.toUpperCase()}</span>
           <h1>LKW Ankauf in {group.name}.</h1>
           <p>
             Wir kaufen LKW, Nutzfahrzeuge, Auflieger, Anhänger, Transporter,
             Baumaschinen und Fuhrparks in {group.name} direkt an. Wählen
             Sie Ihre Stadt oder senden Sie uns direkt Ihre Fahrzeugdaten.
           </p>
+          <p>Unser Unternehmensstandort ist Talkau. Die Städte auf dieser Seite sind Ankaufgebiete, keine Niederlassungen. Auch beschädigte, ältere oder nicht fahrbereite Fahrzeuge können Sie anbieten.</p>
           <div class="state-actions">
             <a href="/kontakt" class="btn btn-primary">Fahrzeug anbieten</a>
             <a href={`tel:${site.phoneHref}`} class="state-call">
@@ -124,12 +125,11 @@ const schema = [
           </p>
         </article>
         <article>
-          <span>WICHTIGE REGIONEN</span>
-          <h3>Wichtige Städte in {group.name}</h3>
+          <span>STÄDTEÜBERSICHT</span>
+          <h3>Städte in {group.name}</h3>
           <p>
-            Besonders relevante Stadtseiten in {group.name}: {topCities.map((city) => city.name).join(", ")}.
-            Jede Stadtseite führt zu regional passenden Informationen und
-            Kontaktmöglichkeiten für den LKW und Nutzfahrzeuge Ankauf.
+            Alphabetischer Auszug: {topCities.map((city) => city.name).join(", ")}.
+            Die vollständige Liste finden Sie oben. Auch außerhalb dieser Orte können Sie uns Fahrzeuge anbieten.
           </p>
         </article>
       </div>

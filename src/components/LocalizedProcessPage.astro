@@ -13,7 +13,7 @@ import AblaufCTA from "./AblaufCTA.astro";
 import { localizePath, type Locale } from "../data/i18n";
 import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
 
-const { lang } = Astro.props as { lang: Locale };
+const { lang } = Astro.props as { lang: Exclude<Locale, "de"> };
 
 const content = {
   en: {
@@ -27,8 +27,8 @@ const content = {
       title: "Sell your truck or commercial vehicle - quickly, safely and without detours.",
       text:
         "Send us the key vehicle details. We get back to you promptly and coordinate the offer, payment, handover and possible pickup directly with you.",
-      primaryHref: "#inquiry",
-      primaryLabel: "Sell your vehicle now",
+      primaryHref: "#anfrage",
+      primaryLabel: "Offer your vehicle without obligation",
       secondaryHref: localizePath("services", "en"),
       secondaryLabel: "View services",
       trustline: ["Direct contact", "Fair valuation", "Across Germany and Europe"],
@@ -56,12 +56,12 @@ const content = {
       text:
         "We buy trucks, semi-trailers, trailers, vans, construction machinery and complete fleets. From the first message to handover, the process stays clear, direct and personal.",
       points: [
-        "Commercial vehicle trade experience since 1995",
+        "Direct commercial vehicle purchase",
         "Direct contact with real decision-makers",
         "Damaged vehicles or high mileage are also possible",
         "All brands and models",
       ],
-      imageAlt: "WAW Commercial Vehicles contact for vehicle purchase",
+      imageAlt: "Commercial vehicles in a yard",
       callLabel: "Call now",
     },
     faqTitle: "Frequently asked questions",
@@ -69,7 +69,7 @@ const content = {
       { question: "How quickly will I hear from you?", answer: "As soon as we receive your vehicle details, we get back to you promptly. The more complete your details and photos are, the more specific our feedback can be." },
       { question: "Are there any costs for me?", answer: "No. Your inquiry and the first coordination are non-binding. If anything needs to be clarified later, we discuss it transparently with you in advance." },
       { question: "Do you also buy damaged vehicles?", answer: "Yes. You can also offer trucks, trailers, vans, construction machinery and fleets with damage, high mileage or older model years." },
-      { question: "How is payment handled?", answer: "Payment is made quickly and securely after agreement and handover. We clarify all details with you beforehand." },
+      { question: "How is payment handled?", answer: "We agree the payment method and timing with you before handover. Any transport arrangements and costs are also discussed before the sale." },
       { question: "Which documents do I need?", answer: "Registration documents, maintenance records, inspection reports and clear photos are helpful. For the first contact, vehicle type, location and your contact details are enough." },
       { question: "Do I have to deliver the vehicle myself?", answer: "Not necessarily. Once we reach an agreement, we coordinate the handover or possible pickup at a suitable date across Germany and Europe." },
     ],
@@ -83,7 +83,7 @@ const content = {
       source: "Process page EN",
       submitLabel: "Sell your vehicle now",
       sendingLabel: "Sending...",
-      privacyText: "We treat your data confidentially and do not pass it on to third parties.",
+      privacyText: "Please see our privacy policy for information about how we process your details.",
       defaultError: "Your inquiry could not be sent. Please try again or call us directly.",
       placeholders: {
         name: "Name",
@@ -107,8 +107,8 @@ const content = {
       title: "Vendre votre camion ou utilitaire, simplement et en toute sécurité.",
       text:
         "Envoyez-nous les informations essentielles du véhicule. Nous vous recontactons rapidement et convenons avec vous de l'offre, du paiement, de la remise et, si besoin, de l'enlèvement.",
-      primaryHref: "#demande",
-      primaryLabel: "Vendre votre véhicule",
+      primaryHref: "#anfrage",
+      primaryLabel: "Proposer votre véhicule sans engagement",
       secondaryHref: localizePath("services", "fr"),
       secondaryLabel: "Voir les services",
       trustline: ["Interlocuteur direct", "Estimation équitable", "En Allemagne et en Europe"],
@@ -136,12 +136,12 @@ const content = {
       text:
         "Nous achetons des camions, semi-remorques, remorques, fourgons, machines de chantier et flottes complètes. Du premier message à la remise, le processus reste clair, direct et personnel.",
       points: [
-        "Expérience dans le négoce de véhicules utilitaires depuis 1995",
+        "Rachat direct de véhicules utilitaires",
         "Échange direct avec de vrais interlocuteurs",
         "Véhicules endommagés ou fort kilométrage possibles",
         "Toutes marques et tous modèles",
       ],
-      imageAlt: "WAW Véhicules Utilitaires interlocuteur pour le rachat",
+      imageAlt: "Véhicules utilitaires sur un parc",
       callLabel: "Appeler maintenant",
     },
     faqTitle: "Questions fréquentes",
@@ -149,7 +149,7 @@ const content = {
       { question: "Quand vais-je recevoir un retour ?", answer: "Dès que nous recevons les informations du véhicule, nous revenons vers vous rapidement. Plus vos informations et vos photos sont complètes, plus notre retour peut être précis." },
       { question: "Y a-t-il des frais pour moi ?", answer: "Non. Votre demande et le premier échange sont sans engagement. S'il y a quelque chose à préciser ensuite, nous en parlons avec vous de façon transparente à l'avance." },
       { question: "Achetez-vous aussi des véhicules endommagés ?", answer: "Oui. Vous pouvez également nous proposer des camions, remorques, fourgons, machines de chantier et flottes avec dommages, kilométrage élevé ou années plus anciennes." },
-      { question: "Comment le paiement se déroule-t-il ?", answer: "Le paiement est effectué rapidement et en toute sécurité après accord et remise du véhicule. Nous clarifions tous les détails avec vous en amont." },
+      { question: "Comment le paiement se déroule-t-il ?", answer: "Nous convenons du mode et du moment du paiement avant la remise. Le transport et ses éventuels frais sont également discutés avant la vente." },
       { question: "Quels documents dois-je prévoir ?", answer: "Les documents du véhicule, justificatifs d'entretien, rapports de contrôle et photos claires sont utiles. Pour le premier contact, le type de véhicule, le lieu et vos coordonnées suffisent." },
       { question: "Dois-je livrer le véhicule moi-même ?", answer: "Pas forcément. Une fois l'accord trouvé, nous organisons la remise ou un enlèvement éventuel à une date adaptée, en Allemagne comme en Europe." },
     ],
@@ -163,7 +163,7 @@ const content = {
       source: "Processus FR",
       submitLabel: "Vendre votre véhicule",
       sendingLabel: "Envoi...",
-      privacyText: "Nous traitons vos données de manière confidentielle et ne les transmettons pas à des tiers.",
+      privacyText: "Consultez notre politique de confidentialité pour le traitement de vos données.",
       defaultError: "Votre demande n'a pas pu être envoyée. Veuillez réessayer ou nous appeler directement.",
       placeholders: {
         name: "Nom",

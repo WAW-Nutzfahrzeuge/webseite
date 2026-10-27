@@ -2,8 +2,17 @@
 import { CircleCheck, PhoneCall } from "@lucide/astro";
 import { site } from "../data/site";
 
+interface Props {
+  kicker?: string;
+  title?: string;
+  text?: string;
+  points?: readonly string[];
+  imageAlt?: string;
+  callLabel?: string;
+}
+
 const defaultPoints = [
-  "Ankauf von Nutzfahrzeugen seit 1995",
+  "Direkter Ankauf von Nutzfahrzeugen",
   "Direkte Abstimmung mit festen Ansprechpartnern",
   "Auch Fahrzeuge mit Schäden oder hoher Laufleistung",
   "Alle Marken und Modelle",
@@ -14,7 +23,7 @@ const {
   title = "Ihr Verkauf in guten Händen",
   text = "Wir kaufen LKW, Auflieger, Anhänger, Transporter, Baumaschinen und komplette Fuhrparks an. Der Ablauf bleibt für Sie vom ersten Kontakt bis zur Übergabe klar, direkt und persönlich.",
   points = defaultPoints,
-  imageAlt = "WAW Nutzfahrzeuge Ansprechpartner beim Fahrzeugankauf",
+  imageAlt = "Nutzfahrzeuge auf einem Fahrzeugplatz",
   callLabel = "Direkt anrufen",
 } = Astro.props;
 ---
@@ -37,7 +46,7 @@ const {
     </div>
 
     <div class="info-media" data-animate>
-      <img src="/images/about-photo.webp" alt={imageAlt} loading="eager" />
+      <img src="/images/about-photo.webp" alt={imageAlt} loading="lazy" />
       <a href={`tel:${site.phoneHref}`} class="media-call">
         <span>
           <PhoneCall aria-hidden="true" />

@@ -1,11 +1,15 @@
 ---
 import type { FaqItem } from "../utils/seo";
+import { getLocaleFromPath } from "../data/i18n";
 
 interface Props {
-  faqs: FaqItem[];
+  faqs: readonly FaqItem[];
+  title?: string;
+  kicker?: string;
 }
 
-const { faqs, title = "Häufige Fragen zur Kontaktaufnahme", kicker = "FRAGEN & ANTWORTEN" } = Astro.props;
+const lang = getLocaleFromPath(Astro.url.pathname);
+const { faqs, title = "Häufige Fragen zur Kontaktaufnahme", kicker = lang === "en" ? "QUESTIONS & ANSWERS" : lang === "fr" ? "QUESTIONS ET RÉPONSES" : "FRAGEN & ANTWORTEN" } = Astro.props;
 ---
 
 <section class="contact-faq-section">

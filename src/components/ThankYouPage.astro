@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import { getLocaleFromPath } from "../data/i18n";
+import { contactCopy, thankYouPath } from "../data/contact";
+import { site } from "../data/site";
+
+const lang = getLocaleFromPath(Astro.url.pathname);
+const copy = contactCopy[lang];
+---
+<BaseLayout title={`${copy.thanksTitle} | WAW`} description={copy.thanksText} canonical={new URL(thankYouPath(lang), site.url).href} lang={lang}>
+  <Fragment slot="head"><meta name="robots" content="noindex,follow" /></Fragment>
+  <Header />
+  <main>
+    <section class="thanks-section">
+      <div class="container">
+        <h1>{copy.thanksTitle}</h1>
+        <p>{copy.thanksText}</p>
+        <div class="thanks-actions">
+          <a class="btn btn-primary" href={`mailto:${site.email}`}>{copy.email}</a>
+          <a class="btn btn-navy" href={`tel:${site.phoneHref}`}>{copy.call}</a>
+          {site.whatsappHref && <a class="btn btn-secondary" href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer /><FloatingContact />
+</BaseLayout>
+<style>
+  .thanks-section { padding: 150px 0 80px; background: #fff; }
+  h1 { font-size: clamp(36px, 4vw, 60px); line-height: 1.1; max-width: 22ch; }
+  p { line-height: 1.7; max-width: 65ch; }
+  .thanks-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+</style>

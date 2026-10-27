@@ -1,9 +1,9 @@
 ---
 import { cities } from "../data/cities";
 import { serviceLinks, site } from "../data/site";
-import { localizeCityPath, localizePath, ui, type Locale } from "../data/i18n";
+import { getLocaleFromPath, localizeCityPath, localizePath, ui, type Locale } from "../data/i18n";
 
-const { lang = "de" } = Astro.props;
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
 const currentLang = lang as Locale;
 const footer = ui[currentLang];
 const footerCities = cities.slice(0, 8);
@@ -103,6 +103,7 @@ const localized = (route: Parameters<typeof localizePath>[0]) => localizePath(ro
     display: inline-flex;
     align-items: center;
     margin-bottom: 18px;
+    padding: 8px 12px;
   }
 
   .footer-logo img {

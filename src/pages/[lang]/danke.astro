@@ -1,0 +1,7 @@
+---
+import ThankYouPage from "../../components/ThankYouPage.astro";
+export function getStaticPaths() {
+  return ["en", "fr"].map((lang) => ({ params: { lang } }));
+}
+---
+<ThankYouPage />

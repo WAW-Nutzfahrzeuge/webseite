@@ -8,6 +8,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "check": "astro check",
+    "check:launch": "node scripts/check-launch.mjs",
+    "test:built": "node --experimental-strip-types scripts/check-site.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types"
@@ -22,5 +26,9 @@
   },
   "overrides": {
     "vite": "^7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^6.0.3"
   }
 }

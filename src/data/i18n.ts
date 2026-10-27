@@ -57,9 +57,9 @@ export const ui = {
     services: "Leistungen",
     allServices: "Alle Leistungen",
     process: "Ablauf",
-    vehicles: "Fahrzeuge",
-    locations: "Standorte",
-    allLocations: "Alle Standorte",
+    vehicles: "Was wir ankaufen",
+    locations: "Ankaufgebiete",
+    allLocations: "Alle Ankaufgebiete",
     contact: "Kontakt",
     startInquiry: "Fahrzeug anbieten",
     call: "Anrufen",
@@ -67,6 +67,7 @@ export const ui = {
     serviceLinks: {
       lkw: "LKW Ankauf",
       nutzfahrzeuge: "Nutzfahrzeuge Ankauf",
+      sattelzugmaschinen: "Sattelzugmaschinen Ankauf",
       auflieger: "Auflieger Ankauf",
       anhaenger: "Anhänger Ankauf",
       transporter: "Transporter Ankauf",
@@ -90,9 +91,9 @@ export const ui = {
     services: "Services",
     allServices: "All services",
     process: "Process",
-    vehicles: "Vehicles",
-    locations: "Locations",
-    allLocations: "All locations",
+    vehicles: "Vehicles we buy",
+    locations: "Coverage",
+    allLocations: "All purchase areas",
     contact: "Contact",
     startInquiry: "Start inquiry",
     call: "Call",
@@ -100,6 +101,7 @@ export const ui = {
     serviceLinks: {
       lkw: "Truck purchase",
       nutzfahrzeuge: "Commercial vehicle purchase",
+      sattelzugmaschinen: "Tractor unit purchase",
       auflieger: "Semi-trailer purchase",
       anhaenger: "Trailer purchase",
       transporter: "Van purchase",
@@ -123,9 +125,9 @@ export const ui = {
     services: "Services",
     allServices: "Tous les services",
     process: "Processus",
-    vehicles: "Véhicules",
-    locations: "Implantations",
-    allLocations: "Toutes les villes",
+    vehicles: "Véhicules rachetés",
+    locations: "Zones de rachat",
+    allLocations: "Toutes les zones de rachat",
     contact: "Contact",
     startInquiry: "Démarrer une demande",
     call: "Appeler",
@@ -133,6 +135,7 @@ export const ui = {
     serviceLinks: {
       lkw: "Rachat de camions",
       nutzfahrzeuge: "Rachat de véhicules utilitaires",
+      sattelzugmaschinen: "Rachat de tracteurs routiers",
       auflieger: "Rachat de semi-remorques",
       anhaenger: "Rachat de remorques",
       transporter: "Rachat de fourgons",
@@ -206,6 +209,7 @@ export function getLocalizedEquivalentPath(pathname: string, locale: Locale): st
 }
 
 export function getAlternates(pathname: string) {
+  if (!getRouteKeyFromPath(pathname) && !getCitySlugFromPath(pathname)) return [];
   return locales.map((locale) => ({
     locale,
     href: getLocalizedEquivalentPath(pathname, locale),

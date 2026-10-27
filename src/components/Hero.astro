@@ -5,23 +5,27 @@
     <div class="hero-content">
       <p class="hero-kicker">LKW-ANKAUF DEUTSCHLAND- UND EUROPAWEIT</p>
 
-      <h1>LKW verkaufen – leicht gemacht.</h1>
+      <h1>LKW und Nutzfahrzeuge verkaufen</h1>
 
       <p class="hero-text">
-        Sie möchten Ihren LKW, Auflieger oder Fuhrpark unkompliziert verkaufen?
-        Wir sind Ihr zuverlässiger Partner für den Ankauf von Nutzfahrzeugen
-        aller Art – zu einem fairen, marktgerechten Preis.
+        Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger, Transporter,
+        Baumaschinen und Fuhrparks – deutschland- und europaweit.
+      </p>
+      <p class="hero-conditions">
+        Auch mit Motor-, Getriebe- oder Unfallschaden, hoher Laufleistung,
+        älterem Baujahr, ohne HU oder nicht fahrbereit können Sie uns Ihr Fahrzeug anbieten.
+        Ob ein Ankauf möglich ist, klären wir anhand Ihrer Angaben.
       </p>
 
       <div class="hero-actions">
-        <a href="/kontakt" class="btn btn-primary">Jetzt LKW verkaufen</a>
-        <a href="/leistungen" class="btn btn-ghost">Leistungen ansehen</a>
+        <a href="/kontakt#kontaktformular" class="btn btn-primary">Fahrzeug unverbindlich anbieten</a>
+        <a href="/ablauf" class="btn btn-ghost">So läuft der Verkauf ab</a>
       </div>
 
       <div class="hero-trust">
-        <span>Faire Preise</span>
-        <span>Schnelle Abwicklung</span>
-        <span>Deutschland- und europaweit</span>
+        <span>Direkter Ankauf</span>
+        <span>Einzelfahrzeuge & Fuhrparks</span>
+        <span>Alle Zustände anfragen</span>
       </div>
     </div>
   </div>
@@ -30,8 +34,8 @@
 <style>
   .hero {
     position: relative;
-    min-height: 760px;
-    padding: 170px 0 110px;
+    min-height: 640px;
+    padding: 148px 0 72px;
     color: white;
     overflow: hidden;
 
@@ -44,7 +48,7 @@
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.25) 46%, rgba(0,0,0,0.08) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.72) 58%, rgba(0,0,0,0.28) 100%),
         linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.22));
     z-index: 0;
   }
@@ -70,9 +74,9 @@
   h1 {
     margin: 0;
     max-width: 760px;
-    font-size: clamp(52px, 6vw, 96px);
-    line-height: 0.92;
-    letter-spacing: -0.075em;
+    font-size: clamp(42px, 5.2vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
     color: white;
   }
 
@@ -83,6 +87,8 @@
     font-size: clamp(18px, 1.7vw, 22px);
     line-height: 1.6;
   }
+
+  .hero-conditions { max-width: 650px; color: #fff; font-size: 17px; line-height: 1.65; margin: 20px 0 0; }
 
   .hero-actions {
     display: flex;
@@ -118,7 +124,7 @@
 
   @media (max-width: 760px) {
     .hero {
-      min-height: 860px;
+      min-height: 0;
       padding: 120px 0 70px;
       background-image: url("/images/hero-yard-sunset-mobile.png");
       background-size: cover;
@@ -127,7 +133,7 @@
 
     .hero-overlay {
       background:
-          linear-gradient(180deg, rgba(0,0,0,0.38), rgba(0,0,0,0.56)),
+          linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.78)),
           linear-gradient(90deg, rgba(0,0,0,0.52), rgba(0,0,0,0.1));
     }
 
@@ -136,7 +142,7 @@
     }
 
     h1 {
-      font-size: clamp(44px, 13vw, 62px);
+      font-size: clamp(38px, 10.5vw, 50px);
     }
 
     .hero-actions {

@@ -1,10 +1,20 @@
 ---
+interface Props {
+  kicker?: string;
+  title?: string;
+  text?: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+  trustline?: readonly string[];
+}
 const {
   kicker = "LKW VERKAUFEN",
-  title = "LKW oder Nutzfahrzeug verkaufen - schnell, sicher und ohne Umwege.",
+  title = "So verkaufen Sie Ihr Nutzfahrzeug an WAW",
   text = "Senden Sie uns die wichtigsten Fahrzeugdaten. Wir melden uns zeitnah zurück und stimmen Angebot, Zahlung, Übergabe und mögliche Abholung direkt mit Ihnen ab.",
   primaryHref = "#anfrage",
-  primaryLabel = "Jetzt Fahrzeug anbieten",
+  primaryLabel = "Fahrzeug unverbindlich anbieten",
   secondaryHref = "/leistungen",
   secondaryLabel = "Leistungen ansehen",
   trustline = ["Direkte Ansprechpartner", "Faire Bewertung", "Deutschland- und europaweit"],
@@ -34,7 +44,7 @@ const {
 <style>
   .ablauf-hero {
     position: relative;
-    min-height: 760px;
+    min-height: 0;
     display: grid;
     align-items: center;
     overflow: hidden;

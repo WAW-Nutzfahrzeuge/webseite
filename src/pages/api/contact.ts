@@ -1,5 +1,8 @@
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
+import { contactCopy, thankYouPath } from "../../data/contact";
+import type { Locale } from "../../data/i18n";
+import { deliverInquiry } from "../../utils/contactMail";
 
 export const prerender = false;
 
@@ -8,7 +11,6 @@ const MIN_SUBMIT_TIME_MS = 2_500;
 const MAX_SUBMIT_TIME_MS = 1000 * 60 * 60 * 6;
 const RATE_LIMIT_WINDOW_MS = 1000 * 60 * 15;
 const RATE_LIMIT_MAX = 5;
-const REDIRECT_TO = "/danke";
 
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
@@ -25,6 +27,8 @@ type ContactPayload = {
     website?: unknown;
     formStartedAt?: unknown;
     source?: unknown;
+    location?: unknown;
+    locale?: unknown;
 };
 
 function jsonResponse(body: Record<string, unknown>, status = 200) {
@@ -129,6 +133,7 @@ function buildLeadText(fields: Record<string, string>) {
         `Baujahr: ${fields.year || "-"}`,
         `Kilometerstand: ${fields.mileage || "-"}`,
         `Zustand / Schäden: ${fields.condition || "-"}`,
+        `Fahrzeugstandort: ${fields.location || "-"}`,
         `Quelle: ${fields.source || "-"}`,
         "",
         "Nachricht:",
@@ -146,6 +151,7 @@ function buildLeadHtml(fields: Record<string, string>) {
         ["Baujahr", fields.year || "-"],
         ["Kilometerstand", fields.mileage || "-"],
         ["Zustand / Schäden", fields.condition || "-"],
+        ["Fahrzeugstandort", fields.location || "-"],
         ["Quelle", fields.source || "-"],
     ];
 
@@ -179,35 +185,34 @@ function buildLeadHtml(fields: Record<string, string>) {
     `;
 }
 
-function buildConfirmationText(name: string) {
+function buildConfirmationText(name: string, locale: Locale) {
+    const copy = contactCopy[locale];
     return [
-        `Hallo ${name},`,
+        `${copy.greeting} ${name},`,
         "",
-        "vielen Dank für Ihre Anfrage bei WAW Nutzfahrzeuge.",
-        "Wir haben Ihre Fahrzeugdaten erhalten und melden uns schnellstmöglich zur weiteren Abstimmung.",
+        copy.confirmation,
         "",
-        "Falls Sie weitere Informationen oder Fotos ergänzen möchten, antworten Sie einfach auf diese E-Mail oder kontaktieren Sie uns telefonisch.",
+        copy.supplement,
         "",
-        "Mit freundlichen Grüßen",
         "WAW Nutzfahrzeuge",
     ].join("\n");
 }
 
-function buildConfirmationHtml(name: string) {
+function buildConfirmationHtml(name: string, locale: Locale) {
+    const copy = contactCopy[locale];
     return `
       <div style="margin:0;padding:0;background:#f4f6f8;font-family:Arial,sans-serif;color:#111827;">
         <div style="max-width:640px;margin:0 auto;padding:28px 16px;">
           <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:18px;overflow:hidden;">
             <div style="background:#07111f;color:#ffffff;padding:24px 28px;">
               <p style="margin:0 0 8px;color:#ff8a2a;font-size:12px;font-weight:700;letter-spacing:.08em;">WAW NUTZFAHRZEUGE</p>
-              <h1 style="margin:0;font-size:24px;line-height:1.2;">Ihre Anfrage ist eingegangen</h1>
+              <h1 style="margin:0;font-size:24px;line-height:1.2;">${copy.thanksTitle}</h1>
             </div>
             <div style="padding:24px 28px;color:#374151;line-height:1.7;">
-              <p>Hallo ${escapeHtml(name)},</p>
-              <p>vielen Dank für Ihre Anfrage bei WAW Nutzfahrzeuge.</p>
-              <p>Wir haben Ihre Fahrzeugdaten erhalten und melden uns schnellstmöglich zur weiteren Abstimmung.</p>
-              <p>Falls Sie weitere Informationen oder Fotos ergänzen möchten, antworten Sie einfach auf diese E-Mail oder kontaktieren Sie uns telefonisch.</p>
-              <p style="margin-top:24px;">Mit freundlichen Grüßen<br /><strong>WAW Nutzfahrzeuge</strong></p>
+              <p>${copy.greeting} ${escapeHtml(name)},</p>
+              <p>${copy.confirmation}</p>
+              <p>${copy.supplement}</p>
+              <p style="margin-top:24px;"><strong>WAW Nutzfahrzeuge</strong></p>
             </div>
           </div>
         </div>
@@ -216,6 +221,7 @@ function buildConfirmationHtml(name: string) {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+    let locale: Locale = "de";
     try {
         const contentLength = Number(request.headers.get("content-length") || 0);
         if (contentLength > MAX_BODY_BYTES) {
@@ -226,25 +232,30 @@ export const POST: APIRoute = async ({ request }) => {
             return jsonResponse({ success: false, error: "Ungültiges Anfrageformat." }, 415);
         }
 
+        const body = (await request.json()) as ContactPayload;
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+            return jsonResponse({ success: false, error: contactCopy.de.error }, 400);
+        }
+        locale = body.locale === "en" || body.locale === "fr" ? body.locale : "de";
+        const copy = contactCopy[locale];
+        const redirectTo = thankYouPath(locale);
         const ip = getClientIp(request);
         if (isRateLimited(ip)) {
             return jsonResponse(
-                { success: false, error: "Zu viele Anfragen. Bitte versuchen Sie es später erneut oder rufen Sie direkt an." },
+                { success: false, error: copy.rateError },
                 429
             );
         }
 
-        const body = (await request.json()) as ContactPayload;
-
         if (clean(body.website, 120)) {
-            return jsonResponse({ success: true, redirectTo: REDIRECT_TO });
+            return jsonResponse({ success: true, redirectTo });
         }
 
         const startedAt = Number(body.formStartedAt || 0);
         const elapsed = Date.now() - startedAt;
         if (!startedAt || elapsed < MIN_SUBMIT_TIME_MS || elapsed > MAX_SUBMIT_TIME_MS) {
             return jsonResponse(
-                { success: false, error: "Die Anfrage konnte nicht validiert werden. Bitte versuchen Sie es erneut." },
+                { success: false, error: copy.timeError },
                 400
             );
         }
@@ -260,21 +271,22 @@ export const POST: APIRoute = async ({ request }) => {
             condition: clean(body.condition, 180),
             message: cleanMultiline(body.message, 2500),
             source: clean(body.source, 120),
+            location: clean(body.location, 140),
         };
 
         const errors: Record<string, string> = {};
 
-        if (fields.name.length < 2) errors.name = "Bitte geben Sie Ihren Namen an.";
-        if (!isValidPhone(fields.phone)) errors.phone = "Bitte geben Sie eine gültige Telefonnummer an.";
-        if (fields.email && !isValidEmail(fields.email)) errors.email = "Bitte geben Sie eine gültige E-Mail-Adresse an.";
-        if (fields.year && !/^[\d\s./-]{2,20}$/.test(fields.year)) errors.year = "Bitte geben Sie ein gültiges Baujahr an.";
+        if (fields.name.length < 2) errors.name = copy.nameError;
+        if (!isValidPhone(fields.phone)) errors.phone = copy.phoneError;
+        if (fields.email && !isValidEmail(fields.email)) errors.email = copy.emailError;
+        if (fields.year && !/^[\d\s./-]{2,20}$/.test(fields.year)) errors.year = copy.yearError;
 
         if (looksLikeSpam(Object.values(fields))) {
-            errors.message = "Die Anfrage wurde vom Spam-Schutz blockiert.";
+            errors.message = copy.spamError;
         }
 
         if (Object.keys(errors).length > 0) {
-            return jsonResponse({ success: false, error: "Bitte prüfen Sie Ihre Angaben.", errors }, 400);
+            return jsonResponse({ success: false, error: copy.validation, errors }, 400);
         }
 
         const apiKey = import.meta.env.RESEND_API_KEY;
@@ -284,7 +296,7 @@ export const POST: APIRoute = async ({ request }) => {
         if (!apiKey || apiKey === "dein_resend_api_key" || !contactToEmail) {
             console.error("Missing contact mail configuration.");
             return jsonResponse(
-                { success: false, error: "Der E-Mail-Versand ist noch nicht vollständig konfiguriert." },
+                { success: false, error: copy.error },
                 500
             );
         }
@@ -293,7 +305,7 @@ export const POST: APIRoute = async ({ request }) => {
         const subjectName = fields.name.replace(/[^\p{L}\p{N}\s.-]/gu, "").slice(0, 60);
         const replyTo = fields.email || undefined;
 
-        await resend.emails.send({
+        await deliverInquiry(() => resend.emails.send({
             from: `WAW Nutzfahrzeuge <${fromEmail}>`,
             to: contactToEmail,
             replyTo,
@@ -303,24 +315,20 @@ export const POST: APIRoute = async ({ request }) => {
             headers: {
                 "X-Entity-Ref-ID": `waw-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
             },
-        });
-
-        if (fields.email) {
-            await resend.emails.send({
+        }), fields.email ? () => resend.emails.send({
                 from: `WAW Nutzfahrzeuge <${fromEmail}>`,
                 to: fields.email,
                 replyTo: contactToEmail,
-                subject: "Ihre Anfrage bei WAW Nutzfahrzeuge ist eingegangen",
-                text: buildConfirmationText(fields.name),
-                html: buildConfirmationHtml(fields.name),
-            });
-        }
+                subject: copy.subject,
+                text: buildConfirmationText(fields.name, locale),
+                html: buildConfirmationHtml(fields.name, locale),
+            }) : undefined, (message) => console.error(message));
 
-        return jsonResponse({ success: true, redirectTo: REDIRECT_TO });
+        return jsonResponse({ success: true, redirectTo });
     } catch (error) {
         console.error("Contact form error", error);
         return jsonResponse(
-            { success: false, error: "Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie direkt an oder versuchen Sie es erneut." },
+            { success: false, error: contactCopy[locale].error },
             500
         );
     }

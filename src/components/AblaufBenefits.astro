@@ -1,6 +1,12 @@
 ---
 import { BadgeEuro, ClockCheck, MapPin, ShieldCheck } from "@lucide/astro";
 
+interface Props {
+  kicker?: string;
+  title?: string;
+  benefits?: readonly { title: string; text: string; iconKey: string }[];
+}
+
 const iconMap = {
   shield: ShieldCheck,
   clock: ClockCheck,

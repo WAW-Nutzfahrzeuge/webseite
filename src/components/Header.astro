@@ -4,6 +4,7 @@ import { serviceLinks, site } from "../data/site";
 import { navigationCities } from "../data/cities";
 import {
   getLocalizedEquivalentPath,
+  getLocaleFromPath,
   localeLabels,
   locales,
   localeShortLabels,
@@ -13,7 +14,7 @@ import {
   type Locale,
 } from "../data/i18n";
 
-const { transparent = false, lang = "de" } = Astro.props;
+const { transparent = false, lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
 const currentLang = lang as Locale;
 const nav = ui[currentLang];
 const currentPath = Astro.url.pathname;
@@ -33,24 +34,24 @@ const languageOptions = locales.map((locale) => ({
       <img src="/images/waw-logo.svg" alt="WAW Nutzfahrzeuge Logo" />
     </a>
 
-    <nav class="desktop-nav" aria-label="Hauptnavigation">
+    <nav class="desktop-nav" aria-label={currentLang === "de" ? "Hauptnavigation" : currentLang === "en" ? "Main navigation" : "Navigation principale"}>
       <a href={localized("home")} class={currentPath === localized("home") ? "is-active" : ""}>{nav.home}</a>
 
       <div class={`nav-group ${isActive(localized("services")) ? "is-active" : ""}`}>
-        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+        <button class="nav-dropdown-btn" aria-controls="services-menu" aria-expanded="false">
           {nav.services}
           <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true">
             <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </button>
-        <div class="nav-dropdown" role="menu">
-          <a href={localized("services")} role="menuitem" class="dropdown-all">
+        <div class="nav-dropdown" id="services-menu" inert>
+          <a href={localized("services")} class="dropdown-all">
             <span>{nav.allServices}</span>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
           </a>
           <div class="dropdown-divider"></div>
           {serviceLinks.map((link) => (
-            <a href={`${localized("services")}#${link.href.split("#")[1]}`} role="menuitem">{nav.serviceLinks[link.href.split("#")[1] as keyof typeof nav.serviceLinks] || link.label}</a>
+            <a href={`${localized("services")}#${link.href.split("#")[1]}`}>{nav.serviceLinks[link.href.split("#")[1] as keyof typeof nav.serviceLinks] || link.label}</a>
           ))}
         </div>
       </div>
@@ -59,21 +60,21 @@ const languageOptions = locales.map((locale) => ({
       <a href={localized("vehicles")} class={isActive(localized("vehicles")) ? "is-active" : ""}>{nav.vehicles}</a>
 
       <div class={`nav-group ${isActive(localized("locations")) || currentPath.includes("/lkw-verkaufen/") || currentPath.includes("/sell-trucks/") || currentPath.includes("/vendre-camion/") ? "is-active" : ""}`}>
-        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+        <button class="nav-dropdown-btn" aria-controls="regions-menu" aria-expanded="false">
           {nav.locations}
           <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true">
             <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </button>
-        <div class="nav-dropdown nav-dropdown--wide" role="menu">
-          <a href={localized("locations")} role="menuitem" class="dropdown-all">
+        <div class="nav-dropdown nav-dropdown--wide" id="regions-menu" inert>
+          <a href={localized("locations")} class="dropdown-all">
             <span>{nav.allLocations}</span>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
           </a>
           <div class="dropdown-divider"></div>
           <div class="dropdown-cities">
             {navigationCities.map((city) => (
-              <a href={localizeCityPath(city.slug, currentLang)} role="menuitem">{city.name}</a>
+              <a href={localizeCityPath(city.slug, currentLang)}>{city.name}</a>
             ))}
           </div>
         </div>
@@ -84,7 +85,7 @@ const languageOptions = locales.map((locale) => ({
     </nav>
 
     <div class="header-actions">
-      <label class="language-switcher" aria-label="Sprache auswählen">
+      <label class="language-switcher" aria-label={nav.language}>
         <span>{nav.language}</span>
         <select data-language-switcher>
           {languageOptions.map((option) => (
@@ -97,7 +98,7 @@ const languageOptions = locales.map((locale) => ({
         {site.phoneDisplay}
       </a>
 
-      <a href={localized("contact")} class="cta-btn">
+      <a href={`${localized("contact")}#kontaktformular`} class="cta-btn">
         {nav.startInquiry}
       </a>
 
@@ -112,7 +113,7 @@ const languageOptions = locales.map((locale) => ({
 <!-- Mobile sheet overlay -->
 <div class="sheet-backdrop" id="sheet-backdrop" aria-hidden="true"></div>
 
-<div class="mobile-sheet" id="mobile-sheet" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation">
+<div class="mobile-sheet" id="mobile-sheet" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Navigation">
   <div class="sheet-top">
     <a href={localized("home")} class="sheet-logo">
       <img src="/images/waw-logo.svg" alt="WAW Nutzfahrzeuge" />
@@ -147,7 +148,7 @@ const languageOptions = locales.map((locale) => ({
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
       </button>
-      <div class="sheet-sub">
+      <div class="sheet-sub" inert>
         <a href={localized("services")} class="sheet-sub-all">{nav.allServices} →</a>
         {serviceLinks.map((link) => (
           <a href={`${localized("services")}#${link.href.split("#")[1]}`}>{nav.serviceLinks[link.href.split("#")[1] as keyof typeof nav.serviceLinks] || link.label}</a>
@@ -174,7 +175,7 @@ const languageOptions = locales.map((locale) => ({
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
       </button>
-      <div class="sheet-sub">
+      <div class="sheet-sub" inert>
         <a href={localized("locations")} class="sheet-sub-all">{nav.allLocations} →</a>
         <div class="sheet-cities">
           {navigationCities.map((city) => (
@@ -208,13 +209,13 @@ const languageOptions = locales.map((locale) => ({
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.1 5.18 2 2 0 0 1 5.08 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.91 10.91a16 16 0 0 0 6.18 6.18l1.38-1.38a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 24 18z"/></svg>
       {site.phoneDisplay}
     </a>
-    <a href={site.whatsappHref} target="_blank" rel="noopener" class="sheet-contact-row">
+    {site.whatsappHref && <a href={site.whatsappHref} target="_blank" rel="noopener" class="sheet-contact-row">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884zm8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
       {nav.writeWhatsapp}
-    </a>
+    </a>}
     <div class="sheet-contact-row sheet-hours">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      {currentLang === "de" ? "Mo–Fr 8–18 · Sa 9–14 Uhr" : currentLang === "en" ? "Mon-Fri 8-18 · Sat 9-14" : "Lun-ven 8-18 · Sam 9-14"}
+      {currentLang === "de" ? site.openingHoursDisplay : currentLang === "en" ? "Mon–Fri 08:30–17:30" : "Lun–ven 08:30–17:30"}
     </div>
   </div>
 </div>
@@ -233,21 +234,26 @@ const languageOptions = locales.map((locale) => ({
   const closeBtn   = document.getElementById("sheet-close");
 
   function openSheet() {
+    if (sheet) sheet.inert = false;
     sheet?.classList.add("open");
     backdrop?.classList.add("open");
     document.body.style.overflow = "hidden";
     toggle?.setAttribute("aria-expanded", "true");
     toggle?.classList.add("active");
     sheet?.setAttribute("aria-hidden", "false");
+    closeBtn?.focus();
   }
 
   function closeSheet() {
+    const wasOpen = sheet?.classList.contains("open");
     sheet?.classList.remove("open");
     backdrop?.classList.remove("open");
     document.body.style.overflow = "";
     toggle?.setAttribute("aria-expanded", "false");
     toggle?.classList.remove("active");
     sheet?.setAttribute("aria-hidden", "true");
+    if (sheet) sheet.inert = true;
+    if (wasOpen) toggle?.focus();
   }
 
   toggle?.addEventListener("click", () => {
@@ -259,6 +265,18 @@ const languageOptions = locales.map((locale) => ({
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeSheet();
+    if (e.key === "Tab" && sheet?.classList.contains("open")) {
+      const focusable = Array.from(sheet.querySelectorAll<HTMLElement>("a[href], button, select")).filter((element) => !element.closest("[inert]") && element.getClientRects().length > 0);
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    }
   });
 
   // Mobile accordion groups
@@ -276,10 +294,14 @@ const languageOptions = locales.map((locale) => ({
         g.classList.remove("open");
         g.querySelector(".sheet-group-btn")?.setAttribute("aria-expanded", "false");
         const s = g.querySelector<HTMLElement>(".sheet-sub");
-        if (s) s.style.maxHeight = "0";
+        if (s) {
+          s.style.maxHeight = "0";
+          s.inert = true;
+        }
       });
 
       if (!isOpen && sub) {
+        sub.inert = false;
         group.classList.add("open");
         btn.setAttribute("aria-expanded", "true");
         sub.style.maxHeight = sub.scrollHeight + "px";
@@ -287,12 +309,32 @@ const languageOptions = locales.map((locale) => ({
     });
   });
 
-  // Desktop: update aria-expanded on hover for accessibility
   const navGroups = document.querySelectorAll<HTMLElement>(".nav-group");
   navGroups.forEach((group) => {
     const btn = group.querySelector<HTMLButtonElement>(".nav-dropdown-btn");
-    group.addEventListener("mouseenter", () => btn?.setAttribute("aria-expanded", "true"));
-    group.addEventListener("mouseleave", () => btn?.setAttribute("aria-expanded", "false"));
+    const setOpen = (open: boolean) => {
+      group.classList.toggle("is-open", open);
+      btn?.setAttribute("aria-expanded", String(open));
+      const dropdown = group.querySelector<HTMLElement>(".nav-dropdown");
+      if (dropdown) dropdown.inert = !open;
+    };
+    btn?.addEventListener("click", () => setOpen(!group.classList.contains("is-open")));
+    group.addEventListener("focusout", (event) => {
+      if (!(event.relatedTarget instanceof Node) || !group.contains(event.relatedTarget)) setOpen(false);
+    });
+    group.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        btn?.focus();
+        setOpen(false);
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (event.target instanceof Node && !group.contains(event.target)) setOpen(false);
+    });
+    group.addEventListener("mouseenter", () => setOpen(true));
+    group.addEventListener("mouseleave", () => {
+      if (!group.contains(document.activeElement)) setOpen(false);
+    });
   });
 
   document.querySelectorAll<HTMLSelectElement>("[data-language-switcher]").forEach((select) => {
@@ -389,17 +431,18 @@ const languageOptions = locales.map((locale) => ({
     display: flex;
     align-items: center;
     flex: 0 0 auto;
+    padding: 5px 8px;
   }
 
   .logo img {
-    width: 188px;
+    width: 144px;
     height: auto;
     display: block;
     object-fit: contain;
   }
 
   @media (max-width: 640px) {
-    .logo img { width: 148px; }
+    .logo img { width: 104px; }
   }
 
   /* ── Desktop nav ── */
@@ -502,7 +545,7 @@ const languageOptions = locales.map((locale) => ({
       transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .nav-group:hover .nav-dropdown {
+  .nav-group.is-open .nav-dropdown {
     opacity: 1;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
@@ -636,7 +679,7 @@ const languageOptions = locales.map((locale) => ({
     padding: 12px 18px;
     border-radius: 999px;
     background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-    color: white;
+    color: var(--navy-deep);
     font-size: 14px;
     font-weight: 800;
     transition: 220ms ease;
@@ -867,7 +910,7 @@ const languageOptions = locales.map((locale) => ({
   .sheet-sub {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: none;
     padding: 0 6px;
   }
 

@@ -1,5 +1,6 @@
 ---
-import { cities } from "../data/cities";
+import { cities, type City } from "../data/cities";
+interface Props { city: City; }
 
 const { city } = Astro.props;
 const nearbyLinkedCities = (city.nearbyCities || [])

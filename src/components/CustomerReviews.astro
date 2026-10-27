@@ -70,7 +70,8 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
 
   <div class="reviews-shell" data-animate>
     <div class="reviews-track" data-review-track aria-label="Google Kundenbewertungen">
-      {loopedReviews.map((review, index) => (
+      <div class="reviews-lane" data-review-lane>
+        {loopedReviews.map((review, index) => (
         <article class="review-card" aria-hidden={index >= reviews.length ? "true" : "false"}>
           <div class="review-top">
             <div>
@@ -84,7 +85,8 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
           <p>“{review.text}”</p>
           <small>Google Rezension</small>
         </article>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
 </section>
@@ -93,107 +95,79 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
   const reviewTracks = document.querySelectorAll<HTMLElement>("[data-review-track]");
 
   reviewTracks.forEach((track) => {
+    const lane = track.querySelector<HTMLElement>("[data-review-lane]")!;
+    const cards = lane.querySelectorAll<HTMLElement>(".review-card");
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let animation: Animation | undefined;
     let isDragging = false;
     let startX = 0;
-    let startScrollLeft = 0;
-    let animationFrame = 0;
-    let lastTimestamp = 0;
-    let resumeAt = 0;
-    let virtualScrollLeft = 0;
-    let isNormalizing = false;
+    let startTime = 0;
+    let duration = 0;
+    let isVisible = false;
     const pixelsPerSecond = 34;
 
-    const getSetWidth = () => track.scrollWidth / 3;
-
-    const normalizeScroll = () => {
-      const setWidth = getSetWidth();
-      if (setWidth <= 0) return;
-
-      if (virtualScrollLeft >= setWidth * 2) {
-        virtualScrollLeft -= setWidth;
-      } else if (virtualScrollLeft < setWidth * 0.5) {
-        virtualScrollLeft += setWidth;
-      }
-
-      isNormalizing = true;
-      track.scrollLeft = virtualScrollLeft;
-      isNormalizing = false;
+    const updatePlayback = () => {
+      if (!animation) return;
+      if (isVisible && !document.hidden && !isDragging) animation.play();
+      else animation.pause();
     };
 
-    const setInitialScrollPosition = () => {
-      const setWidth = getSetWidth();
-      if (setWidth > 0) {
-        virtualScrollLeft = setWidth;
-        track.scrollLeft = virtualScrollLeft;
-      }
-    };
-
-    const startAutoLoop = () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      const tick = (timestamp: number) => {
-        const delta = lastTimestamp ? Math.min(timestamp - lastTimestamp, 32) : 16;
-        lastTimestamp = timestamp;
-
-        if (!isDragging) {
-          if (timestamp >= resumeAt) {
-            virtualScrollLeft += (pixelsPerSecond * delta) / 1000;
-            track.scrollLeft = virtualScrollLeft;
-            normalizeScroll();
-          }
-        }
-        animationFrame = window.requestAnimationFrame(tick);
-      };
-
-      animationFrame = window.requestAnimationFrame(tick);
+    const initializeLoop = () => {
+      const progress = animation && duration ? Number(animation.currentTime || 0) % duration / duration : 0;
+      animation?.cancel();
+      animation = undefined;
+      if (motionPreference.matches) return;
+      const setWidth = cards[cards.length / 3].offsetLeft - cards[0].offsetLeft;
+      if (!setWidth) return;
+      duration = setWidth / pixelsPerSecond * 1000;
+      track.scrollLeft = 0;
+      animation = lane.animate(
+        [{ transform: `translateX(-${setWidth}px)` }, { transform: `translateX(-${setWidth * 2}px)` }],
+        { duration, iterations: Infinity, easing: "linear" },
+      );
+      animation.currentTime = progress * duration;
+      updatePlayback();
     };
 
     track.addEventListener("pointerdown", (event) => {
+      if (!animation) return;
       if (event.pointerType === "mouse" && event.button !== 0) return;
       isDragging = true;
       startX = event.clientX;
-      virtualScrollLeft = track.scrollLeft;
-      startScrollLeft = virtualScrollLeft;
+      startTime = Number(animation.currentTime || 0);
+      animation.pause();
       track.classList.add("is-dragging");
       track.setPointerCapture(event.pointerId);
     });
 
     track.addEventListener("pointermove", (event) => {
-      if (!isDragging) return;
-      event.preventDefault();
+      if (!isDragging || !animation) return;
       const distance = event.clientX - startX;
-      virtualScrollLeft = startScrollLeft - distance;
-      track.scrollLeft = virtualScrollLeft;
-      normalizeScroll();
+      const nextTime = startTime - distance / pixelsPerSecond * 1000;
+      animation.currentTime = ((nextTime % duration) + duration) % duration;
     });
 
     const stopDragging = (event: PointerEvent) => {
       if (!isDragging) return;
       isDragging = false;
-      resumeAt = performance.now() + 900;
       track.classList.remove("is-dragging");
       if (track.hasPointerCapture(event.pointerId)) {
         track.releasePointerCapture(event.pointerId);
       }
-      normalizeScroll();
+      updatePlayback();
     };
 
     track.addEventListener("pointerup", stopDragging);
     track.addEventListener("pointercancel", stopDragging);
-    track.addEventListener("scroll", () => {
-      if (isNormalizing || isDragging) return;
-      virtualScrollLeft = track.scrollLeft;
-      normalizeScroll();
-    }, { passive: true });
-
-    window.requestAnimationFrame(() => {
-      setInitialScrollPosition();
-      startAutoLoop();
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      updatePlayback();
     });
-
-    window.addEventListener("beforeunload", () => {
-      window.cancelAnimationFrame(animationFrame);
-    });
+    visibilityObserver.observe(track);
+    const resizeObserver = new ResizeObserver(initializeLoop);
+    resizeObserver.observe(track);
+    motionPreference.addEventListener("change", initializeLoop);
+    document.addEventListener("visibilitychange", updatePlayback);
   });
 </script>
 
@@ -263,15 +237,20 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
   }
 
   .reviews-track {
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
+    overflow: hidden;
     overscroll-behavior-x: contain;
     padding: 12px max(18px, calc((100vw - 1540px) / 2 + 36px)) 26px;
     cursor: grab;
     scrollbar-width: none;
     user-select: none;
-    touch-action: pan-x;
+    touch-action: pan-y;
+  }
+
+  .reviews-lane {
+    position: relative;
+    display: flex;
+    gap: 18px;
+    width: max-content;
   }
 
   .reviews-track::-webkit-scrollbar {
@@ -301,10 +280,22 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
       box-shadow 260ms ease;
   }
 
-  .review-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 107, 0, 0.22);
-    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.12);
+  @media (hover: hover) and (pointer: fine) {
+    .review-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 107, 0, 0.22);
+      box-shadow: 0 26px 70px rgba(15, 23, 42, 0.12);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-track {
+      overflow-x: auto;
+      touch-action: auto;
+    }
+    .review-card[aria-hidden="true"] {
+      display: none;
+    }
   }
 
   .review-top {
@@ -385,8 +376,10 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
     }
 
     .reviews-track {
-      gap: 11px;
       padding: 8px 14px 22px;
+    }
+    .reviews-lane {
+      gap: 11px;
     }
 
     .review-top {

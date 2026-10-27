@@ -1,4 +1,6 @@
 ---
+import type { FaqItem } from "../utils/seo";
+interface Props { faqs: readonly FaqItem[]; title?: string; kicker?: string; }
 const { faqs, title = "Häufige Fragen zum Verkauf", kicker = "HÄUFIGE FRAGEN" } = Astro.props;
 ---
 

@@ -65,7 +65,7 @@ export function createLocalBusinessSchema(url = site.url, description = site.des
     return schema;
 }
 
-export function createFaqSchema(items: FaqItem[] = []) {
+export function createFaqSchema(items: readonly FaqItem[] = []) {
     return {
         "@context": "https://schema.org",
         "@type": "FAQPage",

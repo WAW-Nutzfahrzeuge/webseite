@@ -1,3 +1,6 @@
+---
+import { homeFaqs } from "../data/homeFaqs";
+---
 <section class="home-faq section" id="faq">
     <div class="container faq-wrap">
         <div class="faq-copy" data-animate>
@@ -10,54 +13,18 @@
         </div>
 
         <div class="faq-list">
-            <details class="faq-card glass-reflect" data-animate open>
-                <summary>Welche Fahrzeuge kaufen wir an?</summary>
-                <p>
-                    Wir kaufen LKW, Sattelzugmaschinen, Auflieger, Anhänger,
-                    Transporter, Baumaschinen und weitere gewerblich genutzte
-                    Nutzfahrzeuge an. Auch LKW mit Schäden, hoher Laufleistung
-                    oder fehlendem TÜV können Sie uns anbieten.
-                </p>
-            </details>
-
-            <details class="faq-card glass-reflect" data-animate>
-                <summary>Kaufen wir auch Fahrzeuge mit hoher Laufleistung?</summary>
-                <p>
-                    Ja. Hohe Laufleistung, Gebrauchsspuren oder ältere Baujahre
-                    sind im Nutzfahrzeughandel üblich. Senden Sie uns die
-                    wichtigsten Daten und Fotos, wir besprechen den Rest direkt.
-                </p>
-            </details>
-
-            <details class="faq-card glass-reflect" data-animate>
-                <summary>Ist der Ankauf deutschland- und europaweit möglich?</summary>
-                <p>
-                    Ja. Sie können uns Fahrzeuge aus Deutschland und Europa
-                    anbieten - vom einzelnen LKW bis zum kompletten Fuhrpark.
-                </p>
-            </details>
-
-            <details class="faq-card glass-reflect" data-animate>
-                <summary>Wie schnell bekomme ich eine Rückmeldung?</summary>
-                <p>
-                    Nach Eingang Ihrer Anfrage melden wir uns schnellstmöglich.
-                    Vollständige Fahrzeugdaten und Fotos helfen uns, konkreter zu antworten.
-                </p>
-            </details>
-
-            <details class="faq-card glass-reflect" data-animate>
-                <summary>Kann ich auch mehrere Fahrzeuge oder einen Fuhrpark anbieten?</summary>
-                <p>
-                    Ja. Mehrere LKW, gemischte Fahrzeugpakete oder komplette
-                    Fuhrparks können Sie gemeinsam anbieten.
-                </p>
-            </details>
+            {homeFaqs.map((item, index) => (
+                <details class="faq-card" open={index === 0}>
+                    <summary>{item.question}</summary>
+                    <p>{item.answer}</p>
+                </details>
+            ))}
         </div>
     </div>
 </section>
 
 <script>
-    const faqCards = document.querySelectorAll(".faq-card");
+    const faqCards = document.querySelectorAll<HTMLDetailsElement>(".faq-card");
 
     faqCards.forEach((card) => {
         card.addEventListener("toggle", () => {
