@@ -5,17 +5,23 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import FloatingContact from "../../components/FloatingContact.astro";
 import LeadForm from "../../components/LeadForm.astro";
+import HomeProcessSection from "../../components/HomeProcessSection.astro";
+import HomeVehicleTypes from "../../components/HomeVehicleTypes.astro";
 import { cities, indexableCitySlugs } from "../../data/cities";
 import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../../utils/seo";
-import { getCityImage } from "../../utils/cityImages";
+import { getCityImage, getMobileCityImage } from "../../utils/cityImages";
 
 export function getStaticPaths() {
   return cities.map((city) => ({ params: { city: city.slug }, props: { city } }));
 }
 const { city } = Astro.props;
 const cityImage = getCityImage(city.name, city.slug);
+const mobileCityImage = getMobileCityImage(city.name, city.slug);
 const heroImage = cityImage
   ? await getImage({ src: cityImage, width: 1600, format: "webp", quality: 75 })
+  : null;
+const mobileHeroImage = mobileCityImage
+  ? await getImage({ src: mobileCityImage, width: 850, format: "webp", quality: 75 })
   : null;
 const canonical = absoluteUrl(`/lkw-verkaufen/${city.slug}`);
 const nearby = cities.filter((entry) => city.nearbyCities.includes(entry.name));
@@ -28,9 +34,13 @@ const schema = [
   {!indexableCitySlugs.has(city.slug) && <Fragment slot="head"><meta name="robots" content="noindex,follow" /></Fragment>}
   <Header />
   <main>
-    <section class="city-hero" style={heroImage ? `background-image: linear-gradient(90deg, rgba(3, 10, 20, 0.94) 0%, rgba(5, 15, 30, 0.82) 44%, rgba(5, 15, 30, 0.42) 100%), url(${heroImage.src})` : undefined}>
+    <section class="city-hero">
       <div class="container city-grid">
-        <div>
+        <div class="city-intro">
+          <picture class="city-hero-background" aria-hidden="true">
+            {mobileHeroImage && <source media="(max-width: 850px)" srcset={mobileHeroImage.src} />}
+            <img src={heroImage?.src ?? "/images/hero-yard-sunset.png"} alt="" width={heroImage?.attributes.width} height={heroImage?.attributes.height} fetchpriority="high" />
+          </picture>
           <h1>LKW verkaufen in {city.name}</h1>
           <p>Sie möchten einen LKW, eine Sattelzugmaschine, einen Auflieger, Anhänger, Transporter, eine Baumaschine oder einen Fuhrpark in {city.name} verkaufen? Bieten Sie uns Ihr Fahrzeug unverbindlich an.</p>
           <p>Auch mit Motor-, Getriebe- oder Unfallschaden, hoher Laufleistung, älterem Baujahr, ohne HU oder nicht fahrbereit ist eine Anfrage möglich. Wir prüfen anhand Ihrer Angaben, ob ein Ankauf infrage kommt.</p>
@@ -40,6 +50,8 @@ const schema = [
         <div class="city-form"><LeadForm compact /></div>
       </div>
     </section>
+    <HomeProcessSection />
+    <HomeVehicleTypes />
     <section class="section">
       <div class="container city-grid">
         <div>
@@ -72,13 +84,19 @@ const schema = [
 </BaseLayout>
 <style>
   .city-hero {
+    position: relative;
+    isolation: isolate;
     padding: 140px 0 64px;
-    background:
-      linear-gradient(90deg, rgba(3, 10, 20, 0.94) 0%, rgba(5, 15, 30, 0.82) 44%, rgba(5, 15, 30, 0.42) 100%),
-      url("/images/hero-yard-sunset.png");
-    background-size: cover;
-    background-position: center right;
+    background: var(--navy);
     color: #fff;
+  }
+  .city-hero-background { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .city-hero-background img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center right; }
+  .city-hero-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(3, 10, 20, 0.66) 0%, rgba(5, 15, 30, 0.54) 44%, rgba(5, 15, 30, 0.18) 100%);
   }
   .city-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
   h1 { margin: 0 0 24px; font-size: clamp(36px, 4.3vw, 64px); line-height: 1.1; letter-spacing: -0.03em; }
@@ -93,6 +111,10 @@ const schema = [
   .regional-links { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 32px; }
   @media (max-width: 850px) {
     .city-grid { grid-template-columns: 1fr; }
-    .city-hero { background-position: center top; }
+    .city-hero { padding: 0; background: var(--bg); }
+    .city-hero > .city-grid { width: 100%; gap: 0; }
+    .city-intro { position: relative; isolation: isolate; padding: 140px max(14px, calc((100% - 778px) / 2)) 40px; }
+    .city-form { width: min(778px, calc(100% - 28px)); margin-inline: auto; padding-block: 32px; }
+    .city-hero-background img { object-position: center top; }
   }
 </style>

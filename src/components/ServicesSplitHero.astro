@@ -9,8 +9,8 @@ import { Building2, Handshake, Route } from "@lucide/astro";
       <h1>Ankauf von LKW und Nutzfahrzeugen jeder Art.</h1>
       <p>
         Ob einzelner LKW oder kompletter Fuhrpark: Wir kaufen Sattelzugmaschinen,
-        Auflieger, Anhänger, Transporter und Baumaschinen deutschland- und
-        europaweit an. Auch ältere Fahrzeuge, hohe Laufleistungen oder Schäden
+        Auflieger, Anhänger, Transporter und Baumaschinen weltweit
+        an. Auch ältere Fahrzeuge, hohe Laufleistungen oder Schäden
         sind kein Ausschlusskriterium.
       </p>
 
@@ -20,7 +20,7 @@ import { Building2, Handshake, Route } from "@lucide/astro";
       </div>
 
       <div class="services-trustpoints" aria-label="Vorteile">
-        <span><Route size={18} stroke-width={2.4} />Deutschland- und europaweiter Ankauf</span>
+        <span><Route size={18} stroke-width={2.4} />Weltweiter Ankauf</span>
         <span><Handshake size={18} stroke-width={2.4} />Direkte Ansprechpartner</span>
         <span><Building2 size={18} stroke-width={2.4} />Mehrere Fahrzeuge oder Fuhrparks</span>
       </div>
@@ -145,7 +145,7 @@ import { Building2, Handshake, Route } from "@lucide/astro";
     min-height: clamp(380px, 36vw, 560px);
     overflow: hidden;
     border: 1px solid rgba(17,24,39,0.08);
-    border-radius: 34px;
+    border-radius: var(--radius-image);
     background: #e8edf3;
     box-shadow: 0 34px 96px rgba(15,23,42,0.16);
   }
@@ -219,7 +219,7 @@ import { Building2, Handshake, Route } from "@lucide/astro";
 
     .services-hero-visual {
       min-height: 280px;
-      border-radius: 24px;
+      border-radius: var(--radius-image);
     }
 
     .services-hero-visual img {

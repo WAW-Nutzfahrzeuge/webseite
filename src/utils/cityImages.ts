@@ -13,6 +13,20 @@ for (const path in cityImageModules) {
   if (filename) cityImages[filename.toLowerCase()] = cityImageModules[path].default;
 }
 
+const mobileCityImageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/cities/mobile/*.{jpg,jpeg,png,webp}",
+  { eager: true }
+);
+const mobileCityImages: Record<string, ImageMetadata> = {};
+for (const path in mobileCityImageModules) {
+  const filename = path.split("/").pop()?.replace(/(?:_mobile)?\.(jpg|jpeg|png|webp)$/i, "");
+  if (filename) mobileCityImages[filename.toLowerCase()] = mobileCityImageModules[path].default;
+}
+
+export function getMobileCityImage(name: string, slug: string): ImageMetadata | null {
+  return mobileCityImages[name.toLowerCase()] ?? mobileCityImages[slug.toLowerCase()] ?? null;
+}
+
 export function getCityImage(name: string, slug: string): ImageMetadata | null {
   return cityImages[name.toLowerCase()] ?? cityImages[slug.toLowerCase()] ?? null;
 }

@@ -13,10 +13,10 @@ const { lang, pageKey, city } = Astro.props as { lang: Locale; pageKey: RouteKey
 const language = lang === "fr" ? "fr" : "en";
 const c = {
   en: {
-    home: ["Sell trucks and commercial vehicles", "We buy trucks, tractor units, semi-trailers, trailers, vans, construction machinery, special vehicles and fleets across Germany and Europe."],
-    about: ["Direct commercial vehicle purchase from WAW", "Based in Talkau, Schleswig-Holstein, we buy individual commercial vehicles, vehicle packages and fleets from businesses, operators and dealers."],
+    home: ["Sell trucks and commercial vehicles", "We buy trucks, tractor units, semi-trailers, trailers, vans, construction machinery, special vehicles and fleets worldwide."],
+    about: ["Direct commercial vehicle purchase from WAW", "Based in Talkau, Schleswig-Holstein, we buy and sell commercial vehicles worldwide. Businesses, operators and dealers can offer individual vehicles, vehicle packages and fleets."],
     services: ["Commercial vehicle purchase: types and conditions", "Offer a single truck, construction machine or an entire fleet. Tell us the vehicle type, condition and location; we will assess whether a purchase is possible."],
-    locations: ["Truck purchase across Germany and Europe", "Our business is based in Talkau. The cities below describe our purchase areas, not additional branches. You can also offer vehicles from other locations."],
+    locations: ["Worldwide truck purchase", "We buy and sell commercial vehicles worldwide. Our business is based in Talkau. The cities below are examples of our purchase areas, not additional branches."],
     city: [`Sell trucks in ${city?.name || ""}`, `Offer trucks, trailers, vans, machinery or fleets located in ${city?.name || ""}. Our business is based in Talkau; this page does not represent a local branch.`],
     legalNotice: ["Legal notice", "The full provider information is available on our German legal notice page. This page is not a translated legal notice."],
     privacy: ["Privacy information", "We process the details you submit to handle your inquiry. Our forms use Resend for email delivery. Please consult the full German privacy policy for information about processing, service providers and your rights."],
@@ -43,10 +43,10 @@ const c = {
     ],
   },
   fr: {
-    home: ["Vendre camions et véhicules utilitaires", "Nous achetons camions, tracteurs routiers, semi-remorques, remorques, fourgons, machines de chantier, véhicules spéciaux et flottes en Allemagne et en Europe."],
-    about: ["Le rachat direct de véhicules utilitaires par WAW", "Depuis Talkau, dans le Schleswig-Holstein, nous achetons des véhicules utilitaires, lots et flottes auprès d'entreprises, d'exploitants et de négociants."],
+    home: ["Vendre camions et véhicules utilitaires", "Nous achetons camions, tracteurs routiers, semi-remorques, remorques, fourgons, machines de chantier, véhicules spéciaux et flottes dans le monde entier."],
+    about: ["Le rachat direct de véhicules utilitaires par WAW", "Depuis Talkau, dans le Schleswig-Holstein, nous achetons et vendons des véhicules utilitaires dans le monde entier. Entreprises, exploitants et négociants peuvent proposer des véhicules seuls, des lots et des flottes."],
     services: ["Rachat de véhicules utilitaires : types et états", "Proposez un camion, une machine ou une flotte complète. Indiquez le type, l'état et le lieu des véhicules ; nous examinerons la possibilité d'un rachat."],
-    locations: ["Rachat de camions en Allemagne et en Europe", "Notre entreprise est située à Talkau. Les villes ci-dessous sont des zones de rachat, pas des succursales. Vous pouvez aussi proposer des véhicules situés ailleurs."],
+    locations: ["Rachat de camions dans le monde entier", "Nous achetons et vendons des véhicules utilitaires dans le monde entier. Notre entreprise est située à Talkau. Les villes ci-dessous sont des exemples de zones de rachat, pas des succursales."],
     city: [`Vendre un camion à ${city?.name || ""}`, `Proposez camions, remorques, fourgons, machines ou flottes situés à ${city?.name || ""}. Notre entreprise est située à Talkau ; cette page ne représente pas une succursale locale.`],
     legalNotice: ["Mentions légales", "Les informations complètes sur l'éditeur figurent sur notre page allemande. Cette page ne constitue pas une traduction des mentions légales."],
     privacy: ["Informations sur la confidentialité", "Nous traitons vos coordonnées pour répondre à votre demande. Les formulaires utilisent Resend pour l'envoi d'e-mails. Consultez notre politique allemande complète pour les traitements, prestataires et droits des personnes."],

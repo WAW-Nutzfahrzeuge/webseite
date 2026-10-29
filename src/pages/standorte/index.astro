@@ -3,17 +3,19 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import FloatingContact from "../../components/FloatingContact.astro";
+import HomeProcessSection from "../../components/HomeProcessSection.astro";
+import HomeVehicleTypes from "../../components/HomeVehicleTypes.astro";
 import { cities, stateGroups } from "../../data/cities";
 import { absoluteUrl, createBreadcrumbSchema } from "../../utils/seo";
 
 const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, "de"));
 ---
-<BaseLayout title="Ankaufgebiete | LKW verkaufen in Deutschland & Europa | WAW" description="WAW kauft Nutzfahrzeuge aus Deutschland und Europa an. Unternehmensstandort Talkau, regionale Ankaufgebiete und direkte Kontaktmöglichkeiten." canonical={absoluteUrl("/standorte")} schema={createBreadcrumbSchema([{ name: "Startseite", url: absoluteUrl("/") }, { name: "Ankaufgebiete", url: absoluteUrl("/standorte") }])}>
+<BaseLayout title="Ankaufgebiete | LKW weltweit verkaufen | WAW" description="WAW kauft Nutzfahrzeuge weltweit an. Unternehmensstandort Talkau, regionale Ankaufgebiete und direkte Kontaktmöglichkeiten." canonical={absoluteUrl("/standorte")} schema={createBreadcrumbSchema([{ name: "Startseite", url: absoluteUrl("/") }, { name: "Ankaufgebiete", url: absoluteUrl("/standorte") }])}>
   <Header />
   <main>
     <section class="coverage-hero">
       <div class="container">
-        <h1>LKW verkaufen – in Deutschland und Europa</h1>
+        <h1>LKW verkaufen – weltweit</h1>
         <p>Unser Unternehmensstandort ist Talkau in Schleswig-Holstein. Die hier aufgeführten Städte und Regionen beschreiben unsere Ankaufgebiete, keine weiteren Niederlassungen.</p>
         <p>Auch außerhalb der aufgeführten Orte können Sie uns einzelne Nutzfahrzeuge, Fahrzeugpakete und Fuhrparks anbieten. Geben Sie den Fahrzeugstandort und bekannte Schäden an. Übergabe, Transport und mögliche Abholung stimmen wir individuell mit Ihnen ab.</p>
         <a class="btn btn-primary" href="/kontakt#kontaktformular">Fahrzeug unverbindlich anbieten</a>
@@ -43,6 +45,8 @@ const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, "de
         <a href="/ablauf">So stimmen wir Angebot, Zahlung und Übergabe ab</a>
       </div>
     </section>
+    <HomeProcessSection />
+    <HomeVehicleTypes />
   </main>
   <Footer /><FloatingContact />
 </BaseLayout>

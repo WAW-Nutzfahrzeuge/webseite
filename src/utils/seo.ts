@@ -41,7 +41,7 @@ export function createLocalBusinessSchema(url = site.url, description = site.des
                 "@type": "ContactPoint",
                 telephone: site.phoneDisplay,
                 contactType: "sales",
-                areaServed: "DE",
+                areaServed: "Worldwide",
                 availableLanguage: ["de", "en", "fr"],
                 email: site.email,
             },

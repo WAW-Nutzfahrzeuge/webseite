@@ -1,192 +1,57 @@
 ---
+import { Plus } from "@lucide/astro";
 import { homeFaqs } from "../data/homeFaqs";
 ---
-<section class="home-faq section" id="faq">
-    <div class="container faq-wrap">
-        <div class="faq-copy" data-animate>
-            <span>FAQ</span>
-            <h2>Häufige Fragen zum LKW Verkauf</h2>
-            <p>
-                Die wichtigsten Antworten für Unternehmen, Händler, Speditionen
-                und Fuhrparks rund um den Verkauf von LKW und Nutzfahrzeugen.
-            </p>
-        </div>
-
-        <div class="faq-list">
-            {homeFaqs.map((item, index) => (
-                <details class="faq-card" open={index === 0}>
-                    <summary>{item.question}</summary>
-                    <p>{item.answer}</p>
-                </details>
-            ))}
-        </div>
+<section class="home-faq" id="faq" aria-labelledby="faq-title">
+  <div class="container faq-wrap">
+    <div class="faq-copy">
+      <h2 id="faq-title">Noch Fragen zum Fahrzeugverkauf?</h2>
+      <p>Hier finden Sie Antworten zu Fahrzeugarten, Zuständen und Ihrer ersten Anfrage.</p>
+      <a href="/kontakt">Persönlich mit uns klären</a>
     </div>
+    <div class="faq-list">
+      {homeFaqs.map((item, index) => (
+        <details class="faq-card" open={index === 0}>
+          <summary>{item.question}<Plus size={20} aria-hidden="true" /></summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
 </section>
 
 <script>
-    const faqCards = document.querySelectorAll<HTMLDetailsElement>(".faq-card");
-
-    faqCards.forEach((card) => {
-        card.addEventListener("toggle", () => {
-            if (card.open) {
-                faqCards.forEach((otherCard) => {
-                    if (otherCard !== card) {
-                        otherCard.removeAttribute("open");
-                    }
-                });
-            }
+  const faqCards = document.querySelectorAll<HTMLDetailsElement>(".faq-card");
+  faqCards.forEach((card) => {
+    card.addEventListener("toggle", () => {
+      if (card.open) {
+        faqCards.forEach((otherCard) => {
+          if (otherCard !== card) otherCard.removeAttribute("open");
         });
+      }
     });
+  });
 </script>
 
 <style>
-    .home-faq {
-        background: linear-gradient(180deg, #f7f9fc, #ffffff);
-    }
-
-    .faq-wrap {
-        max-width: 980px;
-    }
-
-    .faq-copy {
-        max-width: 720px;
-        margin: 0 auto 34px;
-        text-align: center;
-    }
-
-    .faq-copy span {
-        display: inline-block;
-        color: var(--orange);
-        font-size: 13px;
-        font-weight: 900;
-        letter-spacing: 0.08em;
-    }
-
-    .faq-copy h2 {
-        margin: 12px 0 0;
-        font-size: clamp(31px, 4vw, 48px);
-        line-height: 1.02;
-        letter-spacing: -0.06em;
-    }
-
-    .faq-copy p {
-        max-width: 580px;
-        margin: 16px auto 0;
-        color: var(--muted);
-        font-size: 17px;
-        line-height: 1.65;
-    }
-
-    .faq-list {
-        display: grid;
-        gap: 10px;
-        padding: 10px;
-        border-radius: 28px;
-        background: #ffffff;
-        border: 1px solid rgba(17,24,39,0.08);
-        box-shadow: 0 18px 60px rgba(15,23,42,0.07);
-    }
-
-    .faq-card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 18px;
-        background: #f8fafc;
-        border: 1px solid rgba(17,24,39,0.06);
-        box-shadow: none;
-        transition:
-                transform 240ms ease,
-                background 240ms ease,
-                border-color 240ms ease;
-    }
-
-    .faq-card:hover {
-        background: #ffffff;
-        border-color: rgba(255,107,0,0.2);
-    }
-
-    .faq-card summary {
-        list-style: none;
-        cursor: pointer;
-        padding: 20px 58px 20px 22px;
-        font-size: 18px;
-        font-weight: 850;
-        letter-spacing: -0.04em;
-        color: var(--text);
-        position: relative;
-    }
-
-    .faq-card summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .faq-card summary::after {
-        content: "+";
-        position: absolute;
-        right: 22px;
-        top: 50%;
-        width: 34px;
-        height: 34px;
-        transform: translateY(-50%);
-        border-radius: 999px;
-        background: var(--orange);
-        color: #ffffff;
-        display: grid;
-        place-items: center;
-        font-size: 21px;
-        transition: 260ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .faq-card[open] summary::after {
-        content: "−";
-        transform: translateY(-50%) rotate(180deg);
-    }
-
-    .faq-card p {
-        margin: 0;
-        padding: 0 22px 22px;
-        color: var(--muted);
-        font-size: 16px;
-        line-height: 1.7;
-        animation: faqReveal 360ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .faq-card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-                radial-gradient(circle at top right, rgba(255,255,255,0.9), transparent 16rem);
-        opacity: 0;
-        transition: 240ms ease;
-        pointer-events: none;
-    }
-
-    .faq-card[open]::before {
-        opacity: 1;
-    }
-
-    @keyframes faqReveal {
-        from {
-            opacity: 0;
-            transform: translateY(-8px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @media (max-width: 620px) {
-        .faq-list {
-            padding: 8px;
-            border-radius: 22px;
-        }
-
-        .faq-card summary {
-            padding: 18px 54px 18px 18px;
-            font-size: 16px;
-        }
-    }
+  .home-faq { padding: 80px 0 48px; background: #fff; }
+  .container { max-width: 1320px; }
+  .faq-wrap { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(36px, 6vw, 88px); align-items: start; }
+  h2 { margin: 0; font-size: clamp(30px, 3vw, 42px); line-height: 1.15; }
+  .faq-copy p { margin: 22px 0; color: #435063; font-size: 17px; line-height: 1.75; }
+  .faq-copy a { display: inline-block; padding-block: 12px; font-weight: 750; text-decoration: underline; text-underline-offset: 5px; }
+  .faq-copy a:hover { color: #a94300; }
+  .faq-card { border-bottom: 1px solid #d2dae3; }
+  .faq-card:hover { box-shadow: none; }
+  .faq-card:first-child { border-top: 1px solid #d2dae3; }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; list-style: none; cursor: pointer; font-size: 17px; font-weight: 750; line-height: 1.5; }
+  summary::-webkit-details-marker { display: none; }
+  summary :global(svg) { color: #b94d00; flex-shrink: 0; }
+  details[open] summary :global(svg) { transform: rotate(45deg); }
+  .faq-card p { margin: 0; padding: 0 36px 24px 0; color: #435063; font-size: 16px; line-height: 1.75; }
+  @media (max-width: 760px) {
+    .home-faq { padding: 48px 6px 24px; }
+    .faq-wrap { grid-template-columns: 1fr; gap: 28px; }
+    summary { font-size: 16px; padding-block: 20px; }
+  }
 </style>

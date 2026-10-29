@@ -5,13 +5,13 @@ import { getLocaleFromPath, localizePath } from "../data/i18n";
 
 const lang = getLocaleFromPath(Astro.url.pathname);
 const copy = contactCopy[lang];
-const { title = copy.title, compact = false } = Astro.props;
+const { title = copy.title, compact = false, variant = "dark" } = Astro.props;
 const source = Astro.url.pathname;
 const fields = ["email", "vehicle", "location", "condition"] as const;
 const additionalFields = ["company", "year", "mileage"] as const;
 ---
 
-<form class="contact-lead-form" id="kontaktformular" data-contact-form data-error={copy.error} data-validation={copy.validation} data-sending={copy.sending} data-submit={copy.submit}>
+<form class:list={["contact-lead-form", { "contact-lead-form--light": variant === "light" }]} id="kontaktformular" data-contact-form data-error={copy.error} data-validation={copy.validation} data-sending={copy.sending} data-submit={copy.submit}>
   <h2>{title}</h2>
   <p>{copy.intro}</p>
   <div class="form-grid">
@@ -117,7 +117,7 @@ const additionalFields = ["company", "year", "mileage"] as const;
 </script>
 
 <style>
-  .contact-lead-form { min-width: 0; padding: clamp(22px, 3vw, 34px); border-radius: 16px; background: var(--navy-deep); color: #fff; scroll-margin-top: 110px; }
+  .contact-lead-form { min-width: 0; padding: clamp(22px, 3vw, 34px); border-radius: 16px; background: var(--navy-soft); color: #fff; scroll-margin-top: 110px; }
   h2 { margin: 0 0 16px; font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.025em; color: #fff; }
   p { line-height: 1.6; color: #d3deeb; }
   .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
@@ -136,5 +136,12 @@ const additionalFields = ["company", "year", "mileage"] as const;
   .form-status { color: #ffb5a8; }
   .form-status:empty { display: none; }
   .form-hp { position: absolute; left: -10000px; width: 1px; height: 1px; }
+  .contact-lead-form--light { background: #fff; color: var(--navy-deep); border-radius: 12px; scroll-margin-top: 12px; }
+  .contact-lead-form--light h2 { color: var(--navy-deep); font-size: clamp(26px, 2.5vw, 34px); }
+  .contact-lead-form--light p { color: #435063; }
+  .contact-lead-form--light input, .contact-lead-form--light textarea { background: #f6f8fa; border-color: #9aa8b8; color: var(--navy-deep); }
+  .contact-lead-form--light input::placeholder { color: #5b6675; }
+  .contact-lead-form--light input[aria-invalid=true], .contact-lead-form--light textarea[aria-invalid=true] { border-color: #ad250c; }
+  .contact-lead-form--light .form-status { color: #ad250c; }
   @media (max-width: 680px) { .form-grid { grid-template-columns: 1fr; } }
 </style>

@@ -5,6 +5,8 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import FloatingContact from "../../components/FloatingContact.astro";
 import ScrollAnimations from "../../components/ScrollAnimations.astro";
+import HomeProcessSection from "../../components/HomeProcessSection.astro";
+import HomeVehicleTypes from "../../components/HomeVehicleTypes.astro";
 import { site } from "../../data/site";
 import { stateGroups } from "../../data/cities";
 import { absoluteUrl, createBreadcrumbSchema } from "../../utils/seo";
@@ -80,12 +82,14 @@ const schema = [
           <div>
             <Route size={28} stroke-width={2.2} aria-hidden="true" />
             <strong>DE</strong>
-            <span>Deutschland- und europaweite Abwicklung</span>
+            <span>Weltweiter Ankauf</span>
           </div>
         </aside>
       </div>
     </section>
 
+    <HomeProcessSection />
+    <HomeVehicleTypes />
     <section class="state-cities" aria-labelledby="state-cities-title">
       <div class="container">
         <div class="state-section-head">

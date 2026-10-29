@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { cities, indexableCitySlugs, cityAliasRoutes } from "../src/data/cities.ts";
+import { readFile, readdir } from "node:fs/promises";
+import { cities, indexableCitySlugs, cityAliasRoutes, stateGroups } from "../src/data/cities.ts";
 import { routeMap } from "../src/data/i18n.ts";
 
 const root = new URL("../dist/client/", import.meta.url);
@@ -14,11 +14,20 @@ for (const [locale, path] of pages) {
   assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, `${path}: exactly one H1`);
   assert.match(html, new RegExp(`<link[^>]+rel="canonical"[^>]+href="https://www\\.wawnutzfahrzeuge\\.de${path === "/" ? "/" : path}"`), `${path}: canonical`);
   assert.ok(!html.includes('href=""'), `${path}: empty link`);
+  assert.doesNotMatch(
+    html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " "),
+    /deutschland- und europaweit|Deutschland (?:&amp;|&|und) Europa|Germany (?:and|&amp;|&) Europe|Allemagne (?:et|comme) en Europe|Allemagne et l'Europe|Allemagne et Europe/i,
+    `${path}: outdated geographic scope`,
+  );
   if (path.includes("danke") || path.startsWith("/standorte/")) {
     assert.ok(!html.includes('hreflang="en"'), `${path}: unrelated hreflang`);
   }
   for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
     const schema = JSON.parse(match[1]);
+    if (schema["@type"] === "AutoDealer") {
+      assert.ok(schema.areaServed.some((area) => area.name === "Worldwide"), `${path}: worldwide service area`);
+      assert.equal(schema.contactPoint[0].areaServed, "Worldwide", `${path}: worldwide contact scope`);
+    }
     if (schema["@type"] === "FAQPage") {
       for (const item of schema.mainEntity) {
         assert.ok(html.includes(item.name), `${path}: FAQ schema question missing from visible content`);
@@ -28,7 +37,7 @@ for (const [locale, path] of pages) {
   }
 }
 
-for (const path of ["/kontakt", "/en/contact", "/fr/contact"]) {
+for (const path of ["/", "/kontakt", "/en/contact", "/fr/contact"]) {
   const html = await readPage(path);
   const form = html.match(/<form[\s\S]*?<\/form>/)?.[0];
   assert.ok(form, `${path}: shared contact form`);
@@ -37,6 +46,34 @@ for (const path of ["/kontakt", "/en/contact", "/fr/contact"]) {
     .filter((input) => /\brequired(?:\s|>|=)/.test(input))
     .map((input) => input.match(/\bname="([^"]+)"/)?.[1]);
   assert.deepEqual(requiredNames.sort(), ["name", "phone"], `${path}: only first-contact essentials required`);
+}
+
+const homeHtml = await readPage("/");
+const mobileCityFiles = await readdir(new URL("../src/assets/cities/mobile/", import.meta.url));
+for (const filename of mobileCityFiles.filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))) {
+  const name = filename.replace(/(?:_mobile)?\.(jpg|jpeg|png|webp)$/i, "").toLowerCase();
+  const city = cities.find((entry) => entry.name.toLowerCase() === name || entry.slug.toLowerCase() === name);
+  assert.ok(city, `${filename}: matching city`);
+  const html = await readPage(`/lkw-verkaufen/${city.slug}`);
+  const picture = html.match(/<picture class="city-hero-background"[\s\S]*?<\/picture>/)?.[0];
+  assert.ok(picture, `${filename}: responsive city background`);
+  assert.match(picture, /<source[^>]+media="\(max-width: 850px\)"[^>]+srcset="[^"]+"/, `${filename}: mobile hero configured`);
+  assert.doesNotMatch(picture, /hero-yard-sunset/, `${filename}: city photo instead of generic truck`);
+}
+for (const path of ["/standorte", ...stateGroups.map((state) => `/standorte/${state.slug}`), ...cities.map((city) => `/lkw-verkaufen/${city.slug}`)]) {
+  const html = await readPage(path);
+  for (const id of ["ablauf", "fahrzeugarten"]) {
+    assert.equal((html.match(new RegExp(`\\bid="${id}"`, "g")) || []).length, 1, `${path}: exactly one ${id} section`);
+  }
+  assert.ok(html.includes('id="process-title"'), `${path}: shared purchase process`);
+  assert.ok(html.includes('id="vehicles-title"'), `${path}: shared vehicle types`);
+}
+const homeMain = homeHtml.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
+assert.ok(homeMain, "homepage main content");
+for (const [, href] of homeMain.matchAll(/href="((?:\/[^"]*)?#[^"]+)"/g)) {
+  const [path, fragment] = href.split("#");
+  const targetHtml = path ? await readPage(path) : homeHtml;
+  assert.ok(targetHtml.includes(`id="${fragment}"`), `homepage link ${href}: missing anchor target`);
 }
 
 for (const path of ["/en/services", "/fr/services"]) {

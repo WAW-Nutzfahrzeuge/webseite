@@ -1,0 +1,42 @@
+---
+import { Phone, Mail, MessageCircle } from "@lucide/astro";
+import ContactLeadForm from "./ContactLeadForm.astro";
+import { site } from "../data/site";
+---
+
+<section class="home-contact" aria-labelledby="home-contact-title">
+  <div class="container contact-layout">
+    <div class="contact-copy">
+      <h2 id="home-contact-title">Was möchten<br />Sie verkaufen?</h2>
+      <p>Ein LKW, ein Auflieger oder ein ganzer Fuhrpark: Erzählen Sie uns kurz davon. Name und Telefonnummer reichen für den ersten Kontakt.</p>
+      <p>Wir klären offene Fragen mit Ihnen und besprechen, ob ein Ankauf möglich ist.</p>
+      <div class="direct-contact">
+        <a href={`tel:${site.phoneHref}`}><Phone size={22} aria-hidden="true" /><span>Direkt anrufen<strong>{site.phoneDisplay}</strong></span></a>
+        <a href={`mailto:${site.email}`}><Mail size={22} aria-hidden="true" /><span>Fotos und Fahrzeuglisten senden<strong>{site.email}</strong></span></a>
+        {site.whatsappHref && <a href={site.whatsappHref} target="_blank" rel="noopener"><MessageCircle size={22} aria-hidden="true" /><span>Lieber per WhatsApp?<strong>Fahrzeugdaten und Fotos schicken</strong></span></a>}
+      </div>
+    </div>
+    <ContactLeadForm variant="light" />
+  </div>
+</section>
+
+<style>
+  .home-contact { padding: 80px 0; background: var(--navy); color: #fff; }
+  .container { max-width: 1320px; }
+  .contact-layout { display: grid; grid-template-columns: 0.85fr 1.15fr; align-items: start; gap: clamp(36px, 6vw, 88px); }
+  .contact-copy { padding-top: 14px; }
+  h2 { margin: 0 0 26px; font-size: clamp(36px, 4vw, 56px); line-height: 1.1; }
+  p { max-width: 480px; color: #d3deeb; font-size: 17px; line-height: 1.75; margin: 0 0 20px; }
+  .direct-contact { display: grid; margin-top: 36px; }
+  .direct-contact a { display: flex; align-items: center; gap: 18px; padding: 22px 0; border-top: 1px solid #52647a; }
+  .direct-contact :global(svg) { color: #ffae73; flex-shrink: 0; }
+  .direct-contact span { color: #d3deeb; font-size: 14px; line-height: 1.5; min-width: 0; }
+  .direct-contact strong { display: block; margin-top: 4px; color: #fff; font-size: 18px; overflow-wrap: anywhere; }
+  a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+  @media (max-width: 760px) {
+    .home-contact { padding: 48px 6px; }
+    .contact-layout { grid-template-columns: 1fr; gap: 32px; }
+    .contact-copy { padding-top: 0; }
+    .direct-contact { margin-top: 24px; }
+  }
+</style>

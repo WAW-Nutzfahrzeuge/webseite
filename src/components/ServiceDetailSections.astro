@@ -126,6 +126,7 @@ const { services } = Astro.props;
   }
 
   .service-detail-copy {
+    min-width: 0;
     padding: clamp(28px, 4vw, 52px);
   }
 
@@ -210,7 +211,7 @@ const { services } = Astro.props;
     height: clamp(230px, 24vw, 330px);
     margin: clamp(18px, 2.4vw, 30px);
     padding: clamp(22px, 3vw, 32px);
-    border-radius: 24px;
+    border-radius: var(--radius-image);
     color: #fff;
     background: #07111f;
     overflow: hidden;
@@ -296,7 +297,7 @@ const { services } = Astro.props;
     .service-detail-visual {
       height: 220px;
       margin: 0 18px 18px;
-      border-radius: 18px;
+      border-radius: var(--radius-image);
     }
 
     .service-detail-points {

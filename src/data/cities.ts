@@ -410,7 +410,7 @@ function createCity(seed: CitySeed): City {
                 question: `Ist der Ankauf auch im Umfeld von ${baseName} möglich?`,
                 answer: nearby.length > 0
                     ? `Ja. Neben ${baseName} können auch Fahrzeuge aus der Umgebung wie ${nearby.join(", ")} und weiteren Orten angefragt werden.`
-                    : `Ja. Wir sind deutschland- und europaweit tätig und kaufen auch Fahrzeuge aus umliegenden Städten und Regionen an.`,
+                    : `Ja. Wir sind weltweit tätig und kaufen auch Fahrzeuge aus umliegenden Städten und Regionen an.`,
             },
             {
                 question: `Wie läuft der LKW Verkauf in ${baseName} ab?`,
@@ -422,7 +422,7 @@ function createCity(seed: CitySeed): City {
             },
             {
                 question: `Ist WAW auch für LKW Export und Händler-Anfragen in ${baseName} relevant?`,
-                answer: `Ja. Wir sind Ansprechpartner für LKW Ankauf, Nutzfahrzeuge Ankauf, Händler-Anfragen, Export-Fahrzeuge und Fuhrparks in ${baseName} sowie deutschland- und europaweit.`,
+                answer: `Ja. Wir sind Ansprechpartner für LKW Ankauf, Nutzfahrzeuge Ankauf, Händler-Anfragen, Export-Fahrzeuge und Fuhrparks in ${baseName} sowie weltweit.`,
             },
         ],
         keywords: searchTerms.slice(0, 10),

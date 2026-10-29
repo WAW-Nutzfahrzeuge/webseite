@@ -26,7 +26,7 @@ const canonical = absoluteUrl("/ueber-uns");
 
 const heroStats = [
   { value: "Direkt", label: "Ankauf von gewerblichen Fahrzeugen" },
-  { value: "EU", label: "deutschland- und europaweite Anfrage" },
+  { value: "Weltweit", label: "An- und Verkauf von Nutzfahrzeugen" },
   { value: "1:1", label: "Direkte Ansprechpartner statt Umwege" },
 ];
 
@@ -79,7 +79,7 @@ const keywords = [
   "Baumaschinen Ankauf",
   "Fuhrpark verkaufen",
   "LKW Export",
-  "Nutzfahrzeuge europaweit",
+  "Nutzfahrzeuge weltweit",
 ];
 
 const steps = [
@@ -100,9 +100,9 @@ const faqs = [
       "Ja. Bieten Sie auch Fahrzeuge mit hoher Laufleistung, Schäden, ohne HU oder aus älteren Baujahren an. Das gilt auch für nicht fahrbereite Fahrzeuge. Ob ein Ankauf möglich ist, prüfen wir anhand Ihrer Angaben.",
   },
   {
-    question: "Ist WAW deutschland- und europaweit tätig?",
+    question: "Ist WAW weltweit tätig?",
     answer:
-      "Ja. Wir bearbeiten Anfragen aus Deutschland und Europa und stimmen die weitere Abwicklung je nach Fahrzeug, Standort und Umfang direkt mit Ihnen ab.",
+      "Ja. WAW kauft und verkauft Nutzfahrzeuge weltweit. Die weitere Abwicklung stimmen wir je nach Fahrzeug, Standort und Umfang direkt mit Ihnen ab.",
   },
   {
     question: "Kann ich mehrere Fahrzeuge oder einen Fuhrpark anbieten?",
@@ -698,7 +698,7 @@ const schema = [
 
   .about-proof__image {
     min-height: 480px;
-    border-radius: 28px;
+    border-radius: var(--radius-image);
     overflow: hidden;
     box-shadow: 0 28px 90px rgba(15,23,42,0.14);
   }

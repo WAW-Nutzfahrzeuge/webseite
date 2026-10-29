@@ -1,13 +1,15 @@
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "491605265022";
+
 export const site = {
     name: "WAW Nutzfahrzeuge",
     url: "https://www.wawnutzfahrzeuge.de",
     description:
-        "WAW kauft LKW, Nutzfahrzeuge, Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks professionell an.",
+        "WAW kauft und verkauft LKW und Nutzfahrzeuge weltweit. Bieten Sie uns auch Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks an.",
     email: "info@waw-nutzfahrzeuge.de",
     phoneDisplay: "+49 4156 8203739",
     phoneHref: "+4941568203739",
-    whatsappHref: /^\d{8,15}$/.test(import.meta.env.PUBLIC_WHATSAPP_NUMBER || "")
-        ? `https://wa.me/${import.meta.env.PUBLIC_WHATSAPP_NUMBER}`
+    whatsappHref: /^\d{8,15}$/.test(whatsappNumber)
+        ? `https://wa.me/${whatsappNumber}`
         : "",
     address: {
         street: "Hegesahl 2",
@@ -19,6 +21,7 @@ export const site = {
     openingHours: ["Mo-Fr 08:30-17:30"],
     openingHoursDisplay: "Mo–Fr 08:30–17:30",
     areaServed: [
+        "Worldwide",
         "Deutschland",
         "Europa",
         "Hamburg",

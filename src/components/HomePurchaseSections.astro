@@ -1,0 +1,75 @@
+---
+import { ArrowRight } from "@lucide/astro";
+const conditions = ["Motor- oder Getriebeschaden", "Unfallschaden", "Hohe Laufleistung oder älteres Baujahr", "Ohne HU oder nicht fahrbereit"];
+---
+
+<section class="conditions-section" aria-labelledby="conditions-title">
+  <div class="container purchase-layout">
+    <div class="purchase-copy">
+      <h2 id="conditions-title">Auch beschädigt.<br />Auch nicht fahrbereit.</h2>
+      <p>Ein Schaden muss kein Grund sein, Ihr Nutzfahrzeug nicht anzubieten. Beschreiben Sie uns den Zustand und bekannte Mängel – auch wenn noch nicht alle Fahrzeugdaten vorliegen.</p>
+      <ul class="condition-list">
+        {conditions.map((condition) => <li>{condition}</li>)}
+      </ul>
+      <p class="purchase-note">Ob ein Ankauf möglich ist, prüfen wir anhand Ihrer Angaben. Eine Anfrage ist keine Ankaufgarantie.</p>
+      <a href="#kontaktformular" class="text-link">Fahrzeug mit Schäden anbieten <ArrowRight size={18} aria-hidden="true" /></a>
+    </div>
+    <figure>
+      <img src="/images/ablauf-inspection.webp" alt="Begutachtung einer Sattelzugmaschine" width="1448" height="1086" loading="lazy" />
+      <figcaption>Fahrzeugzustand und bekannte Schäden gemeinsam klären.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="fleet-section" aria-labelledby="fleet-title">
+  <div class="container purchase-layout fleet-layout">
+    <figure>
+      <img src="/images/fuhrpark-aerial.webp" alt="LKW-Fuhrpark aus der Vogelperspektive" width="1448" height="1086" loading="lazy" />
+    </figure>
+    <div class="purchase-copy">
+      <h2 id="fleet-title">Ein Fahrzeug abgeben.<br />Oder den Fuhrpark verändern.</h2>
+      <p>Fahrzeugwechsel, Flottenerneuerung oder überschüssige Fahrzeuge? Wir sind Ansprechpartner für Speditionen, Bauunternehmen, Gewerbebetriebe und Nutzfahrzeughändler.</p>
+      <div class="sale-situations">
+        <div>
+          <h3>Ein einzelnes Fahrzeug</h3>
+          <p>Nennen Sie uns Fahrzeugtyp, Standort und Zustand. Fehlende Angaben können wir im Gespräch ergänzen.</p>
+        </div>
+        <div>
+          <h3>Mehrere Fahrzeuge oder ein Fuhrpark</h3>
+          <p>Eine grobe Übersicht zu Anzahl, Fahrzeugarten und Standorten genügt zum Start. Eine vollständige Fahrzeugliste ist keine Voraussetzung.</p>
+        </div>
+      </div>
+      <a href="#kontaktformular" class="text-link">Einzelfahrzeug oder Fuhrpark anbieten <ArrowRight size={18} aria-hidden="true" /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .conditions-section { background: #f3f5f6; padding: 80px 0; }
+  .fleet-section { background: #fff; padding: 88px 0; }
+  .container { max-width: 1320px; }
+  .purchase-layout { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(36px, 6vw, 88px); align-items: center; }
+  .fleet-layout { grid-template-columns: 1.05fr 1fr; }
+  figure { margin: 0; }
+  img { display: block; width: 100%; height: auto; aspect-ratio: 1.08; object-fit: cover; border-radius: var(--radius-image); }
+  figcaption { padding-top: 12px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+  h2 { margin: 0 0 22px; font-size: clamp(32px, 3.4vw, 48px); line-height: 1.1; color: var(--navy-deep); }
+  .purchase-copy > p { color: #435063; font-size: 17px; line-height: 1.75; margin: 0 0 22px; }
+  .condition-list { list-style: none; padding: 0; margin: 26px 0 20px; }
+  .condition-list li { position: relative; padding: 12px 0 12px 22px; border-bottom: 1px solid #d2dae3; line-height: 1.5; font-weight: 650; }
+  .condition-list li::before { content: ""; position: absolute; left: 0; top: 21px; width: 7px; height: 7px; border-radius: 50%; background: #b94d00; }
+  .purchase-copy > .purchase-note { font-size: 14px; }
+  .text-link { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-weight: 750; line-height: 1.5; text-decoration: underline; text-underline-offset: 5px; }
+  .text-link :global(svg) { flex-shrink: 0; }
+  .text-link:hover { color: #a94300; }
+  .sale-situations { margin: 24px 0; border-top: 1px solid #dce2e8; }
+  .sale-situations > div { padding-block: 20px; border-bottom: 1px solid #dce2e8; }
+  h3 { margin: 0 0 8px; font-size: 19px; line-height: 1.3; }
+  .sale-situations p { margin: 0; font-size: 15px; line-height: 1.75; color: #435063; }
+  @media (max-width: 900px) { .purchase-layout { gap: 32px; } }
+  @media (max-width: 760px) {
+    .conditions-section, .fleet-section { padding: 48px 6px; }
+    .purchase-layout { grid-template-columns: 1fr; }
+    img { aspect-ratio: 1.5; }
+  }
+</style>

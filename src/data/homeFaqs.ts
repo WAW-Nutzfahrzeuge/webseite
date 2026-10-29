@@ -12,8 +12,8 @@ export const homeFaqs = [
     answer: "Im Formular reichen Name und Telefonnummer. Wenn vorhanden, ergänzen Sie Fahrzeugtyp, Baujahr, Laufleistung, Zustand und Fahrzeugstandort. Fotos und Fahrzeuglisten können Sie uns per E-Mail senden. Fehlende Angaben klären wir im Gespräch.",
   },
   {
-    question: "Ist eine Anfrage aus Deutschland und Europa möglich?",
-    answer: "Ja. Unser Unternehmensstandort ist Talkau; Fahrzeuge aus Deutschland und Europa können angeboten werden. Übergabe, Transport und mögliche Abholung stimmen wir für das jeweilige Fahrzeug ab.",
+    question: "Kann ich ein Fahrzeug aus dem Ausland anbieten?",
+    answer: "Ja. WAW kauft und verkauft Nutzfahrzeuge weltweit. Unser Unternehmensstandort ist Talkau. Übergabe, Transport und mögliche Abholung stimmen wir je nach Fahrzeug und Standort individuell ab.",
   },
   {
     question: "Wie geht es nach meiner Anfrage weiter?",

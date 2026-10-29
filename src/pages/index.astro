@@ -4,37 +4,35 @@ import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import FloatingContact from "../components/FloatingContact.astro";
 import Footer from "../components/Footer.astro";
-import ScrollAnimations from "../components/ScrollAnimations.astro";
-import TrustSection from "../components/TrustSection.astro";
 import HomeFAQ from "../components/HomeFAQ.astro";
-import FinalCTA from "../components/FinalCTA.astro";
 import CitySection from "../components/CitySection.astro";
 import HomeVehicleTypes from "../components/HomeVehicleTypes.astro";
 import HomeProcessSection from "../components/HomeProcessSection.astro";
 import CustomerReviews from "../components/CustomerReviews.astro";
+import HomePurchaseSections from "../components/HomePurchaseSections.astro";
+import HomeContactSection from "../components/HomeContactSection.astro";
 import { createFaqSchema } from "../utils/seo";
 import { homeFaqs } from "../data/homeFaqs";
 ---
 
 <BaseLayout
   title="LKW & Nutzfahrzeuge verkaufen | WAW Nutzfahrzeuge"
-  description="LKW, Auflieger, Anhänger, Transporter, Baumaschinen oder Fuhrpark verkaufen? WAW kauft gewerbliche Nutzfahrzeuge deutschland- und europaweit an."
+  description="LKW, Auflieger, Anhänger, Transporter, Baumaschinen oder Fuhrpark verkaufen? WAW kauft gewerbliche Nutzfahrzeuge weltweit an."
   canonical="https://www.wawnutzfahrzeuge.de/"
   schema={createFaqSchema(homeFaqs)}
 >
-  <Header transparent />
+  <Header />
   <main>
     <Hero />
-    <HomeVehicleTypes />
-    <TrustSection />
     <HomeProcessSection />
-    <CitySection />
+    <HomeVehicleTypes />
+    <HomePurchaseSections />
     <CustomerReviews />
+    <CitySection />
+    <HomeContactSection />
     <HomeFAQ />
-    <FinalCTA />
   </main>
 
   <Footer />
   <FloatingContact />
-  <ScrollAnimations />
 </BaseLayout>
