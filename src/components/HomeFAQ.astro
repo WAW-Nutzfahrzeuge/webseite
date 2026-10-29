@@ -10,8 +10,8 @@ import { homeFaqs } from "../data/homeFaqs";
       <a href="/kontakt">Persönlich mit uns klären</a>
     </div>
     <div class="faq-list">
-      {homeFaqs.map((item, index) => (
-        <details class="faq-card" open={index === 0}>
+      {homeFaqs.map((item) => (
+        <details class="faq-card">
           <summary>{item.question}<Plus size={20} aria-hidden="true" /></summary>
           <p>{item.answer}</p>
         </details>

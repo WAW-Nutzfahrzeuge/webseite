@@ -26,7 +26,10 @@ const conditions = ["Motor- oder Getriebeschaden", "Unfallschaden", "Hohe Laufle
 <section class="fleet-section" aria-labelledby="fleet-title">
   <div class="container purchase-layout fleet-layout">
     <figure>
-      <img src="/images/fuhrpark-aerial.webp" alt="LKW-Fuhrpark aus der Vogelperspektive" width="1448" height="1086" loading="lazy" />
+      <picture>
+        <source media="(max-width: 760px)" srcset="/images/waw_real_2_mobile.webp" width="1024" height="1536" />
+        <img src="/images/waw_real_2.webp" alt="Scania-Sattelzugmaschine vor dem Gebäude von WAW Nutzfahrzeuge" width="1448" height="1086" loading="lazy" />
+      </picture>
     </figure>
     <div class="purchase-copy">
       <h2 id="fleet-title">Ein Fahrzeug abgeben.<br />Oder den Fuhrpark verändern.</h2>
@@ -73,5 +76,6 @@ const conditions = ["Motor- oder Getriebeschaden", "Unfallschaden", "Hohe Laufle
     .conditions-section, .fleet-section { padding: 48px 6px; }
     .purchase-layout { grid-template-columns: 1fr; }
     img { aspect-ratio: 1.5; }
+    .fleet-section img { object-position: center 70%; }
   }
 </style>

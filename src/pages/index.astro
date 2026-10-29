@@ -25,7 +25,12 @@ import { homeFaqs } from "../data/homeFaqs";
   <main>
     <Hero />
     <HomeProcessSection />
-    <HomeVehicleTypes />
+    <HomeVehicleTypes>
+      <picture slot="vehicle-image">
+        <source media="(max-width: 760px)" srcset="/images/waw_real_1_mobile.webp" width="1024" height="1536" />
+        <img src="/images/waw_real_1.webp" alt="Sattelzugmaschinen vor dem Gebäude von WAW Nutzfahrzeuge" width="1448" height="1086" loading="lazy" />
+      </picture>
+    </HomeVehicleTypes>
     <HomePurchaseSections>
       <CitySection slot="before-fleet" />
     </HomePurchaseSections>

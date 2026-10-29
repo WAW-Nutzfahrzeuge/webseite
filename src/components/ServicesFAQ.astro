@@ -20,8 +20,8 @@ const { faqs } = Astro.props;
     </div>
 
     <div class="services-faq-grid">
-      {faqs.map((faq, index) => (
-        <details class="services-faq-item" data-services-faq data-animate open={index === 0}>
+      {faqs.map((faq) => (
+        <details class="services-faq-item" data-services-faq data-animate>
           <summary>{faq.question}</summary>
           <p>{faq.answer}</p>
         </details>
