@@ -52,7 +52,7 @@ const contactPath = `${lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact
 
         display: flex;
         gap: 10px;
-        padding: 10px;
+        padding: 3px;
 
         border: 1px solid rgba(15, 23, 42, 0.08);
         border-radius: 999px;
@@ -75,7 +75,8 @@ const contactPath = `${lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact
         align-items: center;
         gap: 9px;
 
-        padding: 12px 15px;
+        min-height: 44px;
+        padding: 4px 12px;
         border-radius: 999px;
 
         color: #17181c;
@@ -237,10 +238,10 @@ const contactPath = `${lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact
 
         .float-btn {
             flex: 1;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             gap: 6px;
-            padding: 9px 10px 10px;
+            padding: 4px 6px;
             min-width: 0;
         }
 
@@ -261,8 +262,8 @@ const contactPath = `${lang === "de" ? "/kontakt" : lang === "en" ? "/en/contact
         }
 
         .icon-wrap {
-            width: 34px;
-            height: 34px;
+            width: 24px;
+            height: 24px;
         }
 
         .icon-wrap svg {
