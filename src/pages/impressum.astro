@@ -41,10 +41,9 @@ const canonical = `${site.url}/impressum`;
 
         <article class="legal-card">
           <section id="anbieter">
-            <h2>Angaben gemaess § 5 DDG / § 18 MStV</h2>
+            <h2>Angaben gemaess § 5 DDG</h2>
             <p>
-              <strong>{site.name}</strong><br />
-              [PLATZHALTER: Rechtsform, z. B. Einzelunternehmen / GmbH / UG]<br />
+              <strong>{site.legal.name}</strong><br />
               {site.address.street}<br />
               {site.address.postalCode} {site.address.locality}<br />
               Deutschland
@@ -52,19 +51,19 @@ const canonical = `${site.url}/impressum`;
           </section>
 
           <section id="vertretung">
-            <h2>Vertreten durch</h2>
+            <h2>Inhaber</h2>
             <p>
-              [PLATZHALTER: Name des Inhabers / der Geschaeftsfuehrung]
+              {site.legal.owner}
             </p>
           </section>
 
           <section id="register">
             <h2>Registereintrag und Umsatzsteuer</h2>
             <p>
-              Registergericht: [PLATZHALTER: z. B. Amtsgericht ... oder "nicht eingetragen"]<br />
-              Registernummer: [PLATZHALTER: HRB/HRA ...]<br />
+              Registergericht: [PLATZHALTER: Registergericht ergaenzen]<br />
+              Registernummer: [PLATZHALTER: HRA-Nummer ergaenzen]<br />
               Umsatzsteuer-Identifikationsnummer gemaess § 27a UStG:
-              [PLATZHALTER: DE... oder "nicht vorhanden"]
+              {site.legal.vatId}
             </p>
           </section>
 
@@ -72,70 +71,52 @@ const canonical = `${site.url}/impressum`;
             <h2>Kontakt</h2>
             <p>
               Telefon: <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
+              Mobil: <a href="tel:+491605265022">+49 160 5265022</a><br />
+              Mobil: <a href="tel:+491724538149">+49 172 4538149</a><br />
               E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
-            </p>
-          </section>
-
-          <section>
-            <h2>Verantwortlich fuer den Inhalt nach § 18 Abs. 2 MStV</h2>
-            <p>
-              [PLATZHALTER: Name der verantwortlichen Person]<br />
-              {site.address.street}<br />
-              {site.address.postalCode} {site.address.locality}
             </p>
           </section>
 
           <section id="haftung">
             <h2>Haftung fuer Inhalte</h2>
             <p>
-              Als Diensteanbieter sind wir fuer eigene Inhalte auf diesen Seiten
-              nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht
-              verpflichtet, uebermittelte oder gespeicherte fremde Informationen
-              zu ueberwachen oder nach Umstaenden zu forschen, die auf eine
-              rechtswidrige Taetigkeit hinweisen.
-            </p>
-            <p>
-              Verpflichtungen zur Entfernung oder Sperrung der Nutzung von
-              Informationen nach den allgemeinen Gesetzen bleiben hiervon
-              unberuehrt. Eine diesbezuegliche Haftung ist jedoch erst ab dem
-              Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung moeglich.
-              Bei Bekanntwerden entsprechender Rechtsverletzungen entfernen wir
-              diese Inhalte umgehend.
+              Fuer die Inhalte dieser Website gelten die gesetzlichen
+              Verantwortlichkeits- und Haftungsregelungen. Wenn Sie einen Fehler
+              oder eine moegliche Rechtsverletzung feststellen, koennen Sie uns
+              ueber die oben genannten Kontaktdaten darauf hinweisen.
             </p>
 
             <h2>Haftung fuer Links</h2>
             <p>
-              Unser Angebot kann Links zu externen Websites Dritter enthalten,
-              auf deren Inhalte wir keinen Einfluss haben. Deshalb koennen wir
-              fuer diese fremden Inhalte keine Gewaehr uebernehmen. Fuer die
-              Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder
-              Betreiber der Seiten verantwortlich.
+              Diese Website enthaelt Links zu Angeboten Dritter. Fuer deren
+              Inhalte sind die jeweiligen Anbieter verantwortlich. Unsere eigene
+              Verantwortlichkeit richtet sich auch bei Verlinkungen nach den
+              gesetzlichen Vorschriften.
             </p>
 
             <h2>Urheberrecht</h2>
             <p>
-              Die durch den Seitenbetreiber erstellten Inhalte und Werke auf
-              dieser Website unterliegen dem deutschen Urheberrecht. Beitraege
-              Dritter werden als solche gekennzeichnet. Vervielfaeltigung,
-              Bearbeitung, Verbreitung und jede Art der Verwertung ausserhalb
-              der Grenzen des Urheberrechts beduerfen der schriftlichen
-              Zustimmung des jeweiligen Rechteinhabers.
+              Texte, Bilder und weitere Inhalte sind nach Massgabe der
+              gesetzlichen Vorschriften geschuetzt. Nutzungen ausserhalb
+              gesetzlicher Erlaubnisse erfordern die Zustimmung des jeweiligen
+              Rechteinhabers. Fuer eingebundene Open-Source-Schriften und
+              Icons gelten die jeweiligen Lizenzbedingungen.
             </p>
           </section>
 
           <section id="streitbeilegung">
             <h2>Verbraucherstreitbeilegung</h2>
             <p>
-              Wir sind nicht verpflichtet und nicht bereit, an
-              Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-              teilzunehmen, sofern gesetzlich nichts anderes zwingend gilt.
+              Die Angabe zur Bereitschaft oder Verpflichtung zur Teilnahme an
+              Verfahren vor einer Verbraucherschlichtungsstelle ist vor
+              Veroeffentlichung noch durch den Inhaber zu bestaetigen.
             </p>
           </section>
 
           <p class="legal-note">
-            Hinweis: Die mit [PLATZHALTER] gekennzeichneten Angaben muessen vor
-            Veroeffentlichung durch die tatsaechlichen Unternehmensdaten ersetzt
-            und rechtlich geprueft werden.
+            Vor Veroeffentlichung: Registergericht und HRA-Nummer ergaenzen
+            sowie die Angaben zur Verbraucherstreitbeilegung und eine
+            gegebenenfalls zugeteilte Wirtschafts-Identifikationsnummer pruefen.
           </p>
         </article>
       </div>

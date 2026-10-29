@@ -2,6 +2,11 @@ const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "491605265022";
 
 export const site = {
     name: "WAW Nutzfahrzeuge",
+    legal: {
+        name: "W.A.W-Nutzfahrzeuge e.K.",
+        owner: "Waseh Abdul",
+        vatId: "DE249232427",
+    },
     url: "https://www.wawnutzfahrzeuge.de",
     description:
         "WAW kauft und verkauft LKW und Nutzfahrzeuge weltweit. Bieten Sie uns auch Auflieger, Anhänger, Transporter, Baumaschinen und Fuhrparks an.",

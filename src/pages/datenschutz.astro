@@ -50,16 +50,15 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               Verantwortlich fuer die Datenverarbeitung auf dieser Website ist:
             </p>
             <p>
-              <strong>{site.name}</strong><br />
-              [PLATZHALTER: Rechtsform und Inhaber / Geschaeftsfuehrung]<br />
+              <strong>{site.legal.name}</strong><br />
+              Inhaber: {site.legal.owner}<br />
               {fullAddress}<br />
               Telefon: <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
               E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
             </p>
             <p>
-              Datenschutzbeauftragter: [PLATZHALTER: falls gesetzlich
-              erforderlich, Kontaktdaten ergaenzen; andernfalls "nicht
-              bestellt" ergaenzen.]
+              Bei Fragen zum Datenschutz und zur Ausuebung Ihrer Rechte
+              koennen Sie sich ueber diese Kontaktdaten an uns wenden.
             </p>
           </section>
 
@@ -92,9 +91,20 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               Zustand oder Schaeden und Ihre Nachricht gehoeren.
             </p>
             <p>
-              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit Ihre
-              Anfrage der Durchfuehrung vorvertraglicher Massnahmen oder der
-              Anbahnung eines Fahrzeugankaufs dient. Soweit die Verarbeitung zur
+              Name und Telefonnummer sind fuer die Bearbeitung einer
+              Formularanfrage erforderlich; die weiteren Felder sind
+              freiwillig. Ohne die erforderlichen Kontaktdaten koennen Sie
+              das Formular nicht absenden. Sie koennen uns alternativ
+              telefonisch oder per E-Mail kontaktieren.
+            </p>
+            <p>
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit Sie selbst
+              einen Vertrag mit uns anbahnen oder erfuellen. Wenn Sie als
+              Ansprechpartner eines Unternehmens handeln oder eine allgemeine
+              Anfrage stellen, ist Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO.
+              Unser berechtigtes Interesse liegt in der Bearbeitung von
+              Anfragen und der Kommunikation mit Geschaeftspartnern.
+              Soweit die Verarbeitung zur
               Sicherung des Formulars, zur Spam-Abwehr oder zur technischen
               Nachvollziehbarkeit erforderlich ist, erfolgt sie auf Grundlage von
               Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in
@@ -106,6 +116,9 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               Validierung, Zeitpruefung, Honeypot-Feld, Inhaltspruefung und
               Rate-Limiting. Diese Schutzmassnahmen dienen ausschliesslich der
               Abwehr von Spam, Missbrauch und automatisierten Masseneinsendungen.
+              Dafuer werden insbesondere die IP-Adresse, der Zeitpunkt des
+              Formularaufrufs und die uebermittelten Inhalte geprueft. Ein
+              externer CAPTCHA-Dienst ist im Formular nicht eingebunden.
             </p>
           </section>
 
@@ -120,29 +133,37 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               Versandinformationen.
             </p>
             <p>
-              Anbieter: Resend, Inc., [PLATZHALTER: aktuelle Anbieteranschrift
-              aus dem Resend-Auftragsverarbeitungsvertrag ergaenzen].
-              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO fuer die
-              Anfragebearbeitung sowie Art. 6 Abs. 1 lit. f DSGVO fuer den
-              sicheren und zuverlaessigen Versand transaktionaler E-Mails.
+              Anbieter ist Plus Five Five, Inc. (Resend), USA.
+              Wenn Sie eine E-Mail-Adresse angeben, kann eine
+              Eingangsbestätigung an diese Adresse versandt werden.
+              Rechtsgrundlage fuer die Anfragebearbeitung ist je nach
+              Kontaktanlass Art. 6 Abs. 1 lit. b oder lit. f DSGVO, wie
+              oben beschrieben. Der technisch zuverlaessige E-Mail-Versand
+              liegt in unserem berechtigten Interesse nach Art. 6 Abs. 1
+              lit. f DSGVO.
             </p>
             <p>
-              Sofern Resend Daten ausserhalb der EU/des EWR verarbeitet, erfolgt
-              dies auf Grundlage geeigneter Garantien, insbesondere
-              Standardvertragsklauseln, soweit diese vom Anbieter bereitgestellt
-              werden. Bitte pruefen Sie vor Livegang den abgeschlossenen
-              Auftragsverarbeitungsvertrag und die aktuellen Resend-Unterlagen.
+              Resend beschreibt eine Verarbeitung von Daten in den USA.
+              Der vom Anbieter bereitgestellte Auftragsverarbeitungsvertrag
+              enthaelt Regelungen zu internationalen Datenuebermittlungen
+              einschliesslich EU-Standardvertragsklauseln. Die tatsaechliche
+              vertragliche Einbeziehung und die Einstellungen des eingesetzten
+              Kontos sind vor der produktiven Nutzung zu pruefen.
+              Weitere Informationen:
+              <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Datenschutz bei Resend</a>
+              und <a href="https://resend.com/legal/dpa" target="_blank" rel="noopener">Auftragsverarbeitungsvertrag</a>.
             </p>
           </section>
 
           <section id="hosting">
             <h2>5. Hosting, Auslieferung und Server-Logfiles</h2>
             <p>
-              [PLATZHALTER: Tatsaechlichen Hostinganbieter, Anschrift und
-              eingesetzte Dienste nach Festlegung der Zielumgebung ergaenzen.
-              Die Projektkonfiguration enthaelt derzeit sowohl Vercel- als
-              auch Cloudflare-Konfiguration; daraus laesst sich der
-              produktive Datenfluss nicht verlaesslich ableiten.]
+              Die aktuelle technische Konfiguration dieser Website ist fuer
+              eine Bereitstellung ueber Vercel Inc., USA, eingerichtet.
+              Der tatsaechlich eingesetzte produktive Hostinganbieter,
+              moegliche vorgeschaltete Dienste und die vertraglichen
+              Einstellungen sind vor Veroeffentlichung dieser Erklaerung
+              noch zu bestaetigen.
             </p>
             <p>
               Beim Aufruf der Website koennen insbesondere IP-Adresse, Datum und
@@ -154,39 +175,54 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               von Angriffen.
             </p>
             <p>
-              [PLATZHALTER: Auftragsverarbeitungsvertrag, moegliche
-              Drittlanduebermittlungen und Datenschutzgarantien fuer die
-              tatsaechlich eingesetzten Hostingdienste vor Livegang pruefen.]
+              Bei Vercel koennen Daten auch ausserhalb der EU beziehungsweise
+              des EWR verarbeitet werden. Der Anbieter stellt einen
+              Auftragsverarbeitungsvertrag mit Regelungen zu
+              Drittlanduebermittlungen bereit. Daraus allein folgt nicht,
+              dass dieser fuer das eingesetzte Konto wirksam vereinbart ist.
+              Informationen zu den Bedingungen und Garantien:
+              <a href="https://vercel.com/legal/privacy-notice" target="_blank" rel="noopener">Datenschutz bei Vercel</a>
+              und <a href="https://vercel.com/legal/dpa" target="_blank" rel="noopener">Auftragsverarbeitungsvertrag</a>.
             </p>
           </section>
 
           <section>
             <h2>6. Cookies, Tracking und Analyse</h2>
             <p>
-              Nach aktuellem technischen Stand setzt diese Website keine
-              werblichen Tracking-Cookies und keine Analysewerkzeuge wie Google
-              Analytics ein. Falls spaeter Analyse-, Marketing- oder
-              Remarketing-Dienste eingebunden werden, muss diese
-              Datenschutzerklaerung vorab angepasst und gegebenenfalls ein
-              Consent-Banner eingerichtet werden.
+              Im Website-Code sind keine eigenen Analyse- oder
+              Remarketing-Werkzeuge wie Google Analytics und keine
+              werblichen Tracking-Cookies eingebunden. Die verwendeten
+              Schriftdateien werden lokal von der Website geladen;
+              dafuer erfolgt kein Abruf bei Google Fonts.
+              Fuer externe Dienste wie die nachfolgend beschriebene
+              Kartenfunktion gelten zusaetzlich die jeweiligen Hinweise.
             </p>
           </section>
 
           <section id="karte">
             <h2>7. Kartenfunktion und externe Links</h2>
             <p>
-              Auf der Kontaktseite kann eine Karte von OpenStreetMap eingebettet
-              sein. Beim Laden der Karte koennen technische Daten wie Ihre
-              IP-Adresse an die beteiligten Kartendienste uebermittelt werden.
+              Auf der Kontaktseite ist eine Karte ueber
+              www.openstreetmap.org eingebettet. Anbieter ist die
+              OpenStreetMap Foundation, Vereinigtes Koenigreich.
+              Sobald Ihr Browser die eingebettete Karte laedt, werden
+              insbesondere Ihre IP-Adresse und technische Zugriffsdaten an
+              die beteiligten Kartendienste uebermittelt. Dafuer ist kein
+              Klick auf einen Aktivierungsbutton erforderlich.
               Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes
               Interesse liegt in einer nutzerfreundlichen Darstellung unseres
               Standorts und der Routenplanung.
+              Informationen zur Verarbeitung durch den Kartenanbieter finden
+              Sie in der <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Datenschutzerklaerung der OpenStreetMap Foundation</a>.
             </p>
             <p>
               Links zu externen Diensten, zum Beispiel Google Maps fuer die
               Routenplanung oder WhatsApp fuer eine direkte Kontaktaufnahme,
-              fuehren zu Angeboten Dritter. Wenn Sie diese Links anklicken,
-              gelten die Datenschutzbestimmungen des jeweiligen Anbieters.
+              fuehren zu Angeboten Dritter. Google Maps ist als Link, nicht
+              als eingebettete Google-Karte eingebunden. Erst beim Aufruf
+              des Links wird die entsprechende Verbindung hergestellt.
+              Fuer die Verarbeitung auf diesen Angeboten sind die jeweiligen
+              Anbieter verantwortlich.
             </p>
           </section>
 
@@ -195,16 +231,23 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
             <p>
               Wenn Sie uns per Telefon, WhatsApp oder E-Mail kontaktieren,
               verarbeiten wir Ihre Kommunikationsdaten zur Bearbeitung Ihrer
-              Anfrage. Bei Nutzung von WhatsApp erfolgt die Kommunikation ueber
-              den Anbieter WhatsApp Ireland Limited beziehungsweise Meta. Bitte
-              beachten Sie, dass dabei Daten auch durch WhatsApp verarbeitet
-              werden koennen.
+              Anfrage. Dazu gehoeren beispielsweise Name, Telefonnummer,
+              E-Mail-Adresse, Inhalt Ihrer Mitteilung und von Ihnen
+              uebermittelte Fahrzeugbilder oder Unterlagen.
+              WhatsApp wird fuer Nutzer im Europaeischen Wirtschaftsraum
+              durch WhatsApp Ireland Limited, Irland, angeboten.
+              Bei Nutzung werden insbesondere Telefonnummern,
+              Kommunikations- und technische Nutzungsdaten auch durch
+              WhatsApp verarbeitet. Dabei kann es zu Verarbeitungen
+              ausserhalb der EU beziehungsweise des EWR kommen.
             </p>
             <p>
-              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit Ihre
-              Anfrage auf die Anbahnung oder Durchfuehrung eines Ankaufs
-              gerichtet ist, und Art. 6 Abs. 1 lit. f DSGVO fuer allgemeine
-              Kommunikation.
+              Fuer unsere Anfragebearbeitung gelten die in Abschnitt 3
+              erlaeuterten Rechtsgrundlagen. Die Nutzung von WhatsApp ist
+              freiwillig; Telefon, E-Mail und Kontaktformular stehen als
+              Alternativen zur Verfuegung. Die Verarbeitung durch WhatsApp
+              richtet sich nach dessen
+              <a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener">Datenschutzrichtlinie</a>.
             </p>
           </section>
 
@@ -215,10 +258,17 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               die Bearbeitung Ihrer Anfrage, die Anbahnung oder Durchfuehrung
               eines Ankaufs, die Erfuellung gesetzlicher Aufbewahrungspflichten
               oder die Abwehr beziehungsweise Geltendmachung rechtlicher
-              Ansprueche erforderlich ist. Anfragen ohne anschliessenden
-              Vertragsschluss werden regelmaessig geloescht, sobald keine
-              weitere Bearbeitung erforderlich ist, sofern keine gesetzlichen
-              Pflichten entgegenstehen.
+              Ansprueche erforderlich ist. Bei Anfragen ohne Vertragsschluss
+              ist der Abschluss der Bearbeitung massgeblich, sofern keine
+              weitere Rechtsgrundlage fuer eine Aufbewahrung besteht.
+              Fuer Vertrags- und Geschaeftsunterlagen gelten die jeweils
+              einschlaegigen handels- und steuerrechtlichen Pflichten
+              insbesondere nach HGB und AO. Soweit die Aufbewahrung zur
+              Erfuellung solcher Pflichten erforderlich ist, ist
+              Art. 6 Abs. 1 lit. c DSGVO Rechtsgrundlage.
+              Bei einer Aufbewahrung zur Rechtsverfolgung ist
+              Art. 6 Abs. 1 lit. f DSGVO Rechtsgrundlage; massgeblich
+              sind die einschlaegigen Verjaehrungsfristen.
             </p>
           </section>
 
@@ -243,7 +293,18 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
               Datenuebertragbarkeit sowie Widerspruch gegen bestimmte
               Verarbeitungen. Soweit eine Verarbeitung auf Ihrer Einwilligung
               beruht, koennen Sie diese Einwilligung jederzeit mit Wirkung fuer
-              die Zukunft widerrufen.
+              die Zukunft widerrufen. Die Rechtmaessigkeit der Verarbeitung
+              bis zum Widerruf bleibt davon unberuehrt.
+            </p>
+            <p>
+              <strong>Widerspruchsrecht nach Art. 21 DSGVO:</strong> Soweit wir
+              Daten auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO verarbeiten,
+              koennen Sie aus Gruenden, die sich aus Ihrer besonderen
+              Situation ergeben, jederzeit widersprechen. Wir verarbeiten
+              die Daten dann nicht weiter, es sei denn, wir koennen zwingende
+              schutzwuerdige Gruende nachweisen, die Ihre Interessen, Rechte
+              und Freiheiten ueberwiegen, oder die Verarbeitung dient der
+              Geltendmachung, Ausuebung oder Verteidigung von Rechtsanspruechen.
             </p>
             <p>
               Zur Ausuebung Ihrer Rechte koennen Sie uns ueber die oben
@@ -270,17 +331,20 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
           <section>
             <h2>13. Aktualitaet dieser Datenschutzerklaerung</h2>
             <p>
-              Stand: August 2026. Wir passen diese Datenschutzerklaerung an,
+              Stand: 30. Oktober 2026. Wir passen diese Datenschutzerklaerung an,
               wenn sich technische, rechtliche oder organisatorische
               Verarbeitungsvorgaenge aendern.
             </p>
           </section>
 
           <p class="legal-note">
-            Hinweis: Diese Seite enthaelt bewusst Platzhalter fuer noch fehlende
-            Unternehmens- und Vertragsdaten. Vor Veroeffentlichung sollten die
-            Angaben durch die tatsaechlichen Daten ersetzt und juristisch geprueft
-            werden.
+            Vor Veroeffentlichung sind die produktive Hostingumgebung,
+            die wirksamen Auftragsverarbeitungsvertraege und
+            Drittlandgarantien, der Postfachanbieter, die tatsaechlichen
+            Speicher- und Loeschablaeufe sowie die WhatsApp-Konfiguration
+            abzugleichen. Eine etwaige Pflicht zur Benennung eines
+            Datenschutzbeauftragten und die rechtlichen Voraussetzungen
+            der direkten Karteneinbindung sind gesondert zu pruefen.
           </p>
         </article>
       </div>
