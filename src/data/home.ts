@@ -130,7 +130,7 @@ const en: HomeCopy = {
   reviewsTitle: "Customers who already trust WAW",
   reviewsFrom: "Reviews on",
   reviewsLabel: "Google customer reviews",
-  reviewLabel: "Google review",
+  reviewLabel: "Google review · Translated from German",
   rating: "5 out of 5 stars",
 };
 
@@ -199,7 +199,7 @@ const fr: HomeCopy = {
   reviewsTitle: "Des clients qui font déjà confiance à WAW",
   reviewsFrom: "Avis sur",
   reviewsLabel: "Avis clients Google",
-  reviewLabel: "Avis Google",
+  reviewLabel: "Avis Google · Traduit de l'allemand",
   rating: "5 étoiles sur 5",
 };
 

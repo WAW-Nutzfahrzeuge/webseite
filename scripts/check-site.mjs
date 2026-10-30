@@ -49,6 +49,22 @@ for (const path of ["/", "/en", "/fr", "/kontakt", "/en/contact", "/fr/contact"]
 }
 
 const homeHtml = await readPage("/");
+const germanReviewTexts = [...homeHtml.matchAll(/<p\b[^>]*lang="de"[^>]*>([^<]+)<\/p>/g)].map(([, text]) => text);
+assert.equal(germanReviewTexts.length, 27, "German review originals preserved");
+for (const [locale, path, notice] of [
+  ["en", "/en", "Translated from German"],
+  ["fr", "/fr", "Traduit de l&#39;allemand"],
+]) {
+  const html = await readPage(path);
+  const cards = [...html.matchAll(/<article class="review-card"[\s\S]*?<\/article>/g)].map(([card]) => card);
+  assert.equal(cards.length, 27, `${path}: all nine reviews in each slider set`);
+  for (const card of cards) {
+    assert.match(card, new RegExp(`<p\\b[^>]*lang="${locale}"[^>]*>`), `${path}: localized review body`);
+    assert.ok(card.includes(notice) || card.includes(notice.replace("&#39;", "'")), `${path}: translation disclosed`);
+    assert.doesNotMatch(card, /Rezensionen?|vor 3 Jahren/, `${path}: localized review metadata`);
+    assert.ok(!germanReviewTexts.some((text) => card.includes(text)), `${path}: review text translated`);
+  }
+}
 const mainContent = (html) => {
   const content = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
   assert.ok(content, "page has main content");

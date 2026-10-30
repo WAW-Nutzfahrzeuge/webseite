@@ -7,47 +7,83 @@ const reviews = [
   {
     name: "Jan Hendrik",
     meta: "Local Guide · 23 Rezensionen · vor 3 Jahren",
+    metaEn: "Local Guide · 23 reviews · 3 years ago",
+    metaFr: "Local Guide · 23 avis · il y a 3 ans",
     text: "Freundliche Mitarbeiter, welche telefonisch gut erreichbar sind. Fahrzeug war wie vorab besprochen und es waren keine Mängel o.ä. vorhanden. Ich werde hier das nächste Mal wieder anfragen.",
+    textEn: "Friendly staff who are easy to reach by phone. The vehicle was as discussed beforehand, with no defects or similar issues. I will inquire here again next time.",
+    textFr: "Un personnel aimable et facilement joignable par téléphone. Le véhicule était conforme à ce qui avait été convenu et ne présentait aucun défaut ni problème similaire. Je les recontacterai la prochaine fois.",
   },
   {
     name: "Ahmad",
     meta: "7 Rezensionen · vor 3 Jahren",
+    metaEn: "7 reviews · 3 years ago",
+    metaFr: "7 avis · il y a 3 ans",
     text: "Sehr gute und vertrauenswürdige Firma. Abwicklung läuft gut und einwandfrei. Kompetente Mitarbeiter, die ihre Arbeit ernst nehmen. Von mir sind es 5 von 5 Sternen.",
+    textEn: "A very good and trustworthy company. Everything is handled smoothly and without problems. Competent staff who take their work seriously. I give them 5 out of 5 stars.",
+    textFr: "Une très bonne entreprise, digne de confiance. Tout se déroule bien et sans problème. Un personnel compétent qui prend son travail au sérieux. Je leur donne 5 étoiles sur 5.",
   },
   {
     name: "Enes Ramovic",
     meta: "3 Rezensionen · vor 3 Jahren",
+    metaEn: "3 reviews · 3 years ago",
+    metaFr: "3 avis · il y a 3 ans",
     text: "Top Service! Fahrzeug hatte keine versteckten Mängel und war wie in der Anzeige beschrieben. Bei Bedarf immer wieder!",
+    textEn: "Great service! The vehicle had no hidden defects and was as described in the advertisement. I would happily use them again when needed!",
+    textFr: "Excellent service ! Le véhicule n'avait aucun défaut caché et correspondait à la description de l'annonce. Je reviendrai volontiers si besoin !",
   },
   {
     name: "Farita Surie",
     meta: "4 Rezensionen · vor 3 Jahren",
+    metaEn: "4 reviews · 3 years ago",
+    metaFr: "4 avis · il y a 3 ans",
     text: "Freundliche Mitarbeiter, immer telefonisch erreichbar und verkaufen gute Fahrzeuge. Sehr professionell und weiterzuempfehlen.",
+    textEn: "Friendly staff, always reachable by phone, selling good vehicles. Very professional and worth recommending.",
+    textFr: "Un personnel aimable, toujours joignable par téléphone, qui vend de bons véhicules. Très professionnel, à recommander.",
   },
   {
     name: "Musto Khan",
     meta: "Local Guide · 24 Rezensionen · vor 3 Jahren",
+    metaEn: "Local Guide · 24 reviews · 3 years ago",
+    metaFr: "Local Guide · 24 avis · il y a 3 ans",
     text: "Sehr kompetentes Team, Fahrzeug war wie beschrieben, würde ich sehr gern weiterempfehlen.",
+    textEn: "A very competent team. The vehicle was as described. I would gladly recommend them.",
+    textFr: "Une équipe très compétente. Le véhicule était conforme à la description. Je les recommande volontiers.",
   },
   {
     name: "ikbal qamari",
     meta: "4 Rezensionen · vor 3 Jahren",
+    metaEn: "4 reviews · 3 years ago",
+    metaFr: "4 avis · il y a 3 ans",
     text: "Freundlich und zufrieden mit dem Kauf. Auf jeden Fall für beginnende Spediteure zu empfehlen.",
+    textEn: "Friendly, and I am happy with the purchase. Definitely recommended for hauliers who are just starting out.",
+    textFr: "Un accueil aimable, et je suis satisfait de mon achat. À recommander sans hésiter aux transporteurs qui débutent.",
   },
   {
     name: "Julia Fischer",
     meta: "1 Rezension · vor 3 Jahren",
+    metaEn: "1 review · 3 years ago",
+    metaFr: "1 avis · il y a 3 ans",
     text: "Gute Abwicklung. Fahrzeug war wie beschrieben. Ich würde euch gerne weiter empfehlen.",
+    textEn: "Everything was handled well. The vehicle was as described. I would gladly recommend you.",
+    textFr: "Tout s'est bien déroulé. Le véhicule était conforme à la description. Je vous recommande volontiers.",
   },
   {
     name: "Hadis Surie",
     meta: "8 Rezensionen · vor 3 Jahren",
+    metaEn: "8 reviews · 3 years ago",
+    metaFr: "8 avis · il y a 3 ans",
     text: "Gute Abwicklung. Fahrzeug wie beschrieben. Gerne nochmal.",
+    textEn: "Everything was handled well. The vehicle was as described. Happy to deal with them again.",
+    textFr: "Tout s'est bien déroulé. Le véhicule était conforme à la description. À refaire avec plaisir.",
   },
   {
     name: "RRoman",
     meta: "10 Rezensionen · vor 3 Jahren",
+    metaEn: "10 reviews · 3 years ago",
+    metaFr: "10 avis · il y a 3 ans",
     text: "Einfache Kommunikation, professionell und verlässlich.",
+    textEn: "Easy communication, professional and reliable.",
+    textFr: "Une communication simple, professionnelle et fiable.",
   },
 ];
 
@@ -80,13 +116,13 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
           <div class="review-top">
             <div>
               <strong>{review.name}</strong>
-              <span lang="de">{review.meta}</span>
+              <span lang={lang}>{lang === "en" ? review.metaEn : lang === "fr" ? review.metaFr : review.meta}</span>
             </div>
             <div class="review-rating" aria-label={c.rating}>
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
             </div>
           </div>
-          <p lang="de">“{review.text}”</p>
+          <p lang={lang}>“{lang === "en" ? review.textEn : lang === "fr" ? review.textFr : review.text}”</p>
           <small>{c.reviewLabel}</small>
         </article>
         ))}
