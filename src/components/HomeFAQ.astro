@@ -1,16 +1,19 @@
 ---
 import { Plus } from "@lucide/astro";
-import { homeFaqs } from "../data/homeFaqs";
+import { getLocaleFromPath, localizePath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = homeCopy[lang];
 ---
 <section class="home-faq" id="faq" aria-labelledby="faq-title">
   <div class="container faq-wrap">
     <div class="faq-copy">
-      <h2 id="faq-title">Noch Fragen zum Fahrzeugverkauf?</h2>
-      <p>Hier finden Sie Antworten zu Fahrzeugarten, Zuständen und Ihrer ersten Anfrage.</p>
-      <a href="/kontakt">Persönlich mit uns klären</a>
+      <h2 id="faq-title">{c.faqTitle}</h2>
+      <p>{c.faqText}</p>
+      <a href={localizePath("contact", lang)}>{c.faqLink}</a>
     </div>
     <div class="faq-list">
-      {homeFaqs.map((item) => (
+      {c.faqs.map((item) => (
         <details class="faq-card">
           <summary>{item.question}<Plus size={20} aria-hidden="true" /></summary>
           <p>{item.answer}</p>

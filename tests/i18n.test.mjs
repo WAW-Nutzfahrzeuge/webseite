@@ -3,7 +3,12 @@ import { test } from "node:test";
 import { getAlternates, getLocaleFromPath, getLocalizedEquivalentPath } from "../src/data/i18n.ts";
 
 test("only equivalent routes receive hreflang, never unrelated homepage links", () => {
-  assert.deepEqual(getAlternates("/standorte/bayern"), []);
+  assert.deepEqual(getAlternates("/standorte/bayern"), [
+    { locale: "de", href: "/standorte/bayern" },
+    { locale: "en", href: "/en/locations/bayern" },
+    { locale: "fr", href: "/fr/implantations/bayern" },
+  ]);
+  assert.equal(getLocalizedEquivalentPath("/fr/implantations/bayern", "en"), "/en/locations/bayern");
   assert.deepEqual(getAlternates("/danke"), []);
   assert.deepEqual(getAlternates("/en/danke"), []);
   assert.equal(getLocalizedEquivalentPath("/kontakt", "fr"), "/fr/contact");

@@ -1,23 +1,24 @@
 ---
 import { ArrowRight, CircleCheck } from "@lucide/astro";
 import type { Service } from "../data/services";
+import { getLocaleFromPath, localizePath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
 
 interface Props {
   services: Service[];
+  lang?: Locale;
 }
 
-const { services } = Astro.props;
+const { services, lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang];
 ---
 
 <section class="service-details-modern" aria-labelledby="service-details-title">
   <div class="container">
     <div class="service-details-head" data-animate>
-      <span>LEISTUNGEN IM DETAIL</span>
-      <h2 id="service-details-title">Konkrete Ankaufbereiche für Unternehmen, Händler und Fuhrparks.</h2>
-      <p>
-        Hier finden Sie die wichtigsten Fahrzeugarten, typische Aufbauten und
-        Situationen, in denen sich eine Anfrage lohnt.
-      </p>
+      <span>{copy.detail.kicker}</span>
+      <h2 id="service-details-title">{copy.detail.heading}</h2>
+      <p>{copy.detail.text}</p>
     </div>
 
     <div class="service-detail-list">
@@ -38,17 +39,17 @@ const { services } = Astro.props;
             </div>
 
             <div class="service-detail-actions">
-              <a href="/kontakt" class="btn btn-primary">
-                Fahrzeug anbieten
+              <a href={localizePath("contact", lang)} class="btn btn-primary">
+                {copy.detail.offer}
                 <ArrowRight size={17} stroke-width={2.5} aria-hidden="true" />
               </a>
-              <a href="/ablauf" class="service-detail-link">Ablauf ansehen</a>
-              <a href="/fahrzeuge" class="service-detail-link">Alle Fahrzeugtypen</a>
+              <a href={localizePath("process", lang)} class="service-detail-link">{copy.process}</a>
+              <a href={localizePath("vehicles", lang)} class="service-detail-link">{copy.detail.vehicles}</a>
             </div>
           </div>
 
           <div class="service-detail-visual">
-            <img src={service.imageSrc} alt={`${service.title} bei WAW anbieten`} loading="lazy" />
+            <img src={service.imageSrc} alt={lang === "de" ? `${service.title} ${copy.detail.imageAlt}` : `${copy.detail.imageAlt} ${service.title}`} loading="lazy" />
             <span class="service-detail-number">{String(index + 1).padStart(2, "0")}</span>
             <strong>{service.title}</strong>
           </div>

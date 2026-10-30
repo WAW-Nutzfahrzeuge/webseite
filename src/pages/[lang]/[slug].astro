@@ -1,5 +1,10 @@
 ---
-import LocalizedLandingPage from "../../components/LocalizedLandingPage.astro";
+import LocationsPage from "../../components/LocationsPage.astro";
+import ServicesPage from "../../components/ServicesPage.astro";
+import AboutPage from "../../components/AboutPage.astro";
+import LegalNoticePage from "../../components/LegalNoticePage.astro";
+import PrivacyPage from "../../components/PrivacyPage.astro";
+import TermsPage from "../../components/TermsPage.astro";
 import {
   locales,
   routeMap,
@@ -7,6 +12,8 @@ import {
   type StaticRouteKey,
   type Locale,
 } from "../../data/i18n";
+
+type SharedRouteKey = Exclude<StaticRouteKey, "vehicles" | "process" | "contact">;
 
 export function getStaticPaths() {
   const staticPaths: Array<{
@@ -35,12 +42,20 @@ export function getStaticPaths() {
 
 const { lang, pageKey } = Astro.props as {
   lang: Locale;
-  pageKey: StaticRouteKey;
+  pageKey: SharedRouteKey;
 };
 const canonicalPath = routeMap[pageKey][lang];
 if (Astro.url.pathname.replace(/\/$/, "") !== canonicalPath) {
   return Astro.redirect(canonicalPath, 301);
 }
+const Page = {
+  locations: LocationsPage,
+  services: ServicesPage,
+  about: AboutPage,
+  legalNotice: LegalNoticePage,
+  privacy: PrivacyPage,
+  terms: TermsPage,
+}[pageKey];
 ---
 
-<LocalizedLandingPage lang={lang} pageKey={pageKey} />
+<Page lang={lang} />

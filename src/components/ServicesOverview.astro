@@ -1,29 +1,30 @@
 ---
 import { ArrowRight, CircleCheck } from "@lucide/astro";
 import type { Service } from "../data/services";
+import { getLocaleFromPath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
 
 interface Props {
   services: Service[];
+  lang?: Locale;
 }
 
-const { services } = Astro.props;
+const { services, lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang].overview;
 ---
 
 <section class="services-overview-modern" aria-labelledby="services-overview-title">
   <div class="container">
     <div class="services-section-head" data-animate>
-      <span>UNSERE ANKAUFBEREICHE</span>
-      <h2 id="services-overview-title">Welche Fahrzeuge kaufen wir an?</h2>
-      <p>
-        Vom einzelnen LKW bis zum kompletten Fuhrpark: Senden Sie uns die
-        Fahrzeugdaten, und wir stimmen den weiteren Ablauf direkt mit Ihnen ab.
-      </p>
+      <span>{copy.kicker}</span>
+      <h2 id="services-overview-title">{copy.heading}</h2>
+      <p>{copy.text}</p>
     </div>
 
     <div class="services-overview-grid">
       {services.map((service) => (
         <article class={`services-overview-card ${service.featured ? "is-featured" : ""}`} data-animate>
-          <a href={`#${service.id}`} aria-label={`${service.title} ansehen`}>
+          <a href={`#${service.id}`} aria-label={lang === "de" ? `${service.title} ${copy.view}` : `${copy.view} ${service.title}`}>
             <div class="services-card-top">
               <div class="services-card-icon">
                 <img src={service.iconSrc} alt="" loading="lazy" aria-hidden="true" />
@@ -40,7 +41,7 @@ const { services } = Astro.props;
                 </li>
               ))}
             </ul>
-            <em>Details ansehen</em>
+            <em>{copy.details}</em>
           </a>
         </article>
       ))}

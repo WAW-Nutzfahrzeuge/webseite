@@ -1,21 +1,20 @@
 ---
 import { ArrowRight } from "@lucide/astro";
 
-const steps = [
-  { title: "Anfrage senden", text: "Name und Telefonnummer genügen zum Start. Fahrzeugtyp und Standort helfen bei der ersten Einschätzung." },
-  { title: "Angaben klären", text: "Wir besprechen Fahrzeugdaten, Zustand und offene Fragen. Fotos und Unterlagen können Sie nachreichen." },
-  { title: "Angebot abstimmen", text: "Kommt ein Ankauf infrage, besprechen wir das Angebot und die weiteren Schritte mit Ihnen." },
-  { title: "Verkauf abschließen", text: "Kaufvertrag, Zahlung, Übergabe und mögliche Abholung stimmen wir vor dem Verkauf gemeinsam ab." },
-];
+import { getLocaleFromPath, localizePath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = homeCopy[lang];
+const steps = c.steps;
 ---
 
 <section class="home-process" id="ablauf" aria-labelledby="process-title">
   <div class="container">
     <div class="process-head">
-      <h2 id="process-title">Vom ersten Kontakt<br />bis zur Übergabe.</h2>
+      <h2 id="process-title">{c.processTitle[0]}<br />{c.processTitle[1]}</h2>
       <div>
-        <p>So verkaufen Sie Ihr Nutzfahrzeug an WAW – mit direkter Abstimmung bei jedem Schritt.</p>
-        <a href="/ablauf">Den Verkaufsablauf kennenlernen <ArrowRight size={18} aria-hidden="true" /></a>
+        <p>{c.processText}</p>
+        <a href={localizePath("process", lang)}>{c.processLink} <ArrowRight size={18} aria-hidden="true" /></a>
       </div>
     </div>
     <ol class="steps-row">

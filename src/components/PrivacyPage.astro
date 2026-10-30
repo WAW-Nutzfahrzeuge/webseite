@@ -1,0 +1,351 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import { site } from "../data/site";
+import { getLocaleFromPath, localizePath, type Locale } from "../data/i18n";
+
+interface Props { lang?: Locale }
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const t = (de: string, en: string, fr: string) => ({ de, en, fr })[lang];
+const canonical = new URL(localizePath("privacy", lang), site.url).toString();
+const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.address.locality}, ${t("Deutschland", "Germany", "Allemagne")}`;
+---
+
+<BaseLayout
+  title={t("Datenschutz", "Privacy policy", "Politique de confidentialité") + " | WAW Nutzfahrzeuge"}
+  description={t("Datenschutzerklaerung von WAW Nutzfahrzeuge mit Informationen zu Kontaktformular, E-Mail-Versand, Hosting, Logfiles und Betroffenenrechten.", "WAW Nutzfahrzeuge privacy policy with information on the contact form, email delivery, hosting, log files and data subject rights.", "Politique de confidentialité de WAW Nutzfahrzeuge : formulaire de contact, envoi d’e-mails, hébergement, fichiers journaux et droits des personnes concernées.")}
+  canonical={canonical}
+  lang={lang}
+>
+  <Header />
+
+  <main class="legal-page">
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <span class="legal-kicker">{t("DATENSCHUTZ", "PRIVACY", "PROTECTION DES DONNÉES")}</span>
+        <h1>{t("Datenschutzerklaerung", "Privacy policy", "Politique de confidentialité")}</h1>
+        <p>
+          {t("Wir informieren Sie transparent darueber, welche personenbezogenen Daten beim Besuch dieser Website und bei einer Anfrage an WAW Nutzfahrzeuge verarbeitet werden.", "We transparently explain which personal data is processed when you visit this website and submit an inquiry to WAW Nutzfahrzeuge.", "Nous vous informons en toute transparence sur les données personnelles traitées lors de votre visite sur ce site et de l’envoi d’une demande à WAW Nutzfahrzeuge.")}
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-content">
+      <div class="container legal-grid">
+        <aside class="legal-toc" aria-label={t("Inhaltsuebersicht", "Table of contents", "Table des matières")}>
+          <strong>{t("Uebersicht", "Overview", "Sommaire")}</strong>
+          <a href="#verantwortlicher">{t("Verantwortlicher", "Controller", "Responsable du traitement")}</a>
+          <a href="#datenarten">{t("Datenarten", "Types of data", "Types de données")}</a>
+          <a href="#kontaktformular">{t("Kontaktformular", "Contact form", "Formulaire de contact")}</a>
+          <a href="#email">{t("E-Mail-Versand", "Email delivery", "Envoi d’e-mails")}</a>
+          <a href="#hosting">{t("Hosting & Logfiles", "Hosting & log files", "Hébergement et journaux")}</a>
+          <a href="#karte">{t("Kartenfunktion", "Map feature", "Fonction cartographique")}</a>
+          <a href="#rechte">{t("Ihre Rechte", "Your rights", "Vos droits")}</a>
+          <a href="#aufsicht">{t("Aufsichtsbehoerde", "Supervisory authority", "Autorité de contrôle")}</a>
+        </aside>
+
+        <article class="legal-card">
+          <section id="verantwortlicher">
+            <h2>{t("1. Verantwortlicher", "1. Controller", "1. Responsable du traitement")}</h2>
+            <p>
+              {t("Verantwortlich fuer die Datenverarbeitung auf dieser Website ist:", "The controller responsible for data processing on this website is:", "Le responsable du traitement des données sur ce site est :")}
+            </p>
+            <p>
+              <strong>{site.legal.name}</strong><br />
+              {t("Inhaber:", "Owner:", "Propriétaire :")} {site.legal.owner}<br />
+              {fullAddress}<br />
+              {t("Telefon:", "Telephone:", "Téléphone :")} <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
+              {t("E-Mail:", "Email:", "E-mail :")} <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+            <p>
+              {t("Bei Fragen zum Datenschutz und zur Ausuebung Ihrer Rechte koennen Sie sich ueber diese Kontaktdaten an uns wenden.", "You may contact us using these details with questions about data protection and to exercise your rights.", "Vous pouvez nous contacter à ces coordonnées pour toute question relative à la protection des données et pour exercer vos droits.")}
+            </p>
+          </section>
+
+          <section id="datenarten">
+            <h2>{t("2. Allgemeine Hinweise und Datenarten", "2. General information and types of data", "2. Informations générales et types de données")}</h2>
+            <p>
+              {t("Personenbezogene Daten sind alle Informationen, die sich auf eine identifizierte oder identifizierbare natuerliche Person beziehen. Wir verarbeiten Daten grundsaetzlich nur, soweit dies fuer den Betrieb der Website, die Bearbeitung Ihrer Anfrage, die Anbahnung oder Durchfuehrung eines Ankaufs oder zur Erfuellung gesetzlicher Pflichten erforderlich ist.", "Personal data means any information relating to an identified or identifiable natural person. As a general rule, we process data only insofar as necessary to operate the website, handle your inquiry, initiate or complete a purchase, or fulfil statutory obligations.", "Les données personnelles sont toutes les informations se rapportant à une personne physique identifiée ou identifiable. En principe, nous ne traitons les données que dans la mesure nécessaire au fonctionnement du site, au traitement de votre demande, à la préparation ou à la réalisation d’un rachat, ou au respect d’obligations légales.")}
+            </p>
+            <p>
+              {t("Je nach Nutzung koennen insbesondere folgende Daten verarbeitet werden: Name, Telefonnummer, E-Mail-Adresse, Unternehmensangaben, Fahrzeugdaten, Nachrichteninhalte, technische Zugriffsdaten, IP-Adresse, Datum und Uhrzeit des Zugriffs sowie Angaben zur Spam-Abwehr.", "Depending on use, the following data in particular may be processed: name, telephone number, email address, company details, vehicle information, message content, technical access data, IP address, date and time of access, and information used for spam prevention.", "Selon l’utilisation, les données suivantes peuvent notamment être traitées : nom, numéro de téléphone, adresse e-mail, informations sur l’entreprise, données du véhicule, contenu des messages, données techniques d’accès, adresse IP, date et heure d’accès ainsi que données de lutte contre le spam.")}
+            </p>
+          </section>
+
+          <section id="kontaktformular">
+            <h2>{t("3. Kontaktformular und Anfragebearbeitung", "3. Contact form and inquiry handling", "3. Formulaire de contact et traitement des demandes")}</h2>
+            <p>
+              {t("Wenn Sie uns ueber das Kontaktformular eine Anfrage senden, verarbeiten wir die von Ihnen eingegebenen Daten zur Bearbeitung Ihrer Anfrage. Dazu koennen Name, Telefon, E-Mail-Adresse, Unternehmen, Fahrzeugtyp, Fahrzeugstandort, Baujahr, Kilometerstand, Angaben zu Zustand oder Schaeden und Ihre Nachricht gehoeren.", "If you send us an inquiry via the contact form, we process the data you enter to handle your inquiry. This may include your name, telephone number, email address, company, vehicle type, vehicle location, year of manufacture, mileage, details of condition or damage, and your message.", "Si vous nous envoyez une demande via le formulaire de contact, nous traitons les données que vous saisissez pour répondre à votre demande. Elles peuvent comprendre le nom, le téléphone, l’adresse e-mail, l’entreprise, le type et l’emplacement du véhicule, l’année de fabrication, le kilométrage, les informations sur l’état ou les dommages et votre message.")}
+            </p>
+            <p>
+              {t("Name und Telefonnummer sind fuer die Bearbeitung einer Formularanfrage erforderlich; die weiteren Felder sind freiwillig. Ohne die erforderlichen Kontaktdaten koennen Sie das Formular nicht absenden. Sie koennen uns alternativ telefonisch oder per E-Mail kontaktieren.", "Your name and telephone number are required to handle an inquiry submitted through the form; the other fields are optional. You cannot submit the form without the required contact details. Alternatively, you may contact us by telephone or email.", "Le nom et le numéro de téléphone sont nécessaires au traitement d’une demande via le formulaire ; les autres champs sont facultatifs. Vous ne pouvez pas envoyer le formulaire sans les coordonnées requises. Vous pouvez également nous contacter par téléphone ou e-mail.")}
+            </p>
+            <p>
+              {t("Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit Sie selbst einen Vertrag mit uns anbahnen oder erfuellen. Wenn Sie als Ansprechpartner eines Unternehmens handeln oder eine allgemeine Anfrage stellen, ist Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der Bearbeitung von Anfragen und der Kommunikation mit Geschaeftspartnern. Soweit die Verarbeitung zur Sicherung des Formulars, zur Spam-Abwehr oder zur technischen Nachvollziehbarkeit erforderlich ist, erfolgt sie auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der sicheren, verlaesslichen und missbrauchsarmen Bearbeitung von Website-Anfragen.", "The legal basis is Article 6(1)(b) GDPR insofar as you personally initiate or perform a contract with us. If you act as a company's contact person or submit a general inquiry, the legal basis is Article 6(1)(f) GDPR. Our legitimate interest lies in handling inquiries and communicating with business partners. Insofar as processing is necessary to secure the form, prevent spam or ensure technical traceability, it is based on Article 6(1)(f) GDPR. Our legitimate interest lies in the secure, reliable handling of website inquiries with minimal abuse.", "La base juridique est l’article 6, paragraphe 1, point b du RGPD lorsque vous préparez ou exécutez vous-même un contrat avec nous. Si vous agissez en tant qu’interlocuteur d’une entreprise ou formulez une demande générale, la base juridique est l’article 6, paragraphe 1, point f du RGPD. Notre intérêt légitime réside dans le traitement des demandes et la communication avec nos partenaires commerciaux. Dans la mesure où le traitement est nécessaire à la sécurisation du formulaire, à la lutte contre le spam ou à la traçabilité technique, il repose sur l’article 6, paragraphe 1, point f du RGPD. Notre intérêt légitime réside dans un traitement sûr et fiable des demandes du site, limitant les abus.")}
+            </p>
+            <p>
+              {t("Das Formular nutzt technische Schutzmechanismen wie serverseitige Validierung, Zeitpruefung, Honeypot-Feld, Inhaltspruefung und Rate-Limiting. Diese Schutzmassnahmen dienen ausschliesslich der Abwehr von Spam, Missbrauch und automatisierten Masseneinsendungen. Dafuer werden insbesondere die IP-Adresse, der Zeitpunkt des Formularaufrufs und die uebermittelten Inhalte geprueft. Ein externer CAPTCHA-Dienst ist im Formular nicht eingebunden.", "The form uses technical protection mechanisms such as server-side validation, timing checks, a honeypot field, content checks and rate limiting. These safeguards are used solely to prevent spam, abuse and automated bulk submissions. In particular, the IP address, the time the form was opened and the submitted content are checked for this purpose. No external CAPTCHA service is integrated into the form.", "Le formulaire utilise des mécanismes de protection techniques tels que la validation côté serveur, le contrôle du délai, un champ piège (« honeypot »), le contrôle du contenu et la limitation du nombre de requêtes. Ces mesures servent exclusivement à prévenir le spam, les abus et les envois automatisés en masse. À cette fin, l’adresse IP, l’heure d’ouverture du formulaire et les contenus transmis sont notamment contrôlés. Aucun service CAPTCHA externe n’est intégré au formulaire.")}
+            </p>
+          </section>
+
+          <section id="email">
+            <h2>{t("4. E-Mail-Versand und Resend", "4. Email delivery and Resend", "4. Envoi d’e-mails et Resend")}</h2>
+            <p>
+              {t("Zur technischen Zustellung von Website-Anfragen und optionalen Eingangsbestätigungen wird der E-Mail-Dienstleister Resend genutzt. Dabei werden die fuer den Versand erforderlichen Kommunikationsdaten verarbeitet, insbesondere Empfaengeradresse, Absenderangaben, Nachrichteninhalt, Betreff und technische Versandinformationen.", "The email service provider Resend is used for the technical delivery of website inquiries and optional acknowledgements of receipt. This involves processing the communication data required for sending, in particular the recipient address, sender details, message content, subject and technical delivery information.", "Le prestataire d’envoi d’e-mails Resend est utilisé pour l’acheminement technique des demandes du site et des accusés de réception facultatifs. Les données de communication nécessaires à l’envoi sont traitées, notamment l’adresse du destinataire, les coordonnées de l’expéditeur, le contenu du message, l’objet et les informations techniques d’envoi.")}
+            </p>
+            <p>
+              {t("Anbieter ist Plus Five Five, Inc. (Resend), USA. Wenn Sie eine E-Mail-Adresse angeben, kann eine Eingangsbestätigung an diese Adresse versandt werden. Rechtsgrundlage fuer die Anfragebearbeitung ist je nach Kontaktanlass Art. 6 Abs. 1 lit. b oder lit. f DSGVO, wie oben beschrieben. Der technisch zuverlaessige E-Mail-Versand liegt in unserem berechtigten Interesse nach Art. 6 Abs. 1 lit. f DSGVO.", "The provider is Plus Five Five, Inc. (Resend), USA. If you provide an email address, an acknowledgement of receipt may be sent to that address. Depending on the reason for contact, the legal basis for handling inquiries is Article 6(1)(b) or (f) GDPR, as described above. Technically reliable email delivery is in our legitimate interest under Article 6(1)(f) GDPR.", "Le fournisseur est Plus Five Five, Inc. (Resend), États-Unis. Si vous indiquez une adresse e-mail, un accusé de réception peut être envoyé à cette adresse. Selon le motif du contact, la base juridique du traitement des demandes est l’article 6, paragraphe 1, point b ou f du RGPD, comme décrit ci-dessus. La fiabilité technique de l’envoi d’e-mails relève de notre intérêt légitime au titre de l’article 6, paragraphe 1, point f du RGPD.")}
+            </p>
+            <p>
+              {t("Resend beschreibt eine Verarbeitung von Daten in den USA. Der vom Anbieter bereitgestellte Auftragsverarbeitungsvertrag enthaelt Regelungen zu internationalen Datenuebermittlungen einschliesslich EU-Standardvertragsklauseln. Die tatsaechliche vertragliche Einbeziehung und die Einstellungen des eingesetzten Kontos sind vor der produktiven Nutzung zu pruefen. Weitere Informationen:", "Resend describes processing data in the USA. The data processing agreement provided by the provider contains provisions on international data transfers, including EU standard contractual clauses. Whether the agreement has actually been incorporated into the contractual relationship and the settings of the account used must be checked before production use. Further information:", "Resend décrit un traitement de données aux États-Unis. L’accord de sous-traitance fourni par le prestataire contient des dispositions relatives aux transferts internationaux de données, y compris les clauses contractuelles types de l’UE. L’intégration effective de cet accord à la relation contractuelle et les paramètres du compte utilisé doivent être vérifiés avant toute utilisation en production. Informations complémentaires :")}
+              <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">{t("Datenschutz bei Resend", "Resend privacy policy", "Confidentialité chez Resend")}</a>
+              {t("und", "and", "et")} <a href="https://resend.com/legal/dpa" target="_blank" rel="noopener">{t("Auftragsverarbeitungsvertrag", "Data processing agreement", "Accord de sous-traitance")}</a>.
+            </p>
+          </section>
+
+          <section id="hosting">
+            <h2>{t("5. Hosting, Auslieferung und Server-Logfiles", "5. Hosting, delivery and server log files", "5. Hébergement, diffusion et journaux du serveur")}</h2>
+            <p>
+              {t("Die aktuelle technische Konfiguration dieser Website ist fuer eine Bereitstellung ueber Vercel Inc., USA, eingerichtet. Der tatsaechlich eingesetzte produktive Hostinganbieter, moegliche vorgeschaltete Dienste und die vertraglichen Einstellungen sind vor Veroeffentlichung dieser Erklaerung noch zu bestaetigen.", "The current technical configuration of this website is set up for deployment through Vercel Inc., USA. The hosting provider actually used in production, any upstream services and the contractual arrangements still need to be confirmed before this policy is published.", "La configuration technique actuelle de ce site est prévue pour un déploiement via Vercel Inc., États-Unis. Le fournisseur d’hébergement effectivement utilisé en production, les éventuels services intermédiaires en amont et les dispositions contractuelles doivent encore être confirmés avant la publication de la présente politique.")}
+            </p>
+            <p>
+              {t("Beim Aufruf der Website koennen insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, angeforderte URL, Referrer, Browsertyp, Betriebssystem, Statuscodes und vergleichbare technische Daten verarbeitet werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt im sicheren und performanten Betrieb der Website, der Fehleranalyse und der Abwehr von Angriffen.", "When the website is accessed, the IP address, date and time of access, requested URL, referrer, browser type, operating system, status codes and comparable technical data may in particular be processed. The legal basis is Article 6(1)(f) GDPR. Our legitimate interest lies in the secure and efficient operation of the website, error analysis and defence against attacks.", "Lors de l’accès au site, l’adresse IP, la date et l’heure d’accès, l’URL demandée, le référent, le type de navigateur, le système d’exploitation, les codes de statut et des données techniques comparables peuvent notamment être traités. La base juridique est l’article 6, paragraphe 1, point f du RGPD. Notre intérêt légitime réside dans le fonctionnement sûr et performant du site, l’analyse des erreurs et la prévention des attaques.")}
+            </p>
+            <p>
+              {t("Bei Vercel koennen Daten auch ausserhalb der EU beziehungsweise des EWR verarbeitet werden. Der Anbieter stellt einen Auftragsverarbeitungsvertrag mit Regelungen zu Drittlanduebermittlungen bereit. Daraus allein folgt nicht, dass dieser fuer das eingesetzte Konto wirksam vereinbart ist. Informationen zu den Bedingungen und Garantien:", "Vercel may also process data outside the EU or the EEA. The provider makes available a data processing agreement containing provisions on transfers to third countries. This alone does not mean that it has been validly agreed for the account used. Information on the conditions and safeguards:", "Chez Vercel, des données peuvent également être traitées en dehors de l’UE ou de l’EEE. Le prestataire met à disposition un accord de sous-traitance comprenant des dispositions sur les transferts vers des pays tiers. Cela ne signifie pas, à lui seul, que cet accord a été valablement conclu pour le compte utilisé. Informations sur les conditions et les garanties :")}
+              <a href="https://vercel.com/legal/privacy-notice" target="_blank" rel="noopener">{t("Datenschutz bei Vercel", "Vercel privacy policy", "Confidentialité chez Vercel")}</a>
+              {t("und", "and", "et")} <a href="https://vercel.com/legal/dpa" target="_blank" rel="noopener">{t("Auftragsverarbeitungsvertrag", "Data processing agreement", "Accord de sous-traitance")}</a>.
+            </p>
+          </section>
+
+          <section>
+            <h2>{t("6. Cookies, Tracking und Analyse", "6. Cookies, tracking and analytics", "6. Cookies, suivi et analyse")}</h2>
+            <p>
+              {t("Im Website-Code sind keine eigenen Analyse- oder Remarketing-Werkzeuge wie Google Analytics und keine werblichen Tracking-Cookies eingebunden. Die verwendeten Schriftdateien werden lokal von der Website geladen; dafuer erfolgt kein Abruf bei Google Fonts. Fuer externe Dienste wie die nachfolgend beschriebene Kartenfunktion gelten zusaetzlich die jeweiligen Hinweise.", "The website code does not integrate any analytics or remarketing tools of our own, such as Google Analytics, or advertising tracking cookies. The font files used are loaded locally from the website; no request is made to Google Fonts for this purpose. The respective additional notices apply to external services such as the map feature described below.", "Le code du site n’intègre aucun outil propre d’analyse ou de remarketing tel que Google Analytics, ni aucun cookie de suivi publicitaire. Les fichiers de polices utilisés sont chargés localement depuis le site ; aucune requête n’est effectuée auprès de Google Fonts à cette fin. Pour les services externes, tels que la fonction cartographique décrite ci-dessous, les informations spécifiques correspondantes s’appliquent en complément.")}
+            </p>
+          </section>
+
+          <section id="karte">
+            <h2>{t("7. Kartenfunktion und externe Links", "7. Map feature and external links", "7. Fonction cartographique et liens externes")}</h2>
+            <p>
+              {t("Auf der Kontaktseite ist eine Karte ueber www.openstreetmap.org eingebettet. Anbieter ist die OpenStreetMap Foundation, Vereinigtes Koenigreich. Sobald Ihr Browser die eingebettete Karte laedt, werden insbesondere Ihre IP-Adresse und technische Zugriffsdaten an die beteiligten Kartendienste uebermittelt. Dafuer ist kein Klick auf einen Aktivierungsbutton erforderlich. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer nutzerfreundlichen Darstellung unseres Standorts und der Routenplanung. Informationen zur Verarbeitung durch den Kartenanbieter finden Sie in der", "A map from www.openstreetmap.org is embedded on the contact page. The provider is the OpenStreetMap Foundation, United Kingdom. As soon as your browser loads the embedded map, your IP address and technical access data in particular are transmitted to the map services involved. No click on an activation button is required for this. The legal basis is Article 6(1)(f) GDPR. Our legitimate interest lies in a user-friendly display of our location and route planning. Information about processing by the map provider can be found in the", "Une carte de www.openstreetmap.org est intégrée à la page de contact. Le fournisseur est l’OpenStreetMap Foundation, Royaume-Uni. Dès que votre navigateur charge la carte intégrée, votre adresse IP et vos données techniques d’accès sont notamment transmises aux services cartographiques concernés. Aucun clic sur un bouton d’activation n’est nécessaire. La base juridique est l’article 6, paragraphe 1, point f du RGPD. Notre intérêt légitime réside dans une présentation conviviale de notre emplacement et dans la planification d’itinéraires. Les informations sur le traitement par le fournisseur de la carte figurent dans la")} <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">{t("Datenschutzerklaerung der OpenStreetMap Foundation", "OpenStreetMap Foundation privacy policy", "politique de confidentialité de l’OpenStreetMap Foundation")}</a>.
+            </p>
+            <p>
+              {t("Links zu externen Diensten, zum Beispiel Google Maps fuer die Routenplanung oder WhatsApp fuer eine direkte Kontaktaufnahme, fuehren zu Angeboten Dritter. Google Maps ist als Link, nicht als eingebettete Google-Karte eingebunden. Erst beim Aufruf des Links wird die entsprechende Verbindung hergestellt. Fuer die Verarbeitung auf diesen Angeboten sind die jeweiligen Anbieter verantwortlich.", "Links to external services, such as Google Maps for route planning or WhatsApp for direct contact, lead to third-party services. Google Maps is included as a link, not as an embedded Google map. The corresponding connection is only established when the link is opened. The respective providers are responsible for processing on those services.", "Les liens vers des services externes, par exemple Google Maps pour la planification d’itinéraires ou WhatsApp pour une prise de contact directe, renvoient à des services tiers. Google Maps est proposé sous forme de lien et non de carte Google intégrée. La connexion correspondante n’est établie qu’à l’ouverture du lien. Les fournisseurs respectifs sont responsables du traitement sur ces services.")}
+            </p>
+          </section>
+
+          <section>
+            <h2>{t("8. WhatsApp, Telefon und direkte Kommunikation", "8. WhatsApp, telephone and direct communication", "8. WhatsApp, téléphone et communication directe")}</h2>
+            <p>
+              {t("Wenn Sie uns per Telefon, WhatsApp oder E-Mail kontaktieren, verarbeiten wir Ihre Kommunikationsdaten zur Bearbeitung Ihrer Anfrage. Dazu gehoeren beispielsweise Name, Telefonnummer, E-Mail-Adresse, Inhalt Ihrer Mitteilung und von Ihnen uebermittelte Fahrzeugbilder oder Unterlagen. WhatsApp wird fuer Nutzer im Europaeischen Wirtschaftsraum durch WhatsApp Ireland Limited, Irland, angeboten. Bei Nutzung werden insbesondere Telefonnummern, Kommunikations- und technische Nutzungsdaten auch durch WhatsApp verarbeitet. Dabei kann es zu Verarbeitungen ausserhalb der EU beziehungsweise des EWR kommen.", "If you contact us by telephone, WhatsApp or email, we process your communication data to handle your inquiry. This includes, for example, your name, telephone number, email address, the content of your message and any vehicle images or documents you send. WhatsApp is provided to users in the European Economic Area by WhatsApp Ireland Limited, Ireland. When used, telephone numbers, communication data and technical usage data in particular are also processed by WhatsApp. This may involve processing outside the EU or the EEA.", "Si vous nous contactez par téléphone, WhatsApp ou e-mail, nous traitons vos données de communication pour répondre à votre demande. Elles comprennent par exemple le nom, le numéro de téléphone, l’adresse e-mail, le contenu de votre message ainsi que les photos du véhicule ou les documents que vous transmettez. WhatsApp est fourni aux utilisateurs de l’Espace économique européen par WhatsApp Ireland Limited, Irlande. Lors de son utilisation, WhatsApp traite également notamment les numéros de téléphone, les données de communication et les données techniques d’utilisation. Des traitements peuvent alors avoir lieu en dehors de l’UE ou de l’EEE.")}
+            </p>
+            <p>
+              {t("Fuer unsere Anfragebearbeitung gelten die in Abschnitt 3 erlaeuterten Rechtsgrundlagen. Die Nutzung von WhatsApp ist freiwillig; Telefon, E-Mail und Kontaktformular stehen als Alternativen zur Verfuegung. Die Verarbeitung durch WhatsApp richtet sich nach dessen", "The legal bases explained in section 3 apply to our handling of inquiries. Use of WhatsApp is voluntary; telephone, email and the contact form are available as alternatives. Processing by WhatsApp is governed by its", "Les bases juridiques exposées à la section 3 s’appliquent à notre traitement des demandes. L’utilisation de WhatsApp est facultative ; le téléphone, l’e-mail et le formulaire de contact sont des solutions alternatives. Le traitement par WhatsApp est régi par sa")}
+              <a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener">{t("Datenschutzrichtlinie", "privacy policy", "politique de confidentialité")}</a>.
+            </p>
+          </section>
+
+          <section>
+            <h2>{t("9. Speicherdauer", "9. Retention period", "9. Durée de conservation")}</h2>
+            <p>
+              {t("Wir speichern personenbezogene Daten nur so lange, wie dies fuer die Bearbeitung Ihrer Anfrage, die Anbahnung oder Durchfuehrung eines Ankaufs, die Erfuellung gesetzlicher Aufbewahrungspflichten oder die Abwehr beziehungsweise Geltendmachung rechtlicher Ansprueche erforderlich ist. Bei Anfragen ohne Vertragsschluss ist der Abschluss der Bearbeitung massgeblich, sofern keine weitere Rechtsgrundlage fuer eine Aufbewahrung besteht. Fuer Vertrags- und Geschaeftsunterlagen gelten die jeweils einschlaegigen handels- und steuerrechtlichen Pflichten insbesondere nach HGB und AO. Soweit die Aufbewahrung zur Erfuellung solcher Pflichten erforderlich ist, ist Art. 6 Abs. 1 lit. c DSGVO Rechtsgrundlage. Bei einer Aufbewahrung zur Rechtsverfolgung ist Art. 6 Abs. 1 lit. f DSGVO Rechtsgrundlage; massgeblich sind die einschlaegigen Verjaehrungsfristen.", "We retain personal data only for as long as necessary to handle your inquiry, initiate or complete a purchase, fulfil statutory retention obligations, or defend or assert legal claims. For inquiries that do not result in a contract, completion of handling is decisive unless there is another legal basis for retention. Contractual and business documents are subject to the applicable commercial and tax-law obligations, in particular under the German Commercial Code (HGB) and Fiscal Code (AO). Insofar as retention is necessary to fulfil such obligations, the legal basis is Article 6(1)(c) GDPR. For retention for legal enforcement, the legal basis is Article 6(1)(f) GDPR; the applicable limitation periods are decisive.", "Nous ne conservons les données personnelles que pendant la durée nécessaire au traitement de votre demande, à la préparation ou à la réalisation d’un rachat, au respect des obligations légales de conservation ou à la défense ou à l’exercice de droits en justice. Pour les demandes sans conclusion de contrat, la fin du traitement est déterminante, sauf autre base juridique justifiant la conservation. Les documents contractuels et commerciaux sont soumis aux obligations commerciales et fiscales applicables, notamment celles du Code de commerce allemand (HGB) et du Code fiscal allemand (AO). Dans la mesure où la conservation est nécessaire au respect de ces obligations, la base juridique est l’article 6, paragraphe 1, point c du RGPD. Pour une conservation aux fins de faire valoir des droits en justice, la base juridique est l’article 6, paragraphe 1, point f du RGPD ; les délais de prescription applicables sont déterminants.")}
+            </p>
+          </section>
+
+          <section>
+            <h2>{t("10. Empfaenger von Daten", "10. Data recipients", "10. Destinataires des données")}</h2>
+            <p>
+              {t("Zugriff auf personenbezogene Daten erhalten nur Stellen, die diese zur Bearbeitung Ihrer Anfrage oder zum Betrieb der Website benoetigen. Dazu koennen technische Dienstleister wie Hosting-, E-Mail- und IT-Dienstleister gehoeren. Eine Weitergabe an Dritte erfolgt nur, wenn sie erforderlich ist, gesetzlich erlaubt ist, eine Einwilligung vorliegt oder wir gesetzlich dazu verpflichtet sind.", "Access to personal data is granted only to parties that need it to handle your inquiry or operate the website. These may include technical service providers such as hosting, email and IT providers. Data is disclosed to third parties only if necessary, permitted by law, covered by consent or required by law.", "L’accès aux données personnelles est réservé aux organismes qui en ont besoin pour traiter votre demande ou exploiter le site. Il peut s’agir de prestataires techniques tels que les fournisseurs d’hébergement, d’e-mail et de services informatiques. Les données ne sont transmises à des tiers que si cela est nécessaire, autorisé par la loi, couvert par un consentement ou imposé par une obligation légale.")}
+            </p>
+          </section>
+
+          <section id="rechte">
+            <h2>{t("11. Ihre Rechte", "11. Your rights", "11. Vos droits")}</h2>
+            <p>
+              {t("Sie haben im Rahmen der gesetzlichen Voraussetzungen das Recht auf Auskunft, Berichtigung, Loeschung, Einschraenkung der Verarbeitung, Datenuebertragbarkeit sowie Widerspruch gegen bestimmte Verarbeitungen. Soweit eine Verarbeitung auf Ihrer Einwilligung beruht, koennen Sie diese Einwilligung jederzeit mit Wirkung fuer die Zukunft widerrufen. Die Rechtmaessigkeit der Verarbeitung bis zum Widerruf bleibt davon unberuehrt.", "Subject to the statutory conditions, you have the right of access, rectification, erasure, restriction of processing, data portability and objection to certain processing. Insofar as processing is based on your consent, you may withdraw that consent at any time with effect for the future. This does not affect the lawfulness of processing before withdrawal.", "Sous réserve des conditions légales, vous disposez des droits d’accès, de rectification, d’effacement, de limitation du traitement, de portabilité des données et d’opposition à certains traitements. Lorsqu’un traitement repose sur votre consentement, vous pouvez le retirer à tout moment pour l’avenir. La licéité du traitement effectué avant le retrait n’en est pas affectée.")}
+            </p>
+            <p>
+              <strong>{t("Widerspruchsrecht nach Art. 21 DSGVO:", "Right to object under Article 21 GDPR:", "Droit d’opposition au titre de l’article 21 du RGPD :")}</strong> {t("Soweit wir Daten auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO verarbeiten, koennen Sie aus Gruenden, die sich aus Ihrer besonderen Situation ergeben, jederzeit widersprechen. Wir verarbeiten die Daten dann nicht weiter, es sei denn, wir koennen zwingende schutzwuerdige Gruende nachweisen, die Ihre Interessen, Rechte und Freiheiten ueberwiegen, oder die Verarbeitung dient der Geltendmachung, Ausuebung oder Verteidigung von Rechtsanspruechen.", "Insofar as we process data on the basis of Article 6(1)(f) GDPR, you may object at any time on grounds relating to your particular situation. We will then no longer process the data unless we can demonstrate compelling legitimate grounds overriding your interests, rights and freedoms, or the processing serves the establishment, exercise or defence of legal claims.", "Lorsque nous traitons des données sur le fondement de l’article 6, paragraphe 1, point f du RGPD, vous pouvez vous y opposer à tout moment pour des raisons tenant à votre situation particulière. Nous ne traiterons alors plus les données, sauf si nous démontrons des motifs légitimes et impérieux prévalant sur vos intérêts, droits et libertés, ou si le traitement sert à la constatation, à l’exercice ou à la défense de droits en justice.")}
+            </p>
+            <p>
+              {t("Zur Ausuebung Ihrer Rechte koennen Sie uns ueber die oben genannten Kontaktdaten erreichen.", "To exercise your rights, you may reach us using the contact details above.", "Pour exercer vos droits, vous pouvez nous joindre aux coordonnées indiquées ci-dessus.")}
+            </p>
+          </section>
+
+          <section id="aufsicht">
+            <h2>{t("12. Beschwerderecht bei einer Aufsichtsbehoerde", "12. Right to lodge a complaint with a supervisory authority", "12. Droit d’introduire une réclamation auprès d’une autorité de contrôle")}</h2>
+            <p>
+              {t("Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehoerde zu beschweren. Zustaendig kann insbesondere die Aufsichtsbehoerde Ihres Wohnorts, Ihres Arbeitsplatzes oder unseres Unternehmenssitzes sein.", "You have the right to lodge a complaint with a data protection supervisory authority. In particular, the authority for your place of residence, place of work or our business location may be competent.", "Vous avez le droit d’introduire une réclamation auprès d’une autorité de contrôle de la protection des données. L’autorité de votre lieu de résidence, de votre lieu de travail ou du siège de notre entreprise peut notamment être compétente.")}
+            </p>
+            <p>
+              {t("Fuer Schleswig-Holstein ist regelmaessig zustaendig:", "The authority generally competent for Schleswig-Holstein is:", "L’autorité généralement compétente pour le Schleswig-Holstein est :")}<br />
+              {t("Unabhaengiges Landeszentrum fuer Datenschutz Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel", "Independent Centre for Data Protection Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel", "Centre indépendant pour la protection des données du Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel")}<br />
+              {t("Website:", "Website:", "Site web :")} <a href="https://www.datenschutzzentrum.de/" target="_blank" rel="noopener">www.datenschutzzentrum.de</a>
+            </p>
+          </section>
+
+          <section>
+            <h2>{t("13. Aktualitaet dieser Datenschutzerklaerung", "13. Updates to this privacy policy", "13. Mise à jour de la présente politique de confidentialité")}</h2>
+            <p>
+              {t("Stand: 30. Oktober 2026. Wir passen diese Datenschutzerklaerung an, wenn sich technische, rechtliche oder organisatorische Verarbeitungsvorgaenge aendern.", "Last updated: 30 October 2026. We update this privacy policy when technical, legal or organisational processing operations change.", "Mise à jour : 30 octobre 2026. Nous adaptons la présente politique de confidentialité lorsque les opérations de traitement changent sur le plan technique, juridique ou organisationnel.")}
+            </p>
+          </section>
+
+          <p class="legal-note">
+            {t("Vor Veroeffentlichung sind die produktive Hostingumgebung, die wirksamen Auftragsverarbeitungsvertraege und Drittlandgarantien, der Postfachanbieter, die tatsaechlichen Speicher- und Loeschablaeufe sowie die WhatsApp-Konfiguration abzugleichen. Eine etwaige Pflicht zur Benennung eines Datenschutzbeauftragten und die rechtlichen Voraussetzungen der direkten Karteneinbindung sind gesondert zu pruefen.", "Before publication, the production hosting environment, valid data processing agreements and safeguards for third-country transfers, mailbox provider, actual retention and deletion procedures, and WhatsApp configuration must be checked for consistency. Any obligation to appoint a data protection officer and the legal requirements for directly embedding the map must be examined separately.", "Avant publication, il convient de vérifier la concordance de l’environnement d’hébergement en production, des accords de sous-traitance valables et des garanties pour les transferts vers des pays tiers, du fournisseur de messagerie, des procédures effectives de conservation et de suppression ainsi que de la configuration de WhatsApp. Toute obligation de désigner un délégué à la protection des données et les conditions juridiques de l’intégration directe de la carte doivent être examinées séparément.")}
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: 0;
+    background: #f6f8fb;
+  }
+
+  .legal-hero {
+    padding: 86px 0 56px;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255, 107, 0, 0.18), transparent 24rem),
+      linear-gradient(135deg, #07111f, #0c223d);
+    color: #fff;
+  }
+
+  .legal-hero-inner {
+    max-width: 980px;
+  }
+
+  .legal-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 16px 0 18px;
+    max-width: 900px;
+    font-size: clamp(46px, 7vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+  }
+
+  .legal-hero p {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    padding: 58px 0 86px;
+  }
+
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .legal-toc,
+  .legal-card {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 24px 70px rgba(17, 24, 39, 0.08);
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 110px;
+    padding: 22px;
+  }
+
+  .legal-toc strong,
+  .legal-toc a {
+    display: block;
+  }
+
+  .legal-toc strong {
+    margin-bottom: 14px;
+    color: #111827;
+  }
+
+  .legal-toc a {
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+  }
+
+  .legal-toc a:hover {
+    color: var(--orange);
+  }
+
+  .legal-card {
+    padding: clamp(28px, 4vw, 54px);
+  }
+
+  .legal-card section + section {
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  p,
+  li {
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  a {
+    font-weight: 750;
+    color: #111827;
+  }
+
+  .legal-note {
+    margin-top: 38px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(255, 107, 0, 0.1);
+    color: #7a3600;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .legal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .legal-toc {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .legal-page {
+      padding-top: 0;
+    }
+
+    .legal-hero {
+      padding: 58px 0 42px;
+    }
+  }
+</style>

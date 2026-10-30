@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Hero from "./Hero.astro";
+import FloatingContact from "./FloatingContact.astro";
+import Footer from "./Footer.astro";
+import HomeFAQ from "./HomeFAQ.astro";
+import CitySection from "./CitySection.astro";
+import HomeVehicleTypes from "./HomeVehicleTypes.astro";
+import HomeProcessSection from "./HomeProcessSection.astro";
+import CustomerReviews from "./CustomerReviews.astro";
+import HomePurchaseSections from "./HomePurchaseSections.astro";
+import HomeContactSection from "./HomeContactSection.astro";
+import { createFaqSchema } from "../utils/seo";
+import { homeCopy } from "../data/home";
+import { getLocaleFromPath, localizePath } from "../data/i18n";
+import { absoluteUrl } from "../utils/seo";
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = homeCopy[lang];
+---
+
+<BaseLayout
+  title={c.title}
+  description={c.description}
+  canonical={absoluteUrl(localizePath("home", lang))}
+  schema={createFaqSchema(c.faqs)}
+>
+  <Header />
+  <main>
+    <Hero />
+    <HomeProcessSection />
+    <HomeVehicleTypes>
+      <picture slot="vehicle-image">
+        <source media="(max-width: 760px)" srcset="/images/waw_real_1_mobile.webp" width="1024" height="1536" />
+        <img src="/images/waw_real_1.webp" alt={c.realVehicleAlt} width="1448" height="1086" loading="lazy" />
+      </picture>
+    </HomeVehicleTypes>
+    <HomePurchaseSections>
+      <CitySection slot="before-fleet" />
+    </HomePurchaseSections>
+    <CustomerReviews />
+    <HomeContactSection />
+    <HomeFAQ />
+  </main>
+
+  <Footer />
+  <FloatingContact />
+</BaseLayout>

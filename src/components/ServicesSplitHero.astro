@@ -1,43 +1,43 @@
 ---
 import { Building2, Handshake, Route } from "@lucide/astro";
+import { getLocaleFromPath, localizePath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
+interface Props { lang?: Locale }
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang];
 ---
 
 <section class="services-split-hero">
   <div class="container services-split-grid">
     <div class="services-split-copy reveal">
-      <span class="services-kicker">LEISTUNGEN</span>
-      <h1>Ankauf von LKW und Nutzfahrzeugen jeder Art.</h1>
-      <p>
-        Ob einzelner LKW oder kompletter Fuhrpark: Wir kaufen Sattelzugmaschinen,
-        Auflieger, Anhänger, Transporter und Baumaschinen weltweit
-        an. Auch ältere Fahrzeuge, hohe Laufleistungen oder Schäden
-        sind kein Ausschlusskriterium.
-      </p>
+      <span class="services-kicker">{copy.hero.kicker}</span>
+      <h1>{copy.hero.heading}</h1>
+      <p>{copy.hero.text}</p>
 
       <div class="services-hero-actions">
-        <a href="/kontakt#kontaktformular" class="btn btn-primary">Fahrzeug unverbindlich anbieten</a>
-        <a href="/ablauf" class="btn services-hero-secondary">Ablauf ansehen</a>
+        <a href={`${localizePath("contact", lang)}#kontaktformular`} class="btn btn-primary">{copy.offer}</a>
+        <a href={localizePath("process", lang)} class="btn services-hero-secondary">{copy.process}</a>
       </div>
 
-      <div class="services-trustpoints" aria-label="Vorteile">
-        <span><Route size={18} stroke-width={2.4} />Weltweiter Ankauf</span>
-        <span><Handshake size={18} stroke-width={2.4} />Direkte Ansprechpartner</span>
-        <span><Building2 size={18} stroke-width={2.4} />Mehrere Fahrzeuge oder Fuhrparks</span>
+      <div class="services-trustpoints" aria-label={copy.benefitsLabel}>
+        <span><Route size={18} stroke-width={2.4} />{copy.hero.trust[0]}</span>
+        <span><Handshake size={18} stroke-width={2.4} />{copy.hero.trust[1]}</span>
+        <span><Building2 size={18} stroke-width={2.4} />{copy.hero.trust[2]}</span>
       </div>
     </div>
 
     <div class="services-hero-visual reveal delay-2">
       <img
         src="/images/leistungen-hero.webp"
-        alt="Reihe von LKW auf einem professionellen Nutzfahrzeughof"
+        alt={copy.hero.imageAlt}
         width="2244"
         height="701"
         fetchpriority="high"
         decoding="async"
       />
       <div class="services-hero-card">
-        <strong>LKW, Auflieger, Transporter & Fuhrparks</strong>
-        <span>Direkt anbieten und persönlich abstimmen</span>
+        <strong>{copy.hero.cardTitle}</strong>
+        <span>{copy.hero.cardText}</span>
       </div>
     </div>
   </div>

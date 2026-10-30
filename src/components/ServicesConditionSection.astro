@@ -1,29 +1,20 @@
 ---
 import { AlertTriangle, CircleCheck, Gauge, Wrench } from "@lucide/astro";
-
-const conditions = [
-  "hohe Laufleistung",
-  "ohne TÜV oder HU",
-  "Motorschaden",
-  "Getriebeschaden",
-  "Unfallschaden",
-  "ältere Baujahre",
-  "optische Mängel",
-  "nicht fahrbereite Fahrzeuge",
-];
+import { getLocaleFromPath, localizePath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
+interface Props { lang?: Locale }
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang].condition;
+const conditions = copy.items;
 ---
 
 <section class="services-condition">
   <div class="container condition-grid">
     <div class="condition-copy" data-animate>
-      <span>AUCH BEI MÄNGELN</span>
-      <h2>Nicht nur perfekte Fahrzeuge kommen infrage.</h2>
-      <p>
-        Auch ältere Nutzfahrzeuge, hohe Laufleistungen oder technische Schäden
-        können Sie uns direkt anbieten. Wichtig sind Fahrzeugdaten, Standort
-        und, wenn möglich, ein paar Fotos.
-      </p>
-      <a href="/kontakt" class="btn btn-primary">Fahrzeug mit Mängeln anbieten</a>
+      <span>{copy.kicker}</span>
+      <h2>{copy.heading}</h2>
+      <p>{copy.text}</p>
+      <a href={localizePath("contact", lang)} class="btn btn-primary">{copy.offer}</a>
     </div>
 
     <div class="condition-panel" data-animate>
@@ -31,7 +22,7 @@ const conditions = [
         <div>
           <Wrench size={25} stroke-width={2.3} />
         </div>
-        <strong>Direkt anfragen, auch wenn nicht alle Daten vorliegen</strong>
+        <strong>{copy.panel}</strong>
       </div>
 
       <div class="condition-cards">
@@ -39,7 +30,7 @@ const conditions = [
           <article>
             {index % 3 === 0 ? <AlertTriangle size={18} stroke-width={2.3} /> : index % 3 === 1 ? <Gauge size={18} stroke-width={2.3} /> : <CircleCheck size={18} stroke-width={2.3} />}
             <span>{condition}</span>
-            <small>kann angefragt werden</small>
+            <small>{copy.note}</small>
           </article>
         ))}
       </div>

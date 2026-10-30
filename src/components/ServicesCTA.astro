@@ -1,25 +1,26 @@
 ---
 import { PhoneCall } from "@lucide/astro";
 import { site } from "../data/site";
+import { getLocaleFromPath, localizePath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
+interface Props { lang?: Locale }
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang];
 ---
 
 <section class="services-final-cta">
   <div class="container services-final-panel" data-animate>
     <div>
-      <span>FAHRZEUG ANBIETEN</span>
-      <h2>Nutzfahrzeug oder Fuhrpark verkaufen?</h2>
-      <p>
-        Nennen Sie uns Fahrzeugtyp, Marke, Baujahr, Kilometerstand, Zustand,
-        Standort und – wenn vorhanden – ein paar Fotos. Fehlen einzelne Daten,
-        klären wir diese gemeinsam mit Ihnen.
-      </p>
+      <span>{copy.cta.kicker}</span>
+      <h2>{copy.cta.heading}</h2>
+      <p>{copy.cta.text}</p>
     </div>
 
     <div class="services-final-actions">
-      <a href="/kontakt#kontaktformular" class="btn btn-primary">Fahrzeug unverbindlich anbieten</a>
+      <a href={`${localizePath("contact", lang)}#kontaktformular`} class="btn btn-primary">{copy.offer}</a>
       <a href={`tel:${site.phoneHref}`} class="services-call-btn">
         <PhoneCall size={18} stroke-width={2.4} aria-hidden="true" />
-        Direkt anrufen
+        {copy.call}
       </a>
     </div>
   </div>

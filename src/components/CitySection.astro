@@ -3,6 +3,10 @@ import { Image } from "astro:assets";
 import { ArrowRight } from "@lucide/astro";
 import { cities } from "../data/cities";
 import { getCityImage } from "../utils/cityImages";
+import { getLocaleFromPath, localizePath, localizeCityPath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = homeCopy[lang];
 
 const regions = ["hamburg", "berlin", "frankfurt", "muenchen"].map((slug) => {
   const city = cities.find((entry) => entry.slug === slug)!;
@@ -14,16 +18,16 @@ const regions = ["hamburg", "berlin", "frankfurt", "muenchen"].map((slug) => {
   <div class="container">
     <div class="city-head">
       <div>
-        <h2 id="regions-title">Ihr Fahrzeug steht nicht in Talkau?</h2>
-        <p>Wir kaufen weltweit an. Die Städte sind Beispiele für unsere Ankaufgebiete, keine weiteren Niederlassungen.</p>
+        <h2 id="regions-title">{c.regionsTitle}</h2>
+        <p>{c.regionsText}</p>
       </div>
-      <a href="/standorte" class="text-link">Alle Ankaufgebiete <ArrowRight size={18} aria-hidden="true" /></a>
+      <a href={localizePath("locations", lang)} class="text-link">{c.regionsLink} <ArrowRight size={18} aria-hidden="true" /></a>
     </div>
     <div class="city-grid">
       {regions.map((city) => (
-        <a href={`/lkw-verkaufen/${city.slug}`} class="city-link">
+        <a href={localizeCityPath(city.slug, lang)} class="city-link">
           {city.image && <Image src={city.image} width={480} height={300} format="webp" alt="" loading="lazy" sizes="(max-width: 760px) 50vw, 25vw" widths={[240, 480]} />}
-          <span>LKW verkaufen in {city.name}<ArrowRight size={18} aria-hidden="true" /></span>
+          <span>{c.sellIn} {city.name}<ArrowRight size={18} aria-hidden="true" /></span>
         </a>
       ))}
     </div>

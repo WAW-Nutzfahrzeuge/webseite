@@ -1,22 +1,25 @@
 ---
 import { ArrowRight } from "@lucide/astro";
-const conditions = ["Motor- oder Getriebeschaden", "Unfallschaden", "Hohe Laufleistung oder älteres Baujahr", "Ohne HU oder nicht fahrbereit"];
+import { getLocaleFromPath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const c = homeCopy[getLocaleFromPath(Astro.url.pathname)];
+const conditions = c.conditions;
 ---
 
 <section class="conditions-section" aria-labelledby="conditions-title">
   <div class="container purchase-layout">
     <div class="purchase-copy">
-      <h2 id="conditions-title">Auch beschädigt.<br />Auch nicht fahrbereit.</h2>
-      <p>Ein Schaden muss kein Grund sein, Ihr Nutzfahrzeug nicht anzubieten. Beschreiben Sie uns den Zustand und bekannte Mängel – auch wenn noch nicht alle Fahrzeugdaten vorliegen.</p>
+      <h2 id="conditions-title">{c.conditionTitle[0]}<br />{c.conditionTitle[1]}</h2>
+      <p>{c.conditionText}</p>
       <ul class="condition-list">
         {conditions.map((condition) => <li>{condition}</li>)}
       </ul>
-      <p class="purchase-note">Ob ein Ankauf möglich ist, prüfen wir anhand Ihrer Angaben. Eine Anfrage ist keine Ankaufgarantie.</p>
-      <a href="#kontaktformular" class="text-link">Fahrzeug mit Schäden anbieten <ArrowRight size={18} aria-hidden="true" /></a>
+      <p class="purchase-note">{c.conditionNote}</p>
+      <a href="#kontaktformular" class="text-link">{c.conditionLink} <ArrowRight size={18} aria-hidden="true" /></a>
     </div>
     <figure>
-      <img src="/images/ablauf-inspection.webp" alt="Begutachtung einer Sattelzugmaschine" width="1448" height="1086" loading="lazy" />
-      <figcaption>Fahrzeugzustand und bekannte Schäden gemeinsam klären.</figcaption>
+      <img src="/images/ablauf-inspection.webp" alt={c.inspectionAlt} width="1448" height="1086" loading="lazy" />
+      <figcaption>{c.inspectionCaption}</figcaption>
     </figure>
   </div>
 </section>
@@ -28,23 +31,16 @@ const conditions = ["Motor- oder Getriebeschaden", "Unfallschaden", "Hohe Laufle
     <figure>
       <picture>
         <source media="(max-width: 760px)" srcset="/images/waw_real_2_mobile.webp" width="1024" height="1536" />
-        <img src="/images/waw_real_2.webp" alt="Scania-Sattelzugmaschine vor dem Gebäude von WAW Nutzfahrzeuge" width="1448" height="1086" loading="lazy" />
+        <img src="/images/waw_real_2.webp" alt={c.fleetAlt} width="1448" height="1086" loading="lazy" />
       </picture>
     </figure>
     <div class="purchase-copy">
-      <h2 id="fleet-title">Ein Fahrzeug abgeben.<br />Oder den Fuhrpark verändern.</h2>
-      <p>Fahrzeugwechsel, Flottenerneuerung oder überschüssige Fahrzeuge? Wir sind Ansprechpartner für Speditionen, Bauunternehmen, Gewerbebetriebe und Nutzfahrzeughändler.</p>
+      <h2 id="fleet-title">{c.fleetTitle[0]}<br />{c.fleetTitle[1]}</h2>
+      <p>{c.fleetText}</p>
       <div class="sale-situations">
-        <div>
-          <h3>Ein einzelnes Fahrzeug</h3>
-          <p>Nennen Sie uns Fahrzeugtyp, Standort und Zustand. Fehlende Angaben können wir im Gespräch ergänzen.</p>
-        </div>
-        <div>
-          <h3>Mehrere Fahrzeuge oder ein Fuhrpark</h3>
-          <p>Eine grobe Übersicht zu Anzahl, Fahrzeugarten und Standorten genügt zum Start. Eine vollständige Fahrzeugliste ist keine Voraussetzung.</p>
-        </div>
+        {c.situations.map((item) => <div><h3>{item.title}</h3><p>{item.text}</p></div>)}
       </div>
-      <a href="#kontaktformular" class="text-link">Einzelfahrzeug oder Fuhrpark anbieten <ArrowRight size={18} aria-hidden="true" /></a>
+      <a href="#kontaktformular" class="text-link">{c.fleetLink} <ArrowRight size={18} aria-hidden="true" /></a>
     </div>
   </div>
 </section>

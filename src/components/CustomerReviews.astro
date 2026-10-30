@@ -1,4 +1,8 @@
 ---
+import { getLocaleFromPath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = homeCopy[lang];
 const reviews = [
   {
     name: "Jan Hendrik",
@@ -53,13 +57,13 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
 <section class="home-reviews section" aria-labelledby="home-reviews-title">
   <div class="container reviews-head" data-animate>
     <div>
-      <h2 id="home-reviews-title">Kunden, die WAW bereits vertrauen</h2>
+      <h2 id="home-reviews-title">{c.reviewsTitle}</h2>
       <p class="reviews-subtitle">
-        Bewertungen von
+        {c.reviewsFrom}
         <img
           class="reviews-google-logo"
           src="/images/google_logo.webp"
-          alt="Google Rezensionen"
+          alt={c.reviewsLabel}
           width="120"
           height="35"
           loading="lazy"
@@ -69,21 +73,21 @@ const loopedReviews = [...reviews, ...reviews, ...reviews];
   </div>
 
   <div class="reviews-shell" data-animate>
-    <div class="reviews-track" data-review-track aria-label="Google Kundenbewertungen">
+    <div class="reviews-track" data-review-track aria-label={c.reviewsLabel}>
       <div class="reviews-lane" data-review-lane>
         {loopedReviews.map((review, index) => (
         <article class="review-card" aria-hidden={index >= reviews.length ? "true" : "false"}>
           <div class="review-top">
             <div>
               <strong>{review.name}</strong>
-              <span>{review.meta}</span>
+              <span lang="de">{review.meta}</span>
             </div>
-            <div class="review-rating" aria-label="5 von 5 Sternen">
+            <div class="review-rating" aria-label={c.rating}>
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
             </div>
           </div>
-          <p>“{review.text}”</p>
-          <small>Google Rezension</small>
+          <p lang="de">“{review.text}”</p>
+          <small>{c.reviewLabel}</small>
         </article>
         ))}
       </div>

@@ -1,0 +1,262 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import { site } from "../data/site";
+import { getLocaleFromPath, localizePath, type Locale } from "../data/i18n";
+
+interface Props { lang?: Locale }
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const t = (de: string, en: string, fr: string) => ({ de, en, fr })[lang];
+const canonical = new URL(localizePath("legalNotice", lang), site.url).toString();
+---
+
+<BaseLayout
+  title={t("Impressum", "Legal notice", "Mentions légales") + " | WAW Nutzfahrzeuge"}
+  description={t("Impressum und Anbieterkennzeichnung der Website von WAW Nutzfahrzeuge.", "Legal notice and provider information for the WAW Nutzfahrzeuge website.", "Mentions légales et identification de l’éditeur du site de WAW Nutzfahrzeuge.")}
+  canonical={canonical}
+  lang={lang}
+>
+  <Header />
+
+  <main class="legal-page">
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <span class="legal-kicker">{t("RECHTLICHES", "LEGAL", "INFORMATIONS JURIDIQUES")}</span>
+        <h1>{t("Impressum", "Legal notice", "Mentions légales")}</h1>
+        <p>
+          {t("Anbieterkennzeichnung nach den gesetzlichen Informationspflichten fuer die Website von", "Provider identification in accordance with statutory information requirements for the website of", "Identification de l’éditeur conformément aux obligations légales d’information pour le site de")} {site.name}.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-content">
+      <div class="container legal-grid">
+        <aside class="legal-toc" aria-label={t("Inhaltsuebersicht", "Table of contents", "Table des matières")}>
+          <strong>{t("Uebersicht", "Overview", "Sommaire")}</strong>
+          <a href="#anbieter">{t("Anbieter", "Provider", "Éditeur")}</a>
+          <a href="#vertretung">{t("Vertretung", "Representation", "Représentation")}</a>
+          <a href="#register">{t("Register & Steuer", "Register & tax", "Registre et fiscalité")}</a>
+          <a href="#kontakt">{t("Kontakt", "Contact", "Contact")}</a>
+          <a href="#haftung">{t("Haftung", "Liability", "Responsabilité")}</a>
+          <a href="#streitbeilegung">{t("Streitbeilegung", "Dispute resolution", "Règlement des litiges")}</a>
+        </aside>
+
+        <article class="legal-card">
+          <section id="anbieter">
+            <h2>{t("Angaben gemaess § 5 DDG", "Information pursuant to section 5 DDG", "Informations conformément au § 5 DDG")}</h2>
+            <p>
+              <strong>{site.legal.name}</strong><br />
+              {site.address.street}<br />
+              {site.address.postalCode} {site.address.locality}<br />
+              {t("Deutschland", "Germany", "Allemagne")}
+            </p>
+          </section>
+
+          <section id="vertretung">
+            <h2>{t("Inhaber", "Owner", "Propriétaire")}</h2>
+            <p>
+              {site.legal.owner}
+            </p>
+          </section>
+
+          <section id="register">
+            <h2>{t("Registereintrag und Umsatzsteuer", "Register entry and VAT", "Immatriculation au registre et TVA")}</h2>
+            <p>
+              {t("Registergericht: [PLATZHALTER: Registergericht ergaenzen]", "Register court: [PLACEHOLDER: add register court]", "Tribunal chargé du registre : [À COMPLÉTER : ajouter le tribunal chargé du registre]")}<br />
+              {t("Registernummer: [PLATZHALTER: HRA-Nummer ergaenzen]", "Registration number: [PLACEHOLDER: add HRA number]", "Numéro d’immatriculation : [À COMPLÉTER : ajouter le numéro HRA]")}<br />
+              {t("Umsatzsteuer-Identifikationsnummer gemaess § 27a UStG:", "VAT identification number pursuant to section 27a UStG:", "Numéro d’identification à la TVA conformément au § 27a UStG :")}
+              {site.legal.vatId}
+            </p>
+          </section>
+
+          <section id="kontakt">
+            <h2>{t("Kontakt", "Contact", "Contact")}</h2>
+            <p>
+              {t("Telefon:", "Telephone:", "Téléphone :")} <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
+              {t("Mobil:", "Mobile:", "Mobile :")} <a href="tel:+491605265022">+49 160 5265022</a><br />
+              {t("Mobil:", "Mobile:", "Mobile :")} <a href="tel:+491724538149">+49 172 4538149</a><br />
+              {t("E-Mail:", "Email:", "E-mail :")} <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+          </section>
+
+          <section id="haftung">
+            <h2>{t("Haftung fuer Inhalte", "Liability for content", "Responsabilité relative aux contenus")}</h2>
+            <p>
+              {t("Fuer die Inhalte dieser Website gelten die gesetzlichen Verantwortlichkeits- und Haftungsregelungen. Wenn Sie einen Fehler oder eine moegliche Rechtsverletzung feststellen, koennen Sie uns ueber die oben genannten Kontaktdaten darauf hinweisen.", "The content of this website is subject to the statutory rules on responsibility and liability. If you discover an error or a possible infringement, you may notify us using the contact details above.", "Les contenus de ce site sont soumis aux dispositions légales relatives à la responsabilité. Si vous constatez une erreur ou une éventuelle violation du droit, vous pouvez nous en informer aux coordonnées indiquées ci-dessus.")}
+            </p>
+
+            <h2>{t("Haftung fuer Links", "Liability for links", "Responsabilité relative aux liens")}</h2>
+            <p>
+              {t("Diese Website enthaelt Links zu Angeboten Dritter. Fuer deren Inhalte sind die jeweiligen Anbieter verantwortlich. Unsere eigene Verantwortlichkeit richtet sich auch bei Verlinkungen nach den gesetzlichen Vorschriften.", "This website contains links to third-party services. The respective providers are responsible for their content. Our own responsibility, including for links, is governed by statutory provisions.", "Ce site contient des liens vers des services tiers. Leurs contenus relèvent de la responsabilité de leurs fournisseurs respectifs. Notre propre responsabilité, y compris en matière de liens, est régie par les dispositions légales.")}
+            </p>
+
+            <h2>{t("Urheberrecht", "Copyright", "Droit d’auteur")}</h2>
+            <p>
+              {t("Texte, Bilder und weitere Inhalte sind nach Massgabe der gesetzlichen Vorschriften geschuetzt. Nutzungen ausserhalb gesetzlicher Erlaubnisse erfordern die Zustimmung des jeweiligen Rechteinhabers. Fuer eingebundene Open-Source-Schriften und Icons gelten die jeweiligen Lizenzbedingungen.", "Texts, images and other content are protected in accordance with statutory provisions. Uses beyond those permitted by law require the consent of the respective rights holder. The respective licence terms apply to the included open-source fonts and icons.", "Les textes, images et autres contenus sont protégés conformément aux dispositions légales. Toute utilisation dépassant les autorisations légales nécessite l’accord du titulaire des droits concerné. Les polices et icônes open source intégrées sont soumises à leurs conditions de licence respectives.")}
+            </p>
+          </section>
+
+          <section id="streitbeilegung">
+            <h2>{t("Verbraucherstreitbeilegung", "Consumer dispute resolution", "Règlement des litiges de consommation")}</h2>
+            <p>
+              {t("Die Angabe zur Bereitschaft oder Verpflichtung zur Teilnahme an Verfahren vor einer Verbraucherschlichtungsstelle ist vor Veroeffentlichung noch durch den Inhaber zu bestaetigen.", "The information on willingness or obligation to participate in proceedings before a consumer dispute resolution body must still be confirmed by the owner before publication.", "Les informations relatives à la volonté ou à l’obligation de participer à une procédure devant un organisme de règlement des litiges de consommation doivent encore être confirmées par le propriétaire avant publication.")}
+            </p>
+          </section>
+
+          <p class="legal-note">
+            {t("Vor Veroeffentlichung: Registergericht und HRA-Nummer ergaenzen sowie die Angaben zur Verbraucherstreitbeilegung und eine gegebenenfalls zugeteilte Wirtschafts-Identifikationsnummer pruefen.", "Before publication: add the register court and HRA number, and check the consumer dispute resolution information and any assigned German business identification number.", "Avant publication : compléter le tribunal chargé du registre et le numéro HRA, puis vérifier les informations relatives au règlement des litiges de consommation et tout numéro allemand d’identification économique éventuellement attribué.")}
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <FloatingContact />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: 0;
+    background: #f6f8fb;
+  }
+
+  .legal-hero {
+    padding: 86px 0 56px;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255, 107, 0, 0.18), transparent 24rem),
+      linear-gradient(135deg, #07111f, #0c223d);
+    color: #fff;
+  }
+
+  .legal-hero-inner {
+    max-width: 980px;
+  }
+
+  .legal-kicker {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 16px 0 18px;
+    max-width: 900px;
+    font-size: clamp(46px, 7vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+  }
+
+  .legal-hero p {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    padding: 58px 0 86px;
+  }
+
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .legal-toc,
+  .legal-card {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 24px 70px rgba(17, 24, 39, 0.08);
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 110px;
+    padding: 22px;
+  }
+
+  .legal-toc strong,
+  .legal-toc a {
+    display: block;
+  }
+
+  .legal-toc strong {
+    margin-bottom: 14px;
+    color: #111827;
+  }
+
+  .legal-toc a {
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+  }
+
+  .legal-toc a:hover {
+    color: var(--orange);
+  }
+
+  .legal-card {
+    padding: clamp(28px, 4vw, 54px);
+  }
+
+  .legal-card section + section {
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  p,
+  li {
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  a {
+    font-weight: 750;
+    color: #111827;
+  }
+
+  .legal-note {
+    margin-top: 38px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(255, 107, 0, 0.1);
+    color: #7a3600;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .legal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .legal-toc {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .legal-page {
+      padding-top: 0;
+    }
+
+    .legal-hero {
+      padding: 58px 0 42px;
+    }
+  }
+</style>

@@ -178,7 +178,7 @@ export function getRouteKeyFromPath(pathname: string): RouteKey | null {
     const prefix = `/${locale}/`;
     if (!cleanPath.startsWith(prefix)) continue;
 
-    const slug = cleanPath.slice(prefix.length).split("/")[0];
+    const slug = cleanPath.slice(prefix.length);
     for (const key of Object.keys(routeSlugAliases) as StaticRouteKey[]) {
       if (routeSlugAliases[key].includes(slug)) return key;
     }
@@ -202,6 +202,9 @@ export function getLocalizedEquivalentPath(pathname: string, locale: Locale): st
   const citySlug = getCitySlugFromPath(pathname);
   if (citySlug) return localizeCityPath(citySlug, locale);
 
+  const stateSlug = getStateSlugFromPath(pathname);
+  if (stateSlug) return `${localizePath("locations", locale)}/${stateSlug}`;
+
   const routeKey = getRouteKeyFromPath(pathname);
   if (routeKey) return localizePath(routeKey, locale);
 
@@ -209,11 +212,21 @@ export function getLocalizedEquivalentPath(pathname: string, locale: Locale): st
 }
 
 export function getAlternates(pathname: string) {
-  if (!getRouteKeyFromPath(pathname) && !getCitySlugFromPath(pathname)) return [];
+  if (!getRouteKeyFromPath(pathname) && !getCitySlugFromPath(pathname) && !getStateSlugFromPath(pathname)) return [];
   return locales.map((locale) => ({
     locale,
     href: getLocalizedEquivalentPath(pathname, locale),
   }));
+}
+
+export function getStateSlugFromPath(pathname: string): string | null {
+  const cleanPath = withTrailingSlash(pathname);
+  for (const prefix of Object.values(routeMap.locations)) {
+    if (cleanPath.startsWith(`${prefix}/`)) {
+      return cleanPath.slice(prefix.length + 1).split("/")[0] || null;
+    }
+  }
+  return null;
 }
 
 export function getLocaleFromPath(pathname: string): Locale {

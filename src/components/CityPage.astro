@@ -1,0 +1,125 @@
+---
+import { getImage } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import FloatingContact from "./FloatingContact.astro";
+import LeadForm from "./LeadForm.astro";
+import HomeProcessSection from "./HomeProcessSection.astro";
+import HomeVehicleTypes from "./HomeVehicleTypes.astro";
+import { cities, indexableCitySlugs, type City } from "../data/cities";
+import { absoluteUrl, createBreadcrumbSchema, createFaqSchema } from "../utils/seo";
+import { getCityImage, getMobileCityImage } from "../utils/cityImages";
+import { getLocaleFromPath, localizePath, localizeCityPath, ui } from "../data/i18n";
+import { locationCopy, cityFaqs } from "../data/locations";
+import { homeCopy } from "../data/home";
+import { cityFocus } from "../data/cityFocus";
+
+const { city } = Astro.props as { city: City };
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = locationCopy(lang, city.name);
+const h = homeCopy[lang];
+const faqs = cityFaqs(city, lang);
+const cityImage = getCityImage(city.name, city.slug);
+const mobileCityImage = getMobileCityImage(city.name, city.slug);
+const heroImage = cityImage
+  ? await getImage({ src: cityImage, width: 1600, format: "webp", quality: 75 })
+  : null;
+const mobileHeroImage = mobileCityImage
+  ? await getImage({ src: mobileCityImage, width: 850, format: "webp", quality: 75 })
+  : null;
+const canonical = absoluteUrl(localizeCityPath(city.slug, lang));
+const nearby = cities.filter((entry) => city.nearbyCities.includes(entry.name));
+const schema = [
+  createFaqSchema(faqs),
+  createBreadcrumbSchema([{ name: ui[lang].home, url: absoluteUrl(localizePath("home", lang)) }, { name: ui[lang].locations, url: absoluteUrl(localizePath("locations", lang)) }, { name: city.name, url: canonical }]),
+];
+---
+<BaseLayout title={lang === "de" ? city.metaTitle : `${c.cityTitle} | WAW`} description={lang === "de" ? city.metaDescription : c.cityDescription} canonical={canonical} schema={schema}>
+  {!indexableCitySlugs.has(city.slug) && <Fragment slot="head"><meta name="robots" content="noindex,follow" /></Fragment>}
+  <Header />
+  <main>
+    <section class="city-hero">
+      <div class="container city-grid">
+        <div class="city-intro">
+          <picture class="city-hero-background" aria-hidden="true">
+            {mobileHeroImage && <source media="(max-width: 850px)" srcset={mobileHeroImage.src} />}
+            <img src={heroImage?.src ?? "/images/hero-yard-sunset.png"} alt="" width={heroImage?.attributes.width} height={heroImage?.attributes.height} fetchpriority="high" />
+          </picture>
+          <h1>{c.cityTitle}</h1>
+          <p>{c.cityIntro}</p>
+          <p>{c.cityConditions}</p>
+          <p class="coverage-note">{c.cityNote}</p>
+          <a class="btn btn-primary" href="#kontaktformular">{h.offer}</a>
+        </div>
+        <div class="city-form"><LeadForm compact /></div>
+      </div>
+    </section>
+    <HomeProcessSection />
+    <HomeVehicleTypes />
+    <section class="section">
+      <div class="container city-grid">
+        <div>
+          <h2>{c.handoverTitle}</h2>
+          {indexableCitySlugs.has(city.slug) && <p>{cityFocus(city, lang)}</p>}
+          <p>{c.handoverText}</p>
+          <p>{c.contactText} <a href={localizePath("contact", lang)}>{c.contactLink}</a></p>
+          <p><a href={localizePath("services", lang)}>{c.servicesLink}</a></p>
+        </div>
+        <div>
+          <h2>{c.fleetTitle}</h2>
+          <p>{c.fleetText}</p>
+          <p>{c.offerText}</p>
+          <a href={localizePath("process", lang)}>{c.detailProcessLink}</a>
+        </div>
+      </div>
+    </section>
+    <section class="section city-faq">
+      <div class="container">
+        <h2>{c.faqTitle}</h2>
+        {faqs.map((item) => <details><summary>{item.question}</summary><p>{item.answer}</p></details>)}
+        <nav class="regional-links" aria-label={c.nearbyLabel}>
+          <a href={localizePath("locations", lang)}>{h.regionsLink}</a>
+          {nearby.map((entry) => <a href={localizeCityPath(entry.slug, lang)}>{h.sellIn} {entry.name}</a>)}
+        </nav>
+      </div>
+    </section>
+  </main>
+  <Footer /><FloatingContact />
+</BaseLayout>
+<style>
+  .city-hero {
+    position: relative;
+    isolation: isolate;
+    padding: 140px 0 64px;
+    background: var(--navy);
+    color: #fff;
+  }
+  .city-hero-background { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .city-hero-background img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center right; }
+  .city-hero-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(3, 10, 20, 0.66) 0%, rgba(5, 15, 30, 0.54) 44%, rgba(5, 15, 30, 0.18) 100%);
+  }
+  .city-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  h1 { margin: 0 0 24px; font-size: clamp(36px, 4.3vw, 64px); line-height: 1.1; letter-spacing: -0.03em; }
+  h2 { margin: 0 0 20px; font-size: clamp(26px, 2.7vw, 40px); line-height: 1.2; }
+  p { line-height: 1.75; max-width: 72ch; }
+  .coverage-note { color: #c8d6e8; font-size: 15px; }
+  .city-hero .btn { margin-top: 12px; }
+  .section a:not(.btn) { text-decoration: underline; text-underline-offset: 3px; }
+  .city-faq { background: #fff; }
+  details { max-width: 900px; border-bottom: 1px solid #d5dce5; padding: 20px 0; }
+  summary { cursor: pointer; font-weight: 700; line-height: 1.5; }
+  .regional-links { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 32px; }
+  @media (max-width: 850px) {
+    .city-grid { grid-template-columns: 1fr; }
+    .city-hero { padding: 0; background: var(--bg); }
+    .city-hero > .city-grid { width: 100%; gap: 0; }
+    .city-intro { position: relative; isolation: isolate; padding: 140px max(14px, calc((100% - 778px) / 2)) 40px; }
+    .city-form { width: min(778px, calc(100% - 28px)); margin-inline: auto; padding-block: 32px; }
+    .city-hero-background img { object-position: center top; }
+  }
+</style>

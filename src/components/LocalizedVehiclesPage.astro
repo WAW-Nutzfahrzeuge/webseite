@@ -11,6 +11,7 @@ import FahrzeugeDamageSection from "./FahrzeugeDamageSection.astro";
 import FahrzeugeCTA from "./FahrzeugeCTA.astro";
 import { localizePath, type Locale } from "../data/i18n";
 import { absoluteUrl, createBreadcrumbSchema } from "../utils/seo";
+import { CircleCheck, Timer, Wallet, ShieldCheck } from "@lucide/astro";
 
 const { lang } = Astro.props as { lang: Exclude<Locale, "de"> };
 
@@ -34,11 +35,11 @@ const copy = {
         "Find the right category for your vehicle quickly. Every vehicle type can be offered individually or as part of a fleet.",
       linkLabel: "More about purchase ->",
       benefits: [
-        { label: "Many conditions possible", iconSrc: "/icons/lkw.png" },
-        { label: "Fast decision", iconSrc: "/icons/sattelzugmaschine.png" },
+        { label: "Many conditions possible", icon: CircleCheck },
+        { label: "Fast decision", icon: Timer },
         { label: "Pickup by agreement", iconSrc: "/icons/transporter.png" },
-        { label: "Payment by agreement", iconSrc: "/icons/auflieger.png" },
-        { label: "Discreet handling", iconSrc: "/icons/fuhrpark.png" },
+        { label: "Payment by agreement", icon: Wallet },
+        { label: "Discreet handling", icon: ShieldCheck },
       ],
       items: [
         ["lkw", "Truck purchase", "Used trucks of different brands, weight classes and body types - including high mileage or defects.", "/images/fahrzeug_lkw.webp", "/icons/lkw.png"],
@@ -65,7 +66,7 @@ const copy = {
       title: "Vehicles with defects or damage are also relevant",
       text:
         "Not every commercial vehicle is in perfect condition. We also buy vehicles with damage, high mileage, older model years or missing inspection.",
-      points: ["Engine damage", "Gearbox damage", "Accident damage", "Without inspection", "High mileage", "Older model years", "Non-running vehicles"],
+      points: ["Engine damage", "Gearbox damage", "Accident damage", "Without inspection", "High mileage", "Older model years"],
     },
     cta: {
       kicker: "SELL A VEHICLE?",
@@ -110,11 +111,11 @@ const copy = {
         "Trouvez rapidement la catégorie adaptée à votre véhicule. Chaque type de véhicule peut être proposé seul ou dans le cadre d'une flotte.",
       linkLabel: "Plus sur le rachat ->",
       benefits: [
-        { label: "Nombreux états possibles", iconSrc: "/icons/lkw.png" },
-        { label: "Décision rapide", iconSrc: "/icons/sattelzugmaschine.png" },
+        { label: "Nombreux états possibles", icon: CircleCheck },
+        { label: "Décision rapide", icon: Timer },
         { label: "Enlèvement sur accord", iconSrc: "/icons/transporter.png" },
-        { label: "Paiement convenu ensemble", iconSrc: "/icons/auflieger.png" },
-        { label: "Traitement discret", iconSrc: "/icons/fuhrpark.png" },
+        { label: "Paiement convenu ensemble", icon: Wallet },
+        { label: "Traitement discret", icon: ShieldCheck },
       ],
       items: [
         ["lkw", "Rachat de camions", "Camions d'occasion de différentes marques, catégories de poids et carrosseries - même avec kilométrage élevé ou défauts.", "/images/fahrzeug_lkw.webp", "/icons/lkw.png"],
@@ -141,7 +142,7 @@ const copy = {
       title: "Les véhicules avec défauts ou dommages nous intéressent aussi",
       text:
         "Tous les utilitaires ne sont pas en parfait état. Nous achetons aussi des véhicules avec dommages, kilométrage élevé, années anciennes ou sans contrôle technique.",
-      points: ["Moteur endommagé", "Boîte de vitesses endommagée", "Dommage accidentel", "Sans contrôle technique", "Kilométrage élevé", "Années anciennes", "Véhicules non roulants"],
+      points: ["Moteur endommagé", "Boîte de vitesses endommagée", "Dommage accidentel", "Sans contrôle technique", "Kilométrage élevé", "Années anciennes"],
     },
     cta: {
       kicker: "VENDRE UN VÉHICULE ?",

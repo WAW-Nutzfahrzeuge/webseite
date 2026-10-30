@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import { cities, indexableCitySlugs, cityAliasRoutes, stateGroups } from "../src/data/cities.ts";
-import { routeMap } from "../src/data/i18n.ts";
+import { routeMap, getLocalizedEquivalentPath } from "../src/data/i18n.ts";
 
 const root = new URL("../dist/client/", import.meta.url);
 const readPage = (path) => readFile(new URL(`${path.replace(/^\//, "")}${path === "/" ? "" : "/"}index.html`, root), "utf8");
 const pages = Object.values(routeMap).flatMap((translations) => Object.entries(translations));
-pages.push(["de", "/danke"], ["en", "/en/danke"], ["fr", "/fr/danke"], ["de", "/standorte/bayern"]);
+pages.push(["de", "/danke"], ["en", "/en/danke"], ["fr", "/fr/danke"], ["de", "/standorte/bayern"], ["en", "/en/locations/bayern"], ["fr", "/fr/implantations/bayern"]);
 
 for (const [locale, path] of pages) {
   const html = await readPage(path);
@@ -19,7 +19,7 @@ for (const [locale, path] of pages) {
     /deutschland- und europaweit|Deutschland (?:&amp;|&|und) Europa|Germany (?:and|&amp;|&) Europe|Allemagne (?:et|comme) en Europe|Allemagne et l'Europe|Allemagne et Europe/i,
     `${path}: outdated geographic scope`,
   );
-  if (path.includes("danke") || path.startsWith("/standorte/")) {
+  if (path.includes("danke")) {
     assert.ok(!html.includes('hreflang="en"'), `${path}: unrelated hreflang`);
   }
   for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
@@ -37,7 +37,7 @@ for (const [locale, path] of pages) {
   }
 }
 
-for (const path of ["/", "/kontakt", "/en/contact", "/fr/contact"]) {
+for (const path of ["/", "/en", "/fr", "/kontakt", "/en/contact", "/fr/contact"]) {
   const html = await readPage(path);
   const form = html.match(/<form[\s\S]*?<\/form>/)?.[0];
   assert.ok(form, `${path}: shared contact form`);
@@ -49,6 +49,36 @@ for (const path of ["/", "/kontakt", "/en/contact", "/fr/contact"]) {
 }
 
 const homeHtml = await readPage("/");
+const mainContent = (html) => {
+  const content = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
+  assert.ok(content, "page has main content");
+  return content;
+};
+const structure = (html) => [...mainContent(html).matchAll(/<\/?([a-z][a-z0-9-]*)(?:\s[^>]*?)?>/g)]
+  .map((match) => `${match[0].startsWith("</") ? "/" : ""}${match[1]}`);
+const images = (html) => [...mainContent(html).matchAll(/<(?:img|source)\b[^>]*>/g)]
+  .map(([tag]) => tag.match(/\b(?:src|srcset)="([^"]+)"/)?.[1]);
+for (const key of ["home", "about", "services", "process", "vehicles", "locations", "contact", "legalNotice", "privacy", "terms"]) {
+  const translations = routeMap[key];
+  const german = await readPage(translations.de);
+  for (const locale of ["en", "fr"]) {
+    const path = translations[locale];
+    const html = await readPage(path);
+    assert.deepEqual(structure(html), structure(german), `${path}: shared markup structure`);
+    assert.deepEqual(images(html), images(german), `${path}: same images and responsive sources`);
+    assert.doesNotMatch(html, /<details\b[^>]*\bopen(?:\s|=|>)/, `${path}: FAQs start closed`);
+  }
+}
+for (const germanPath of ["/lkw-verkaufen/hamburg", "/lkw-verkaufen/berlin", `/lkw-verkaufen/${cities.find((city) => !indexableCitySlugs.has(city.slug)).slug}`, "/standorte/bayern"]) {
+  const german = await readPage(germanPath);
+  for (const locale of ["en", "fr"]) {
+    const path = getLocalizedEquivalentPath(germanPath, locale);
+    const html = await readPage(path);
+    assert.deepEqual(structure(html), structure(german), `${path}: shared regional structure`);
+    assert.deepEqual(images(html), images(german), `${path}: same regional images`);
+    assert.ok(html.includes(`value="${getLocalizedEquivalentPath(path, "de")}"`), `${path}: switch back to equivalent German page`);
+  }
+}
 const mobileCityFiles = await readdir(new URL("../src/assets/cities/mobile/", import.meta.url));
 for (const filename of mobileCityFiles.filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))) {
   const name = filename.replace(/(?:_mobile)?\.(jpg|jpeg|png|webp)$/i, "").toLowerCase();

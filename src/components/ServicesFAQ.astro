@@ -1,22 +1,23 @@
 ---
 import type { FaqItem } from "../utils/seo";
+import { getLocaleFromPath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
 
 interface Props {
   faqs: FaqItem[];
+  lang?: Locale;
 }
 
-const { faqs } = Astro.props;
+const { faqs, lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang].faq;
 ---
 
 <section class="services-faq-modern">
   <div class="container">
     <div class="services-faq-head" data-animate>
       <span>FAQ</span>
-      <h2>Häufige Fragen zum LKW und Nutzfahrzeuge Ankauf</h2>
-      <p>
-        Kurze Antworten zu Fahrzeugarten, Schäden, TÜV, Fuhrparks und den
-        wichtigsten Daten für Ihre Anfrage.
-      </p>
+      <h2>{copy.heading}</h2>
+      <p>{copy.text}</p>
     </div>
 
     <div class="services-faq-grid">

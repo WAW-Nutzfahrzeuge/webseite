@@ -1,20 +1,21 @@
 ---
-import LocalizedLandingPage from "../../components/LocalizedLandingPage.astro";
-import { cities } from "../../data/cities";
+import CityPage from "../../components/CityPage.astro";
+import StatePage from "../../components/StatePage.astro";
+import { cities, stateGroups } from "../../data/cities";
 import {
   cityRoutePrefixes,
   locales,
-  routeMap,
+  localizePath,
   type Locale,
   type RouteKey,
 } from "../../data/i18n";
 
-type LocalizedPageKey = RouteKey | "city";
+type LocalizedPageKey = RouteKey | "city" | "state";
 
 export function getStaticPaths() {
   const staticPaths: Array<{
     params: { lang: Locale; slug: string };
-    props: { lang: Locale; pageKey: LocalizedPageKey; citySlug?: string };
+    props: { lang: Locale; pageKey: LocalizedPageKey; citySlug?: string; stateSlug?: string };
   }> = [];
 
   for (const lang of locales.filter((locale) => locale !== "de")) {
@@ -25,18 +26,25 @@ export function getStaticPaths() {
         props: { lang, pageKey: "city", citySlug: city.slug },
       });
     }
+    for (const group of stateGroups) {
+      staticPaths.push({
+        params: { lang, slug: `${localizePath("locations", lang).replace(`/${lang}/`, "")}/${group.slug}` },
+        props: { lang, pageKey: "state", stateSlug: group.slug },
+      });
+    }
   }
 
   return staticPaths;
 }
 
-const { lang, pageKey, citySlug } = Astro.props as {
-  lang: Locale;
-  pageKey: LocalizedPageKey;
+const { citySlug, stateSlug } = Astro.props as {
   citySlug?: string;
+  stateSlug?: string;
 };
 
 const city = citySlug ? cities.find((entry) => entry.slug === citySlug) : null;
+const group = stateSlug ? stateGroups.find((entry) => entry.slug === stateSlug) : null;
 ---
 
-<LocalizedLandingPage lang={lang} pageKey={pageKey} city={city} />
+{city && <CityPage city={city} />}
+{group && <StatePage group={group} />}

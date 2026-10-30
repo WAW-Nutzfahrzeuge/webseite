@@ -1,35 +1,19 @@
 ---
 import { ClockCheck, Handshake, Route, ShieldCheck } from "@lucide/astro";
-
-const benefits = [
-  {
-    icon: Handshake,
-    title: "Direkter Ansprechpartner",
-    text: "Sie stimmen Ihre Anfrage und alle weiteren Schritte direkt mit uns ab – ohne Umwege über Dritte.",
-  },
-  {
-    icon: ClockCheck,
-    title: "Schnelle Rückmeldung",
-    text: "Nach Eingang Ihrer Fahrzeugdaten melden wir uns zügig bei Ihnen zurück.",
-  },
-  {
-    icon: Route,
-    title: "Weltweiter Ankauf",
-    text: "Wir bearbeiten Anfragen aus aller Welt und stimmen die Abwicklung direkt mit Ihnen ab.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Erfahrung im Nutzfahrzeughandel",
-    text: "Wir kennen gewerblich genutzte LKW, Auflieger, Baumaschinen und Fuhrparks aus der Praxis.",
-  },
-];
+import { getLocaleFromPath, type Locale } from "../data/i18n";
+import { servicesPageCopy } from "../data/services-page";
+interface Props { lang?: Locale }
+const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
+const copy = servicesPageCopy[lang].trust;
+const icons = [Handshake, ClockCheck, Route, ShieldCheck];
+const benefits = copy.benefits.map((benefit, index) => ({ ...benefit, icon: icons[index] }));
 ---
 
 <section class="services-trust-dark">
   <div class="container">
     <div class="services-trust-head" data-animate>
-      <span>WARUM WAW?</span>
-      <h2>LKW verkaufen mit klarer Abstimmung und direktem Ansprechpartner.</h2>
+      <span>{copy.kicker}</span>
+      <h2>{copy.heading}</h2>
     </div>
 
     <div class="services-trust-grid">

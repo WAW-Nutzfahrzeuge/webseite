@@ -1,6 +1,10 @@
 ---
 import { ArrowRight, Phone, Truck, Wrench, MapPin } from "@lucide/astro";
 import { site } from "../data/site";
+import { getLocaleFromPath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+
+const c = homeCopy[getLocaleFromPath(Astro.url.pathname)];
 
 const whatsappNumber = site.whatsappHref.replace("https://wa.me/", "");
 const whatsappDisplay = whatsappNumber.startsWith("49")
@@ -16,33 +20,30 @@ const whatsappDisplay = whatsappNumber.startsWith("49")
     </picture>
   <div class="container hero-layout">
     <div class="hero-copy">
-      <h1 id="hero-title">LKW verkaufen.<br />Schnell & unkompliziert.</h1>
-      <p>
-        LKW, Auflieger oder Fuhrpark: Wir kaufen weltweit an –
-        auch mit Schäden, ohne HU oder nicht fahrbereit.
-      </p>
+      <h1 id="hero-title">{c.hero[0]}<br />{c.hero[1]}</h1>
+      <p>{c.heroText}</p>
       <div class="hero-actions">
         {site.whatsappHref ? (
-          <a href={site.whatsappHref} class="btn btn-primary hero-whatsapp" target="_blank" rel="noopener" aria-label={`WhatsApp schreiben: ${whatsappDisplay}`}>
+          <a href={site.whatsappHref} class="btn btn-primary hero-whatsapp" target="_blank" rel="noopener" aria-label={`${c.whatsapp}: ${whatsappDisplay}`}>
             <svg width="26" height="26" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
               <path d="M16.03 3C8.88 3 3.08 8.73 3.08 15.8c0 2.25.6 4.45 1.73 6.38L3 29l7-1.78a13.1 13.1 0 0 0 6.03 1.47C23.18 28.69 29 22.96 29 15.9 29 8.82 23.18 3 16.03 3Zm0 23.35a10.7 10.7 0 0 1-5.45-1.5l-.39-.23-4.14 1.05 1.1-4-.26-.41a10.3 10.3 0 0 1-1.56-5.46c0-5.76 4.8-10.45 10.7-10.45 5.9 0 10.7 4.7 10.7 10.55 0 5.76-4.8 10.45-10.7 10.45Zm5.88-7.82c-.32-.16-1.9-.93-2.2-1.04-.29-.1-.5-.16-.72.16-.22.32-.83 1.04-1.02 1.25-.19.22-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.58-.96-.85-1.6-1.9-1.79-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.38.48-.56.16-.19.22-.32.32-.54.1-.22.05-.4-.03-.56-.08-.16-.72-1.72-.98-2.36-.26-.62-.52-.54-.72-.55h-.61c-.22 0-.56.08-.85.4-.29.32-1.12 1.1-1.12 2.68s1.15 3.1 1.31 3.32c.16.22 2.26 3.46 5.48 4.85.77.33 1.37.53 1.84.68.77.24 1.47.21 2.02.13.62-.1 1.9-.77 2.17-1.52.27-.75.27-1.4.19-1.52-.08-.13-.29-.21-.61-.37Z" />
             </svg>
             <span>{whatsappDisplay}</span>
           </a>
         ) : (
-          <a href="#kontaktformular" class="btn btn-primary">Fahrzeug unverbindlich anbieten <ArrowRight size={19} aria-hidden="true" /></a>
+          <a href="#kontaktformular" class="btn btn-primary">{c.offer} <ArrowRight size={19} aria-hidden="true" /></a>
         )}
-        <a href={`tel:${site.phoneHref}`} class="btn btn-navy hero-phone"><Phone size={21} aria-hidden="true" /> Direkt anrufen</a>
+        <a href={`tel:${site.phoneHref}`} class="btn btn-navy hero-phone"><Phone size={21} aria-hidden="true" /> {c.call}</a>
       </div>
-      <p class="hero-hint">Für den ersten Kontakt reichen Name und Telefonnummer.</p>
+      <p class="hero-hint">{c.hint}</p>
     </div>
   </div>
   </div>
   <div class="hero-facts">
     <ul class="container">
-      <li><Truck size={25} aria-hidden="true" /><span>Einzelfahrzeuge <strong>& komplette Fuhrparks</strong></span></li>
-      <li><Wrench size={25} aria-hidden="true" /><span>Auch beschädigte <strong>Fahrzeuge anbieten</strong></span></li>
-      <li><MapPin size={25} aria-hidden="true" /><span>Weltweiter <strong>An- & Verkauf</strong></span></li>
+      <li><Truck size={25} aria-hidden="true" /><span>{c.facts[0][0]} <strong>{c.facts[0][1]}</strong></span></li>
+      <li><Wrench size={25} aria-hidden="true" /><span>{c.facts[1][0]} <strong>{c.facts[1][1]}</strong></span></li>
+      <li><MapPin size={25} aria-hidden="true" /><span>{c.facts[2][0]} <strong>{c.facts[2][1]}</strong></span></li>
     </ul>
   </div>
 </section>

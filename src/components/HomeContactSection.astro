@@ -2,18 +2,21 @@
 import { Phone, Mail, MessageCircle } from "@lucide/astro";
 import ContactLeadForm from "./ContactLeadForm.astro";
 import { site } from "../data/site";
+import { getLocaleFromPath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const c = homeCopy[getLocaleFromPath(Astro.url.pathname)];
 ---
 
 <section class="home-contact" aria-labelledby="home-contact-title">
   <div class="container contact-layout">
     <div class="contact-copy">
-      <h2 id="home-contact-title">Was möchten<br />Sie verkaufen?</h2>
-      <p>Ein LKW, ein Auflieger oder ein ganzer Fuhrpark: Erzählen Sie uns kurz davon. Name und Telefonnummer reichen für den ersten Kontakt.</p>
-      <p>Wir klären offene Fragen mit Ihnen und besprechen, ob ein Ankauf möglich ist.</p>
+      <h2 id="home-contact-title">{c.contactTitle[0]}<br />{c.contactTitle[1]}</h2>
+      <p>{c.contactText}</p>
+      <p>{c.contactNext}</p>
       <div class="direct-contact">
-        <a href={`tel:${site.phoneHref}`}><Phone size={22} aria-hidden="true" /><span>Direkt anrufen<strong>{site.phoneDisplay}</strong></span></a>
-        <a href={`mailto:${site.email}`}><Mail size={22} aria-hidden="true" /><span>Fotos und Fahrzeuglisten senden<strong>{site.email}</strong></span></a>
-        {site.whatsappHref && <a href={site.whatsappHref} target="_blank" rel="noopener"><MessageCircle size={22} aria-hidden="true" /><span>Lieber per WhatsApp?<strong>Fahrzeugdaten und Fotos schicken</strong></span></a>}
+        <a href={`tel:${site.phoneHref}`}><Phone size={22} aria-hidden="true" /><span>{c.call}<strong>{site.phoneDisplay}</strong></span></a>
+        <a href={`mailto:${site.email}`}><Mail size={22} aria-hidden="true" /><span>{c.emailLabel}<strong>{site.email}</strong></span></a>
+        {site.whatsappHref && <a href={site.whatsappHref} target="_blank" rel="noopener"><MessageCircle size={22} aria-hidden="true" /><span>{c.whatsappLabel}<strong>{c.whatsappHint}</strong></span></a>}
       </div>
     </div>
     <ContactLeadForm variant="light" />

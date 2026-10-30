@@ -1,5 +1,9 @@
 ---
 import { ArrowUpRight, ArrowRight } from "@lucide/astro";
+import { getLocaleFromPath, localizePath } from "../data/i18n";
+import { homeCopy } from "../data/home";
+const lang = getLocaleFromPath(Astro.url.pathname);
+const c = homeCopy[lang];
 
 const vehicles = [
   { label: "LKW", href: "/leistungen#lkw", iconSrc: "/icons/lkw.png" },
@@ -17,25 +21,25 @@ const vehicles = [
   <div class="container vehicle-layout">
     <figure>
       <slot name="vehicle-image">
-        <img src="/images/fahrzeug_fuhrpark.webp" alt="Verschiedene gewerbliche Fahrzeugtypen vor einer Halle" width="1536" height="1024" loading="lazy" />
+        <img src="/images/fahrzeug_fuhrpark.webp" alt={c.vehicleAlt} width="1536" height="1024" loading="lazy" />
       </slot>
-      <figcaption>Beispiele für Fahrzeugarten, die Sie uns anbieten können – keine Verkaufsangebote.</figcaption>
+      <figcaption>{c.vehicleCaption}</figcaption>
     </figure>
     <div class="vehicle-copy">
-      <h2 id="vehicles-title">Vom Transporter<br />bis zum Fuhrpark.</h2>
-      <p>Sie möchten ein gewerbliches Fahrzeug verkaufen? Wir kaufen unterschiedliche Fahrzeugarten an – einzeln, als Paket oder als kompletter Fuhrpark.</p>
+      <h2 id="vehicles-title">{c.vehicleTitle[0]}<br />{c.vehicleTitle[1]}</h2>
+      <p>{c.vehicleText}</p>
       <ul>
-        {vehicles.map((vehicle) => (
+        {vehicles.map((vehicle, index) => (
           <li>
-            <a href={vehicle.href}>
+            <a href={`${localizePath("services", lang)}#${vehicle.href.split("#")[1]}`}>
               <img class="vehicle-icon" src={vehicle.iconSrc} alt="" width="28" height="28" loading="lazy" />
-              <span>{vehicle.label}</span>
+              <span>{c.vehicleNames[index]}</span>
               <ArrowUpRight size={17} aria-hidden="true" />
             </a>
           </li>
         ))}
       </ul>
-      <a href="/fahrzeuge" class="text-link">Alle Fahrzeugarten ansehen <ArrowRight size={18} aria-hidden="true" /></a>
+      <a href={localizePath("vehicles", lang)} class="text-link">{c.vehicleLink} <ArrowRight size={18} aria-hidden="true" /></a>
     </div>
   </div>
 </section>
