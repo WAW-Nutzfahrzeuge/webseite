@@ -21,6 +21,7 @@
     "@astrojs/vercel": "^10.0.8",
     "@lucide/astro": "^1.21.0",
     "astro": "^6.3.3",
+    "flag-icons": "^7.6.0",
     "resend": "^6.12.3",
     "wrangler": "^4.92.0"
   },

@@ -1,5 +1,8 @@
 ---
 import { Home, Wrench, ListChecks, Truck, MapPin, Users, Mail } from "@lucide/astro";
+import germanFlag from "flag-icons/flags/4x3/de.svg?url";
+import frenchFlag from "flag-icons/flags/4x3/fr.svg?url";
+import englishFlag from "flag-icons/flags/4x3/us.svg?url";
 import { serviceLinks, site } from "../data/site";
 import { navigationCities } from "../data/cities";
 import {
@@ -7,7 +10,6 @@ import {
   getLocaleFromPath,
   localeLabels,
   locales,
-  localeShortLabels,
   localizeCityPath,
   localizePath,
   ui,
@@ -20,10 +22,11 @@ const nav = ui[currentLang];
 const currentPath = Astro.url.pathname;
 const isActive = (path: string) => currentPath === path || currentPath.startsWith(`${path}/`);
 const localized = (route: Parameters<typeof localizePath>[0]) => localizePath(route, currentLang);
+const languageFlags = { de: germanFlag, en: englishFlag, fr: frenchFlag };
 const languageOptions = locales.map((locale) => ({
   locale,
   label: localeLabels[locale],
-  shortLabel: localeShortLabels[locale],
+  flag: languageFlags[locale],
   href: getLocalizedEquivalentPath(currentPath, locale),
 }));
 ---
@@ -85,14 +88,20 @@ const languageOptions = locales.map((locale) => ({
     </nav>
 
     <div class="header-actions">
-      <label class="language-switcher" aria-label={nav.language}>
-        <span>{nav.language}</span>
-        <select data-language-switcher>
+      <div class="nav-group language-switcher">
+        <button class="nav-dropdown-btn" aria-label={`${nav.language}: ${localeLabels[currentLang]}`} aria-controls="language-menu" aria-expanded="false">
+          <img class="language-flag" src={languageFlags[currentLang]} alt="" width="24" height="18" />
+          <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </button>
+        <div class="nav-dropdown language-menu" id="language-menu" inert>
           {languageOptions.map((option) => (
-            <option value={option.href} selected={option.locale === currentLang}>{option.shortLabel}</option>
+            <a href={option.href} hreflang={option.locale} lang={option.locale} aria-current={option.locale === currentLang ? "true" : undefined}>
+              <img class="language-flag" src={option.flag} alt="" width="24" height="18" />
+              <span>{option.label}</span>
+            </a>
           ))}
-        </select>
-      </label>
+        </div>
+      </div>
 
       <a href={`tel:${site.phoneHref}`} class="call-btn">
         {site.phoneDisplay}
@@ -124,14 +133,21 @@ const languageOptions = locales.map((locale) => ({
   </div>
 
   <nav class="sheet-nav" aria-label="Mobile Navigation">
-    <label class="sheet-language-switcher" aria-label="Sprache auswählen">
-      <span>{nav.language}</span>
-      <select data-language-switcher>
+    <div class="nav-group sheet-language-switcher">
+      <button class="nav-dropdown-btn" aria-label={`${nav.language}: ${localeLabels[currentLang]}`} aria-controls="sheet-language-menu" aria-expanded="false">
+        <span>{nav.language}</span>
+        <img class="language-flag" src={languageFlags[currentLang]} alt="" width="24" height="18" />
+        <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+      <div class="nav-dropdown language-menu" id="sheet-language-menu" inert>
         {languageOptions.map((option) => (
-          <option value={option.href} selected={option.locale === currentLang}>{option.label}</option>
+          <a href={option.href} hreflang={option.locale} lang={option.locale} aria-current={option.locale === currentLang ? "true" : undefined}>
+            <img class="language-flag" src={option.flag} alt="" width="24" height="18" />
+            <span>{option.label}</span>
+          </a>
         ))}
-      </select>
-    </label>
+      </div>
+    </div>
 
     <a href={localized("home")} class={`sheet-link ${currentPath === localized("home") ? "is-active" : ""}`}>
       <Home class="sheet-link-icon" aria-hidden="true" />
@@ -331,17 +347,14 @@ const languageOptions = locales.map((locale) => ({
     document.addEventListener("click", (event) => {
       if (event.target instanceof Node && !group.contains(event.target)) setOpen(false);
     });
-    group.addEventListener("mouseenter", () => setOpen(true));
-    group.addEventListener("mouseleave", () => {
-      if (!group.contains(document.activeElement)) setOpen(false);
-    });
+    if (!group.matches(".language-switcher, .sheet-language-switcher")) {
+      group.addEventListener("mouseenter", () => setOpen(true));
+      group.addEventListener("mouseleave", () => {
+        if (!group.contains(document.activeElement)) setOpen(false);
+      });
+    }
   });
 
-  document.querySelectorAll<HTMLSelectElement>("[data-language-switcher]").forEach((select) => {
-    select.addEventListener("change", () => {
-      if (select.value) window.location.href = select.value;
-    });
-  });
 </script>
 
 <style>
@@ -611,7 +624,7 @@ const languageOptions = locales.map((locale) => ({
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 8px 7px 12px;
+    padding: 0;
     border: 1px solid rgba(15,23,42,0.1);
     border-radius: 999px;
     background: rgba(255,255,255,0.72);
@@ -625,40 +638,35 @@ const languageOptions = locales.map((locale) => ({
     color: #fff;
   }
 
-  .language-switcher span {
-    font-size: 12px;
-    font-weight: 850;
-    letter-spacing: 0.02em;
-  }
-
-  .language-switcher select,
-  .sheet-language-switcher select {
-    border: none;
-    border-radius: 999px;
-    background: rgba(15,23,42,0.06);
+  .language-switcher .nav-dropdown-btn {
+    padding: 12px;
     color: inherit;
-    font-size: 13px;
-    font-weight: 900;
-    cursor: pointer;
-    outline: none;
   }
-
-  .language-switcher select {
-    padding: 5px 24px 5px 8px;
+  .language-flag {
+    display: block;
+    flex-shrink: 0;
+    width: 24px;
+    height: 18px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(15,23,42,0.15);
   }
-
-  .site-header--transparent:not(.scrolled) .language-switcher select {
-    background: rgba(255,255,255,0.16);
+  .language-menu { min-width: 170px; }
+  .language-switcher .chevron,
+  .sheet-language-switcher .chevron { transform: none; }
+  .language-switcher.is-open .chevron,
+  .sheet-language-switcher.is-open .chevron { transform: rotate(180deg); }
+  .language-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-
-  .language-switcher option,
-  .sheet-language-switcher option {
-    color: #17181c;
-    background: #fff;
+  .language-menu a[aria-current="true"] {
+    background: rgba(255,107,0,0.1);
+    color: #9c4100;
   }
-
-  .language-switcher select:focus-visible,
-  .sheet-language-switcher select:focus-visible {
+  .language-switcher button:focus-visible,
+  .sheet-language-switcher button:focus-visible {
     box-shadow: 0 0 0 3px rgba(255,107,0,0.24);
   }
 
@@ -828,10 +836,22 @@ const languageOptions = locales.map((locale) => ({
     color: var(--muted);
   }
 
-  .sheet-language-switcher select {
-    padding: 8px 28px 8px 12px;
-    background: #fff;
-    border: 1px solid rgba(15,23,42,0.1);
+  .sheet-language-switcher .nav-dropdown-btn {
+    width: 100%;
+    padding: 0;
+    gap: 12px;
+  }
+  .sheet-language-switcher .nav-dropdown-btn > span {
+    margin-right: auto;
+  }
+  .sheet-language-switcher .language-menu {
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+    transform: translateY(-6px);
+  }
+  .sheet-language-switcher.is-open .language-menu {
+    transform: translateY(0);
   }
 
   .sheet-link {
