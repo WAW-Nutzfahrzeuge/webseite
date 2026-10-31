@@ -365,7 +365,7 @@ const languageOptions = locales.map((locale) => ({
 
     padding: 0;
 
-    background: rgba(255,255,255,0.92);
+    background: #fff;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border-bottom: 1px solid rgba(15,23,42,0.06);
@@ -385,16 +385,15 @@ const languageOptions = locales.map((locale) => ({
     left: 0;
     right: 0;
     padding: 0;
-    background: transparent;
+    background: #fff;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    box-shadow: none;
+    border-bottom: 1px solid rgba(15,23,42,0.06);
   }
 
   .site-header--transparent.scrolled {
     padding: 0;
-    background: rgba(255,255,255,0.92);
+    background: #fff;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border-bottom: 1px solid rgba(15,23,42,0.06);
@@ -409,28 +408,28 @@ const languageOptions = locales.map((locale) => ({
 
   .site-header--transparent:not(.scrolled) .desktop-nav > a,
   .site-header--transparent:not(.scrolled) .nav-dropdown-btn {
-    color: rgba(255,255,255,0.88);
+    color: var(--muted);
   }
 
   .site-header--transparent:not(.scrolled) .desktop-nav > a:hover,
   .site-header--transparent:not(.scrolled) .nav-group:hover .nav-dropdown-btn {
-    color: white;
-    background: rgba(255,255,255,0.1);
+    color: var(--text);
+    background: rgba(15,23,42,0.05);
   }
 
   .site-header--transparent:not(.scrolled) .call-btn {
-    color: white;
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.26);
+    color: var(--text);
+    background: rgba(255,255,255,0.72);
+    border-color: rgba(15,23,42,0.1);
   }
 
   .site-header--transparent:not(.scrolled) .mobile-toggle {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.24);
+    background: #fff;
+    border-color: rgba(15,23,42,0.1);
   }
 
   .site-header--transparent:not(.scrolled) .mobile-toggle span {
-    background: #fff;
+    background: var(--text);
   }
 
   .header-inner {
@@ -633,9 +632,9 @@ const languageOptions = locales.map((locale) => ({
   }
 
   .site-header--transparent:not(.scrolled) .language-switcher {
-    border-color: rgba(255,255,255,0.28);
-    background: rgba(255,255,255,0.1);
-    color: #fff;
+    border-color: rgba(15,23,42,0.1);
+    background: rgba(255,255,255,0.72);
+    color: var(--text);
   }
 
   .language-switcher .nav-dropdown-btn {
