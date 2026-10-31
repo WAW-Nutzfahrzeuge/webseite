@@ -12,6 +12,7 @@ const additionalFields = ["company", "year", "mileage"] as const;
 ---
 
 <form class:list={["contact-lead-form", { "contact-lead-form--light": variant === "light" }]} id="kontaktformular" data-contact-form data-error={copy.error} data-validation={copy.validation} data-sending={copy.sending} data-submit={copy.submit}>
+  <span class="form-border-shine" aria-hidden="true"></span>
   <h2>{title}</h2>
   <p>{copy.intro}</p>
   <div class="form-grid">
@@ -117,12 +118,44 @@ const additionalFields = ["company", "year", "mileage"] as const;
 </script>
 
 <style>
-  .contact-lead-form { min-width: 0; padding: clamp(22px, 3vw, 34px); border-radius: 16px; background: var(--navy-soft); color: #fff; scroll-margin-top: 110px; }
+  .contact-lead-form { position: relative; min-width: 0; padding: clamp(22px, 3vw, 34px); border-radius: 16px; background: var(--contact-surface); color: #fff; scroll-margin-top: 110px; }
+  .form-border-shine {
+    position: absolute;
+    inset: -4px;
+    padding: 4px;
+    border-radius: inherit;
+    pointer-events: none;
+    container-type: size;
+    overflow: hidden;
+    background: rgba(255, 107, 0, 0.4);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+  .form-border-shine::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(200cqw, 200cqh);
+    aspect-ratio: 1;
+    background: conic-gradient(from 0deg, transparent 0deg 255deg, var(--orange) 295deg, #ffd2a6 320deg, #fff 335deg 350deg, transparent 360deg);
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: form-border-orbit 8s linear infinite;
+  }
+  .contact-lead-form:focus-within .form-border-shine::before { animation-play-state: paused; }
+  @keyframes form-border-orbit {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .form-border-shine::before { animation: none; }
+  }
   h2 { margin: 0 0 16px; font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.025em; color: #fff; }
   p { line-height: 1.6; color: #d3deeb; }
   .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   label { display: grid; gap: 8px; min-width: 0; font-size: 15px; }
-  input, textarea { min-width: 0; width: 100%; padding: 14px; border: 1px solid #718299; border-radius: 8px; background: #14283f; color: #fff; font: inherit; font-size: 16px; }
+  input, textarea { min-width: 0; width: 100%; padding: 14px; border: 1px solid #a4b8cb; border-radius: 8px; background: #204363; color: #fff; font: inherit; font-size: 16px; }
   input::placeholder { color: #bdc9d8; }
   input[aria-invalid=true], textarea[aria-invalid=true] { border-color: #ffb5a8; }
   textarea { resize: vertical; }
