@@ -61,14 +61,14 @@ const {
           </span>
         </a>
 
-        <div class="contact-method-card" data-animate>
+        <a class="contact-method-card" href="https://www.google.de/maps/place/Hegesahl+2,+21493+Talkau/@53.5773439,10.5646312,937m/data=!3m2!1e3!4b1!4m6!3m5!1s0x47b1ff29020d7ad9:0x59c811985353de58!8m2!3d53.5773407!4d10.5672061!16s%2Fg%2F11s0x7t7yh?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" data-animate>
           <span class="contact-method-icon"><MapPin size={24} stroke-width={2.2} /></span>
           <span>
             <strong>{locationLabel}</strong>
             <em>{site.address.street}, {site.address.postalCode} {site.address.locality}</em>
             <small>{site.address.region}, {locationCountry}</small>
           </span>
-        </div>
+        </a>
       </div>
     </div>
 
@@ -169,6 +169,9 @@ const {
     font-style: normal;
     font-weight: 850;
     line-height: 1.35;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
   }
 
   .contact-method-card small {
