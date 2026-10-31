@@ -48,9 +48,14 @@ const canonical = new URL(localizePath("legalNotice", lang), site.url).toString(
             <h2>{t("Angaben gemaess § 5 DDG", "Information pursuant to section 5 DDG", "Informations conformément au § 5 DDG")}</h2>
             <p>
               <strong>{site.legal.name}</strong><br />
+              {t("Hauptniederlassung:", "Registered office:", "Établissement principal :")}<br />
+              {site.legal.registeredOffice.street}<br />
+              {site.legal.registeredOffice.postalCode} {site.legal.registeredOffice.locality}<br />
+              {t("Betriebsstätte:", "Operating site:", "Établissement d’exploitation :")}<br />
               {site.address.street}<br />
               {site.address.postalCode} {site.address.locality}<br />
               {t("Deutschland", "Germany", "Allemagne")}
+              <br />{t("Tätigkeit: Handel mit Fahrzeugen aller Art", "Business activity: trading in vehicles of all kinds", "Activité : commerce de véhicules de toutes catégories")}
             </p>
           </section>
 
@@ -64,9 +69,9 @@ const canonical = new URL(localizePath("legalNotice", lang), site.url).toString(
           <section id="register">
             <h2>{t("Registereintrag und Umsatzsteuer", "Register entry and VAT", "Immatriculation au registre et TVA")}</h2>
             <p>
-              {t("Registergericht: [PLATZHALTER: Registergericht ergaenzen]", "Register court: [PLACEHOLDER: add register court]", "Tribunal chargé du registre : [À COMPLÉTER : ajouter le tribunal chargé du registre]")}<br />
-              {t("Registernummer: [PLATZHALTER: HRA-Nummer ergaenzen]", "Registration number: [PLACEHOLDER: add HRA number]", "Numéro d’immatriculation : [À COMPLÉTER : ajouter le numéro HRA]")}<br />
-              {t("Umsatzsteuer-Identifikationsnummer gemaess § 27a UStG:", "VAT identification number pursuant to section 27a UStG:", "Numéro d’identification à la TVA conformément au § 27a UStG :")}
+              {t("Registergericht: ", "Register court: ", "Tribunal chargé du registre : ")}{site.legal.registrationCourt}<br />
+              {t("Registernummer: ", "Registration number: ", "Numéro d’immatriculation : ")}{site.legal.registrationNumber}<br />
+              {t("Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: ", "VAT identification number pursuant to section 27a UStG: ", "Numéro d’identification à la TVA conformément au § 27a UStG : ")}
               {site.legal.vatId}
             </p>
           </section>
@@ -101,12 +106,12 @@ const canonical = new URL(localizePath("legalNotice", lang), site.url).toString(
           <section id="streitbeilegung">
             <h2>{t("Verbraucherstreitbeilegung", "Consumer dispute resolution", "Règlement des litiges de consommation")}</h2>
             <p>
-              {t("Die Angabe zur Bereitschaft oder Verpflichtung zur Teilnahme an Verfahren vor einer Verbraucherschlichtungsstelle ist vor Veroeffentlichung noch durch den Inhaber zu bestaetigen.", "The information on willingness or obligation to participate in proceedings before a consumer dispute resolution body must still be confirmed by the owner before publication.", "Les informations relatives à la volonté ou à l’obligation de participer à une procédure devant un organisme de règlement des litiges de consommation doivent encore être confirmées par le propriétaire avant publication.")}
+              {t("Die Information darüber, ob wir bereit oder verpflichtet sind, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen, ist noch durch den Inhaber zu bestätigen.", "The owner must still confirm whether we are willing or obliged to participate in dispute resolution proceedings before a consumer arbitration body.", "Le propriétaire doit encore confirmer si nous sommes disposés ou tenus de participer à une procédure de règlement des litiges devant un organisme de médiation de la consommation.")}
             </p>
           </section>
 
           <p class="legal-note">
-            {t("Vor Veroeffentlichung: Registergericht und HRA-Nummer ergaenzen sowie die Angaben zur Verbraucherstreitbeilegung und eine gegebenenfalls zugeteilte Wirtschafts-Identifikationsnummer pruefen.", "Before publication: add the register court and HRA number, and check the consumer dispute resolution information and any assigned German business identification number.", "Avant publication : compléter le tribunal chargé du registre et le numéro HRA, puis vérifier les informations relatives au règlement des litiges de consommation et tout numéro allemand d’identification économique éventuellement attribué.")}
+            {t("Vor Veröffentlichung noch bestätigen: die Angabe zur Verbraucherstreitbeilegung sowie, ob eine Wirtschafts-Identifikationsnummer zugeteilt wurde.", "Still to be confirmed before publication: the consumer dispute resolution statement and whether a German business identification number has been assigned.", "À confirmer avant publication : la déclaration relative au règlement des litiges de consommation et l’attribution éventuelle d’un numéro allemand d’identification économique.")}
           </p>
         </article>
       </div>

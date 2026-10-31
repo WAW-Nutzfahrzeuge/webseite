@@ -50,8 +50,10 @@ const canonical = new URL(localizePath("terms", lang), site.url).toString();
             <h2>{t("1. Geltungsbereich", "1. Scope", "1. Champ d’application")}</h2>
             <p>
               {t("Anbieter dieser Website ist", "The provider of this website is", "L’éditeur de ce site est")} {site.legal.name}, {t("Inhaber", "owner", "propriétaire")}
-              {site.legal.owner}, {site.address.street},
-              {site.address.postalCode} {site.address.locality}, {t("Deutschland.", "Germany.", "Allemagne.")}
+              {" "}{site.legal.owner}. {t("Hauptniederlassung:", "Registered office:", "Établissement principal :")}
+              {" "}{site.legal.registeredOffice.street}, {site.legal.registeredOffice.postalCode} {site.legal.registeredOffice.locality}.
+              {" "}{t("Betriebsstätte:", "Operating site:", "Établissement d’exploitation :")}
+              {" "}{site.address.street}, {site.address.postalCode} {site.address.locality}, {t("Deutschland.", "Germany.", "Allemagne.")}
               {t("Diese Bedingungen beschreiben die Kontaktaufnahme und die Vorbereitung eines moeglichen Fahrzeugankaufs. Sie ersetzen keinen individuellen Kaufvertrag und gelten fuer einen solchen nur, soweit sie wirksam vereinbart wurden. Individuelle Vereinbarungen haben Vorrang.", "These conditions describe making contact and preparing a possible vehicle purchase. They do not replace an individual purchase contract and apply to such a contract only insofar as they have been validly agreed. Individual agreements take precedence.", "Les présentes conditions décrivent la prise de contact et la préparation d’un éventuel rachat de véhicule. Elles ne remplacent pas un contrat de vente individuel et ne s’appliquent à celui-ci que dans la mesure où elles ont été valablement convenues. Les accords individuels prévalent.")}
             </p>
             <p>
@@ -155,7 +157,7 @@ const canonical = new URL(localizePath("terms", lang), site.url).toString();
               {t("Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der uebrigen Bestimmungen unberuehrt.", "If individual provisions of these terms and conditions are or become wholly or partly invalid, the validity of the remaining provisions remains unaffected.", "Si certaines dispositions des présentes conditions générales sont ou deviennent totalement ou partiellement invalides, la validité des autres dispositions n’en est pas affectée.")}
             </p>
             <p>
-              {t("Stand: 30. Oktober 2026", "Last updated: 30 October 2026", "Mise à jour : 30 octobre 2026")}
+              {t("Stand: 31. Oktober 2026", "Last updated: 31 October 2026", "Mise à jour : 31 octobre 2026")}
             </p>
           </section>
 

@@ -37,6 +37,14 @@ for (const [locale, path] of pages) {
   }
 }
 
+for (const path of ["/impressum", "/en/legal-notice", "/fr/mentions-legales"]) {
+  const html = await readPage(path);
+  for (const detail of ["WAW Nutzfahrzeuge e.K.", "Abdul Waseh Abdul", "Langer Hagen 10", "20539 Hamburg", "Hegesahl 2", "21493 Talkau", "Amtsgericht Lübeck", "HRA 11318", "DE249232427"]) {
+    assert.ok(html.includes(detail), `${path}: legal detail ${detail}`);
+  }
+  assert.doesNotMatch(html, /PLATZHALTER|PLACEHOLDER|À COMPLÉTER/, `${path}: register placeholders removed`);
+}
+
 for (const path of ["/", "/en", "/fr", "/kontakt", "/en/contact", "/fr/contact"]) {
   const html = await readPage(path);
   const form = html.match(/<form[\s\S]*?<\/form>/)?.[0];

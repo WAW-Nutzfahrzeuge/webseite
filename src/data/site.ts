@@ -3,9 +3,16 @@ const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "491605265022";
 export const site = {
     name: "WAW Nutzfahrzeuge",
     legal: {
-        name: "W.A.W-Nutzfahrzeuge e.K.",
-        owner: "Waseh Abdul",
+        name: "WAW Nutzfahrzeuge e.K.",
+        owner: "Abdul Waseh Abdul",
         vatId: "DE249232427",
+        registrationCourt: "Amtsgericht Lübeck",
+        registrationNumber: "HRA 11318",
+        registeredOffice: {
+            street: "Langer Hagen 10",
+            postalCode: "20539",
+            locality: "Hamburg",
+        },
     },
     url: "https://www.wawnutzfahrzeuge.de",
     description:

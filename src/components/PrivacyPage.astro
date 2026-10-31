@@ -10,7 +10,7 @@ interface Props { lang?: Locale }
 const { lang = getLocaleFromPath(Astro.url.pathname) } = Astro.props;
 const t = (de: string, en: string, fr: string) => ({ de, en, fr })[lang];
 const canonical = new URL(localizePath("privacy", lang), site.url).toString();
-const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.address.locality}, ${t("Deutschland", "Germany", "Allemagne")}`;
+const fullAddress = `${site.legal.registeredOffice.street}, ${site.legal.registeredOffice.postalCode} ${site.legal.registeredOffice.locality}, ${t("Deutschland", "Germany", "Allemagne")}`;
 ---
 
 <BaseLayout
@@ -55,7 +55,8 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
             <p>
               <strong>{site.legal.name}</strong><br />
               {t("Inhaber:", "Owner:", "Propriétaire :")} {site.legal.owner}<br />
-              {fullAddress}<br />
+              {t("Hauptniederlassung:", "Registered office:", "Établissement principal :")} {fullAddress}<br />
+              {t("Betriebsstätte Talkau:", "Operating site in Talkau:", "Établissement d’exploitation à Talkau :")} {site.address.street}, {site.address.postalCode} {site.address.locality}<br />
               {t("Telefon:", "Telephone:", "Téléphone :")} <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a><br />
               {t("E-Mail:", "Email:", "E-mail :")} <a href={`mailto:${site.email}`}>{site.email}</a>
             </p>
@@ -178,19 +179,19 @@ const fullAddress = `${site.address.street}, ${site.address.postalCode} ${site.a
           <section id="aufsicht">
             <h2>{t("12. Beschwerderecht bei einer Aufsichtsbehoerde", "12. Right to lodge a complaint with a supervisory authority", "12. Droit d’introduire une réclamation auprès d’une autorité de contrôle")}</h2>
             <p>
-              {t("Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehoerde zu beschweren. Zustaendig kann insbesondere die Aufsichtsbehoerde Ihres Wohnorts, Ihres Arbeitsplatzes oder unseres Unternehmenssitzes sein.", "You have the right to lodge a complaint with a data protection supervisory authority. In particular, the authority for your place of residence, place of work or our business location may be competent.", "Vous avez le droit d’introduire une réclamation auprès d’une autorité de contrôle de la protection des données. L’autorité de votre lieu de résidence, de votre lieu de travail ou du siège de notre entreprise peut notamment être compétente.")}
+              {t("Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehoerde zu beschweren, insbesondere in dem EU-Mitgliedstaat Ihres gewoehnlichen Aufenthalts, Ihres Arbeitsplatzes oder des Orts des mutmasslichen Verstosses.", "You have the right to lodge a complaint with a data protection supervisory authority, in particular in the EU Member State of your habitual residence, place of work or the place of the alleged infringement.", "Vous avez le droit d’introduire une réclamation auprès d’une autorité de contrôle de la protection des données, notamment dans l’État membre de l’UE où se trouve votre résidence habituelle, votre lieu de travail ou le lieu de l’infraction présumée.")}
             </p>
             <p>
-              {t("Fuer Schleswig-Holstein ist regelmaessig zustaendig:", "The authority generally competent for Schleswig-Holstein is:", "L’autorité généralement compétente pour le Schleswig-Holstein est :")}<br />
-              {t("Unabhaengiges Landeszentrum fuer Datenschutz Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel", "Independent Centre for Data Protection Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel", "Centre indépendant pour la protection des données du Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel")}<br />
-              {t("Website:", "Website:", "Site web :")} <a href="https://www.datenschutzzentrum.de/" target="_blank" rel="noopener">www.datenschutzzentrum.de</a>
+              {t("Kontaktdaten der Datenschutzaufsicht in unseren Bundeslaendern:", "Contact details for the data protection supervisory authorities in our federal states:", "Coordonnées des autorités de contrôle de la protection des données dans nos Länder :")}<br />
+              {t("Hamburg: Der Hamburgische Beauftragte fuer Datenschutz und Informationsfreiheit (HmbBfDI)", "Hamburg: Hamburg Commissioner for Data Protection and Freedom of Information (HmbBfDI)", "Hambourg : Commissaire de Hambourg à la protection des données et à la liberté d’information (HmbBfDI)")} – <a href="https://datenschutz-hamburg.de/" target="_blank" rel="noopener">datenschutz-hamburg.de</a><br />
+              {t("Schleswig-Holstein: Unabhaengiges Landeszentrum fuer Datenschutz Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel", "Schleswig-Holstein: Independent Centre for Data Protection Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel", "Schleswig-Holstein : Centre indépendant pour la protection des données du Schleswig-Holstein (ULD), Holstenstrasse 98, 24103 Kiel")} – <a href="https://www.datenschutzzentrum.de/" target="_blank" rel="noopener">datenschutzzentrum.de</a>
             </p>
           </section>
 
           <section>
             <h2>{t("13. Aktualitaet dieser Datenschutzerklaerung", "13. Updates to this privacy policy", "13. Mise à jour de la présente politique de confidentialité")}</h2>
             <p>
-              {t("Stand: 30. Oktober 2026. Wir passen diese Datenschutzerklaerung an, wenn sich technische, rechtliche oder organisatorische Verarbeitungsvorgaenge aendern.", "Last updated: 30 October 2026. We update this privacy policy when technical, legal or organisational processing operations change.", "Mise à jour : 30 octobre 2026. Nous adaptons la présente politique de confidentialité lorsque les opérations de traitement changent sur le plan technique, juridique ou organisationnel.")}
+              {t("Stand: 31. Oktober 2026. Wir passen diese Datenschutzerklaerung an, wenn sich technische, rechtliche oder organisatorische Verarbeitungsvorgaenge aendern.", "Last updated: 31 October 2026. We update this privacy policy when technical, legal or organisational processing operations change.", "Mise à jour : 31 octobre 2026. Nous adaptons la présente politique de confidentialité lorsque les opérations de traitement changent sur le plan technique, juridique ou organisationnel.")}
             </p>
           </section>
 
