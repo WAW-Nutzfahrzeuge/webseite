@@ -108,7 +108,8 @@ for (const germanPath of ["/lkw-verkaufen/hamburg", "/lkw-verkaufen/berlin", `/l
     const html = await readPage(path);
     assert.deepEqual(structure(html), structure(german), `${path}: shared regional structure`);
     assert.deepEqual(images(html), images(german), `${path}: same regional images`);
-    assert.ok(html.includes(`value="${getLocalizedEquivalentPath(path, "de")}"`), `${path}: switch back to equivalent German page`);
+    const languageMenu = html.match(/<div\b[^>]*id="language-menu"[\s\S]*?<\/div>/)?.[0];
+    assert.ok(languageMenu?.includes(`href="${getLocalizedEquivalentPath(path, "de")}" lang="de"`), `${path}: switch back to equivalent German page`);
   }
 }
 const mobileCityFiles = await readdir(new URL("../src/assets/cities/mobile/", import.meta.url));
