@@ -95,7 +95,7 @@ const languageOptions = locales.map((locale) => ({
         </button>
         <div class="nav-dropdown language-menu" id="language-menu" inert>
           {languageOptions.map((option) => (
-            <a href={option.href} hreflang={option.locale} lang={option.locale} aria-current={option.locale === currentLang ? "true" : undefined}>
+            <a href={option.href} lang={option.locale} aria-current={option.locale === currentLang ? "true" : undefined}>
               <img class="language-flag" src={option.flag} alt="" width="24" height="18" />
               <span>{option.label}</span>
             </a>
@@ -141,7 +141,7 @@ const languageOptions = locales.map((locale) => ({
       </button>
       <div class="nav-dropdown language-menu" id="sheet-language-menu" inert>
         {languageOptions.map((option) => (
-          <a href={option.href} hreflang={option.locale} lang={option.locale} aria-current={option.locale === currentLang ? "true" : undefined}>
+          <a href={option.href} lang={option.locale} aria-current={option.locale === currentLang ? "true" : undefined}>
             <img class="language-flag" src={option.flag} alt="" width="24" height="18" />
             <span>{option.label}</span>
           </a>
