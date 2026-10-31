@@ -14,6 +14,14 @@ for (const [locale, path] of pages) {
   assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, `${path}: exactly one H1`);
   assert.match(html, new RegExp(`<link[^>]+rel="canonical"[^>]+href="https://www\\.wawnutzfahrzeuge\\.de${path === "/" ? "/" : path}"`), `${path}: canonical`);
   assert.ok(!html.includes('href=""'), `${path}: empty link`);
+  const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)?.[0];
+  assert.ok(footer, `${path}: footer exists`);
+  const footerBottom = footer.match(/<div class="container footer-bottom"[^>]*>([\s\S]*?)<\/div>/)?.[1];
+  assert.ok(footerBottom, `${path}: footer bottom exists`);
+  assert.doesNotMatch(footerBottom, /<a\b/, `${path}: no duplicate links at footer bottom`);
+  for (const legalRoute of ["legalNotice", "privacy", "terms"]) {
+    assert.equal((footer.match(new RegExp(`href="${routeMap[legalRoute][locale]}"`, "g")) || []).length, 1, `${path}: ${legalRoute} linked once in footer`);
+  }
   assert.doesNotMatch(
     html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " "),
     /deutschland- und europaweit|Deutschland (?:&amp;|&|und) Europa|Germany (?:and|&amp;|&) Europe|Allemagne (?:et|comme) en Europe|Allemagne et l'Europe|Allemagne et Europe/i,

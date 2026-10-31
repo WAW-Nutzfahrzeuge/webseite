@@ -62,11 +62,6 @@ const localized = (route: Parameters<typeof localizePath>[0]) => localizePath(ro
 
   <div class="container footer-bottom">
     <span>© {new Date().getFullYear()} WAW Nutzfahrzeuge</span>
-    <div>
-      <a href={localized("legalNotice")}>{footer.legalNotice}</a>
-      <a href={localized("privacy")}>{footer.privacy}</a>
-      <a href={localized("terms")}>{footer.terms}</a>
-    </div>
   </div>
 </footer>
 
@@ -139,11 +134,6 @@ const localized = (route: Parameters<typeof localizePath>[0]) => localizePath(ro
     border-top: 1px solid rgba(255,255,255,0.1);
   }
 
-  .footer-bottom div {
-    display: flex;
-    gap: 18px;
-  }
-
   @media (max-width: 820px) {
     .footer-grid {
       grid-template-columns: 1fr 1fr;
@@ -157,9 +147,5 @@ const localized = (route: Parameters<typeof localizePath>[0]) => localizePath(ro
       flex-direction: column;
     }
 
-    .footer-bottom div {
-      flex-direction: column;
-      gap: 0;
-    }
   }
 </style>
