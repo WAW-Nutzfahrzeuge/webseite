@@ -19,7 +19,7 @@ const {
 <style>
   .contact-hero {
     position: relative;
-    min-height: 0;
+    min-height: 760px;
     display: grid;
     align-items: center;
     overflow: hidden;
@@ -31,9 +31,8 @@ const {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, rgba(5,7,10,0.84) 0%, rgba(5,7,10,0.54) 48%, rgba(5,7,10,0.12) 100%),
-      linear-gradient(180deg, rgba(5,7,10,0.18), rgba(5,7,10,0.48)),
-      url("/images/kontakt-location.webp");
+      linear-gradient(90deg, rgba(5,7,10,0.68) 0%, rgba(5,7,10,0.36) 48%, rgba(5,7,10,0.18) 100%),
+      url("/images/contact_background_desktop.png");
     background-size: cover;
     background-position: center right;
   }
@@ -44,7 +43,7 @@ const {
     inset: 0;
     background:
       radial-gradient(circle at 18% 36%, rgba(255,107,0,0.14), transparent 22rem),
-      linear-gradient(180deg, transparent 64%, rgba(5,7,10,0.26));
+      linear-gradient(180deg, transparent 64%, rgba(5,7,10,0.10));
   }
 
   .contact-hero-inner {
@@ -103,16 +102,16 @@ const {
 
   @media (max-width: 760px) {
     .contact-hero {
-      min-height: 0;
+      min-height: 480px;
     }
 
     .contact-hero-bg {
       background:
-        linear-gradient(180deg, rgba(5,7,10,0.52), rgba(5,7,10,0.76)),
-        linear-gradient(90deg, rgba(5,7,10,0.64), rgba(5,7,10,0.18)),
-        url("/images/kontakt-location.webp");
+        linear-gradient(180deg, rgba(5,7,10,0.48), rgba(5,7,10,0.66)),
+        url("/images/contact_background_mobile.png");
       background-size: cover;
-      background-position: center top;
+      background-position: center, center calc(50% + 28px);
+      background-repeat: no-repeat;
     }
 
     .contact-hero-inner {
