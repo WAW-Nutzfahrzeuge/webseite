@@ -50,11 +50,11 @@ async function submit(changes = {}, mailResponses = [accepted]) {
   return { status: response.status, body: await response.json() };
 }
 
-test("name and phone suffice; vehicle location and damage reach the lead", async () => {
-  const result = await submit({ location: "Hamburg", condition: "Nicht fahrbereit" });
+test("contact details suffice; vehicle location and damage reach the lead", async () => {
+  const result = await submit({ email: "seller@example.test", location: "Hamburg", condition: "Nicht fahrbereit" }, [accepted, accepted]);
   assert.equal(result.status, 200);
   assert.equal(result.body.redirectTo, "/danke");
-  assert.equal(requests.length, 1);
+  assert.equal(requests.length, 2);
   assert.match(requests[0].text, /Fahrzeugstandort: Hamburg/);
   assert.match(requests[0].text, /Nicht fahrbereit/);
 });
@@ -89,12 +89,19 @@ test("network failure on confirmation preserves accepted lead; lead failure does
   let result = await submit({ locale: "en", email: "seller@example.test" }, [accepted, fail]);
   assert.equal(result.body.success, true);
   assert.equal(result.body.redirectTo, "/en/danke");
-  result = await submit({}, [fail]);
+  result = await submit({ email: "seller@example.test" }, [fail]);
   assert.equal(result.status, 500);
   assert.equal(result.body.success, false);
 });
 
-test("missing required details and optional invalid email fail without sending mail", async () => {
+test("missing required email fails without sending mail", async () => {
+  const result = await submit({}, []);
+  assert.equal(result.status, 400);
+  assert.ok(result.body.errors.email);
+  assert.equal(requests.length, 0);
+});
+
+test("missing required details and invalid email fail without sending mail", async () => {
   const result = await submit({ name: "", phone: "", email: "invalid" }, []);
   assert.equal(result.status, 400);
   assert.deepEqual(Object.keys(result.body.errors).sort(), ["email", "name", "phone"]);

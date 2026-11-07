@@ -27,7 +27,7 @@ const additionalFields = ["company", "year", "mileage"] as const;
     {!compact && fields.map((name) => (
       <label>
         <span>{copy.labels[name]}</span>
-        <input name={name} type={name === "email" ? "email" : "text"} autocomplete={name === "email" ? "email" : undefined} maxlength={name === "email" ? 254 : 140} placeholder={name === "vehicle" ? copy.vehicleHint : name === "condition" ? copy.conditionHint : undefined} />
+        <input name={name} type={name === "email" ? "email" : "text"} required={name === "email"} autocomplete={name === "email" ? "email" : undefined} maxlength={name === "email" ? 254 : 140} placeholder={name === "vehicle" ? copy.vehicleHint : name === "condition" ? copy.conditionHint : undefined} />
       </label>
     ))}
   </div>

@@ -278,7 +278,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         if (fields.name.length < 2) errors.name = copy.nameError;
         if (!isValidPhone(fields.phone)) errors.phone = copy.phoneError;
-        if (fields.email && !isValidEmail(fields.email)) errors.email = copy.emailError;
+        if (!isValidEmail(fields.email)) errors.email = copy.emailError;
         if (fields.year && !/^[\d\s./-]{2,20}$/.test(fields.year)) errors.year = copy.yearError;
 
         if (looksLikeSpam(Object.values(fields))) {

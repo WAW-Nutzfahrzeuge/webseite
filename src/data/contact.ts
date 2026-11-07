@@ -3,10 +3,10 @@ import type { Locale } from "./i18n";
 export const contactCopy = {
   de: {
     title: "Fahrzeug unverbindlich anbieten",
-    intro: "Name und Telefonnummer reichen für den ersten Kontakt. Alle Fahrzeugangaben sind freiwillig.",
+    intro: "Name, Telefonnummer und E-Mail-Adresse reichen für den ersten Kontakt. Alle Fahrzeugangaben sind freiwillig.",
     attachments: "Fotos, Unterlagen und Fahrzeuglisten senden Sie uns per E-Mail oder WhatsApp, sofern verfügbar. Dieses Formular enthält keinen Datei-Upload.",
     details: "Weitere Fahrzeugdaten (freiwillig)",
-    labels: { name: "Name *", phone: "Telefon *", email: "E-Mail (freiwillig)", vehicle: "Fahrzeug / Fahrzeugtyp", location: "Fahrzeugstandort", condition: "Zustand / bekannte Schäden", company: "Unternehmen", year: "Baujahr", mileage: "Kilometerstand / Betriebsstunden", message: "Ihre Nachricht (freiwillig)" },
+    labels: { name: "Name *", phone: "Telefon *", email: "E-Mail *", vehicle: "Fahrzeug / Fahrzeugtyp", location: "Fahrzeugstandort", condition: "Zustand / bekannte Schäden", company: "Unternehmen", year: "Baujahr", mileage: "Kilometerstand / Betriebsstunden", message: "Ihre Nachricht (freiwillig)" },
     vehicleHint: "z. B. MAN TGX, Auflieger oder Fuhrpark",
     conditionHint: "z. B. Motorschaden, ohne HU, nicht fahrbereit",
     submit: "Anfrage senden", sending: "Wird gesendet…",
@@ -31,10 +31,10 @@ export const contactCopy = {
   },
   en: {
     title: "Offer your vehicle without obligation",
-    intro: "Your name and phone number are enough to get started. All vehicle details are optional.",
+    intro: "Your name, phone number and email address are enough to get started. All vehicle details are optional.",
     attachments: "Send photos, documents and vehicle lists by email or WhatsApp, if available. This form does not support file uploads.",
     details: "More vehicle details (optional)",
-    labels: { name: "Name *", phone: "Phone *", email: "Email (optional)", vehicle: "Vehicle / type", location: "Vehicle location", condition: "Condition / known damage", company: "Company", year: "Year", mileage: "Mileage / operating hours", message: "Your message (optional)" },
+    labels: { name: "Name *", phone: "Phone *", email: "Email *", vehicle: "Vehicle / type", location: "Vehicle location", condition: "Condition / known damage", company: "Company", year: "Year", mileage: "Mileage / operating hours", message: "Your message (optional)" },
     vehicleHint: "e.g. MAN TGX, semi-trailer or fleet",
     conditionHint: "e.g. engine damage, no inspection, non-running",
     submit: "Send inquiry", sending: "Sending…",
@@ -59,10 +59,10 @@ export const contactCopy = {
   },
   fr: {
     title: "Proposer votre véhicule sans engagement",
-    intro: "Votre nom et votre numéro de téléphone suffisent pour un premier contact. Les informations du véhicule sont facultatives.",
+    intro: "Votre nom, votre numéro de téléphone et votre adresse e-mail suffisent pour un premier contact. Les informations du véhicule sont facultatives.",
     attachments: "Envoyez photos, documents et listes de véhicules par e-mail ou WhatsApp, si disponible. Ce formulaire ne permet pas de joindre des fichiers.",
     details: "Autres informations du véhicule (facultatif)",
-    labels: { name: "Nom *", phone: "Téléphone *", email: "E-mail (facultatif)", vehicle: "Véhicule / type", location: "Lieu du véhicule", condition: "État / dommages connus", company: "Entreprise", year: "Année", mileage: "Kilométrage / heures de service", message: "Votre message (facultatif)" },
+    labels: { name: "Nom *", phone: "Téléphone *", email: "E-mail *", vehicle: "Véhicule / type", location: "Lieu du véhicule", condition: "État / dommages connus", company: "Entreprise", year: "Année", mileage: "Kilométrage / heures de service", message: "Votre message (facultatif)" },
     vehicleHint: "ex. MAN TGX, semi-remorque ou flotte",
     conditionHint: "ex. panne moteur, sans contrôle technique, non roulant",
     submit: "Envoyer la demande", sending: "Envoi en cours…",
